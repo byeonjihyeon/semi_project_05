@@ -21,6 +21,13 @@
 	        	<section class='section notice-list-wrap'>
 				<div class='page-title'>회원 관리</div>
 					<div class='list-content'>
+						<div>
+							<select name='filters'>
+								<option>아이디</option>
+							</select>
+							<input type='text' name='searchName'> 
+							<button type='#' onclick='searchInfo()'>조회</button>
+						</div>
 						<table class='adminTbl tbl-hover'>
 							<tr>
 								<th style='width:10%;'>NO</th>
