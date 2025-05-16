@@ -88,6 +88,48 @@ public class GymDao {
 		
 		return result;
 	}
+
+	public Gym loginChkGym(Connection conn, String userId, String password) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = "select * from tbl_gym where gym_id = ? and gym_pw = ?";
+		
+		Gym loginGym = null;
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, userId);
+			pstmt.setString(2, password);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				loginGym = new Gym();
+				loginGym.setGymId(rset.getString("gym_id"));
+				loginGym.setGymPw(rset.getString("gym_pw"));
+				loginGym.setGymName(rset.getString("gym_name"));
+				loginGym.setGymAddr(rset.getString("gym_addr"));
+				loginGym.setGymMemberCnt(rset.getInt("gym_member"));
+				loginGym.setGymEnrollDate(rset.getString("gym_enrolldate"));
+				loginGym.setApprovalCode(rset.getString("approval_code"));
+				loginGym.setEmail(rset.getString("gym_email"));
+				loginGym.setPhone(rset.getString("gym_phone"));
+				loginGym.setOpenTime(rset.getString("open_time"));
+				loginGym.setDetail(rset.getString("detail"));
+				loginGym.setConvenience(rset.getString("convenience"));
+				 
+				System.out.println(loginGym.getGymId());
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return loginGym;
+	}
 	
 	
 

@@ -55,34 +55,47 @@
            <nav class="main-menu">
            <c:choose>
            		<%--회원(헬스장포함) , 관리자 session 둘다 null 인 경우 --%>
-				<c:when test='${empty sessionScope.loginMember and empty sessionScope.loginAdmin}'>
-             <div class="menu-item"><a href='/member/loginFrm'>로그인</a>
-              <%-- 서브 메뉴 만들시 사용할
-               <div class="submenu">
-                 <a href="#">회원가입</a>
-                 <a href="#">내 정보</a>
-               </div>
-               --%>
-             </div>
-             <div class="menu-item"><a href='#'>회원가입</a>
-             	<%-- 서브 메뉴 만들시 사용할 
-               <div class="submenu">
-                 <a href="#">문의하기</a>
-                 <a href="#">FAQ</a>
-               </div>
-               --%>
-             </div>
-             </c:when>
+				<c:when test='${empty loginMember and empty loginAdmin and empty loginGym}'>
+	             <div class="menu-item"><a href='/member/loginFrm'>로그인</a>
+	              <%-- 서브 메뉴 만들시 사용할
+	               <div class="submenu">
+	                 <a href="#">회원가입</a>
+	                 <a href="#">내 정보</a>
+	               </div>
+	               --%>
+	             </div>
+	             <div class="menu-item"><a href='#'>회원가입</a>
+	             	<%-- 서브 메뉴 만들시 사용할 
+	               <div class="submenu">
+	                 <a href="#">문의하기</a>
+	                 <a href="#">FAQ</a>
+	               </div>
+	               --%>
+	             </div>
+	             </c:when>
 				<c:otherwise>
-             <div class="menu-item"><a href='#'>마이페이지</a>
+				<c:choose>
+					<c:when test = '${not empty loginMember and empty loginAdmin and empty loginGym}'>
+						<%-- 회원용 마이페이지 --%>
+						<div class="menu-item"><a href='#'>마이페이지</a></div>
+					</c:when>
+             		<c:when test = '${empty loginMember and not empty loginAdmin and empty loginGym}'>
+						<%-- 관리자용 마이페이지 --%>
+						<div class="menu-item"><a href='#'>마이페이지</a></div>
+					</c:when>
+					<c:when test = '${empty loginMember and empty loginAdmin and not empty loginGym}'>
+						<%-- 헬스장용 마이페이지 --%>
+						<div class="menu-item"><a href='/gym/myPage'>마이페이지</a></div>
+					</c:when>
+				</c:choose>
               <%-- 서브 메뉴 만들시 사용할
                <div class="submenu">
                  <a href="#">회원가입</a>
                  <a href="#">내 정보</a>
                </div>
                --%>
-             </div>
-             <div class="menu-item"><a href='/member/logOut'>로그아웃</a>
+             
+             		<div class="menu-item"><a href='/member/logOut'>로그아웃</a></div>
 
              	<%-- 서브 메뉴 만들시 사용할 
                <div class="submenu">
@@ -90,8 +103,8 @@
                  <a href="#">FAQ</a>
                </div>
                --%>
-             </div>
-            	 </c:otherwise>
+             
+            </c:otherwise>
 			</c:choose>
            </nav>
          </div>
