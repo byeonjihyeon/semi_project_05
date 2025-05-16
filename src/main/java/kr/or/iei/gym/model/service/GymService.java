@@ -60,6 +60,14 @@ public class GymService {
 		
 		
 	}
+
+	public Gym loginChkGym(String userId, String password) {
+		Connection conn = JDBCTemplate.getConnection();
+		Gym loginGym = dao.loginChkGym(conn, userId, password);
+		JDBCTemplate.close(conn);
+		
+		return loginGym;
+	}
 	
 	
 }
