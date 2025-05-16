@@ -24,6 +24,7 @@
 						<div>
 							<select name='filters'>
 								<option>아이디</option>
+								<option>이름</option>
 							</select>
 							<input type='text' name='searchName'> 
 							<button type='#' onclick='searchInfo()'>조회</button>
@@ -61,6 +62,12 @@
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>   
 </body>
 <script>
+//클릭 이벤트 발생시 이름 또는 아이디로 조히
+function searchInfo() {
+	
+}
+
+
 function deleteMember(memberId) {
 	
 	  swal({
