@@ -90,7 +90,6 @@ public class AdminDao {
 				m.setMemberEmail(rset.getString("member_email"));
 				m.setMemberGrade(rset.getString("member_grade"));
 				m.setMemberName(rset.getString("member_name"));
-				m.setMemberNickname(rset.getString("member_nickname"));
 				m.setMemberPhone(rset.getString("member_phone"));
 				m.setReportedCnt(rset.getInt("reported_cnt"));
 				

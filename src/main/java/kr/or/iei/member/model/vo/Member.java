@@ -18,4 +18,5 @@ public class Member {
 	private String memberPhone;				//회원 전화번호(010-0000-0000)
 	private String memberDate;				//회원 가입일
 	private int reportedCnt;				//신고 당한 횟수
+	private int memberType;					//회원 타입
 }
