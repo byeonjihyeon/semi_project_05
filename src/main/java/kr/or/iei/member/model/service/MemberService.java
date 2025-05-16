@@ -54,6 +54,26 @@ public class MemberService {
 		return memberId;
 	}
 
+	public String searchToEmail(String userId, String userEmail) {
+		Connection conn = JDBCTemplate.getConnection();
+		String toEmail = dao.searchToEmail(conn, userId, userEmail);
+		JDBCTemplate.close(conn);
+		return toEmail;
+	}
+
+	public int updateNewPw(String userId, String newRandomPw) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.updateNewPw(conn, userId, newRandomPw);
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
+
 
 	
 	

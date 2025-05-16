@@ -35,7 +35,7 @@ public class SearchIdFrmServlet extends HttpServlet {
 		// 결과처리
 			// 페이지 이동 경로 지정
 			RequestDispatcher view = null;
-			
+
 			if(gb.equals("id")) {				
 				view = request.getRequestDispatcher("/WEB-INF/views/member/searchId.jsp"); //단순 로그인 화면으로 이동하기 위해 만들어진 서블릿
 			}else if(gb.equals("pw")){
@@ -46,6 +46,7 @@ public class SearchIdFrmServlet extends HttpServlet {
 				request.setAttribute("icon", "warning");
 				request.setAttribute("loc", "/");
 			}
+
 			
 			// 화면 구현에 필요한 데이터 등록 X
 			// 페이지 이동

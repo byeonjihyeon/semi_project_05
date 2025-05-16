@@ -37,8 +37,9 @@ public class MemberDao {
 				m.setMemberNickname(rset.getString("member_nickname"));
 				m.setMemberPhone(rset.getString("member_phone"));
 				m.setMemberPw(rset.getString("member_pw"));
-				m.setReportedCnt(rset.getInt("reported_cnt")
-			);
+				m.setReportedCnt(rset.getInt("reported_cnt"));
+				m.setMemberType(rset.getInt("member_type"));
+			
 				
 			}
 		} catch (SQLException e) {
@@ -85,7 +86,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		
-		String query = "insert into tbl_member values(?,?,?,'null',?,'회원',?,sysdate,0)";
+		String query = "insert into tbl_member values(?,?,?,'null',?,'회원',?,sysdate,0, 3)";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -164,6 +165,59 @@ public class MemberDao {
 		}
 		
 		return memberId;
+	}
+
+	public String searchToEmail(Connection conn, String userId, String userEmail) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = "select member_id, member_email from tbl_member where member_id = ? and member_email = ?";
+		
+		String toEmail = null;
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, userId);
+			pstmt.setString(2, userEmail);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				toEmail = rset.getString("member_email");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return toEmail;
+	}
+
+	public int updateNewPw(Connection conn, String userId, String newRandomPw) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = "update tbl_member set member_pw = ? where member_id = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, newRandomPw);
+			pstmt.setString(2, userId);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
 	}
 
 	
