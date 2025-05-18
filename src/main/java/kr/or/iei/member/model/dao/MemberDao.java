@@ -15,30 +15,31 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		String query = "select * from tbl_member where member_id = ? and member_pw = ?";
+		String query = "select * from tbl_member where member_id = ?";
 		Member loginM = null;
 				
 		try {
 			pstmt = conn.prepareStatement(query);
-			
+
 			pstmt.setString(1, m.getMemberId());
-			pstmt.setString(2, m.getMemberPw());
 			
 			rset = pstmt.executeQuery();
 			
 			if(rset.next()) {
+
 				loginM = new Member();
-				m.setMemberAddr(rset.getString("member_addr"));
-				m.setMemberDate(rset.getString("enrolldate"));
-				m.setMemberEmail(rset.getString("member_email"));
-				m.setMemberGrade(rset.getString("member_grade"));
-				m.setMemberId(rset.getString("member_id"));
-				m.setMemberName(rset.getString("member_name"));
-				m.setMemberNickname(rset.getString("member_nickname"));
-				m.setMemberPhone(rset.getString("member_phone"));
-				m.setMemberPw(rset.getString("member_pw"));
-				m.setReportedCnt(rset.getInt("reported_cnt"));
-				m.setMemberType(rset.getInt("member_type"));
+				loginM.setMemberAddr(rset.getString("member_addr"));
+				loginM.setMemberPw(rset.getString("member_pw"));
+				loginM.setMemberDate(rset.getString("enrolldate"));
+				loginM.setMemberEmail(rset.getString("member_email"));
+				loginM.setMemberGrade(rset.getString("member_grade"));
+				loginM.setMemberId(m.getMemberId());
+				loginM.setMemberName(rset.getString("member_name"));
+				//m.setMemberNickname(rset.getString("member_nickname"));
+				loginM.setMemberPhone(rset.getString("member_phone"));
+				loginM.setMemberPw(rset.getString("member_pw"));
+				loginM.setReportedCnt(rset.getInt("reported_cnt"));
+				loginM.setMemberType(rset.getInt("member_type"));
 			
 				
 			}
@@ -197,7 +198,7 @@ public class MemberDao {
 		return toEmail;
 	}
 
-	public int updateNewPw(Connection conn, String userId, String newRandomPw) {
+	public int updateNewPw(Connection conn, String userId, String updateNewPw) {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		
@@ -206,7 +207,7 @@ public class MemberDao {
 		try {
 			pstmt = conn.prepareStatement(query);
 			
-			pstmt.setString(1, newRandomPw);
+			pstmt.setString(1, updateNewPw);
 			pstmt.setString(2, userId);
 			
 			result = pstmt.executeUpdate();

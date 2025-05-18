@@ -128,12 +128,7 @@ public class sendEmailCodeServlet extends HttpServlet {
 					request.setAttribute("msg", "회원님의 임시 비밀번호를 이메일로 전송했습니다.");
 					request.setAttribute("icon", "success");
 					request.setAttribute("loc", "/member/loginFrm");
-				}else {
-					view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
-					request.setAttribute("title", "알림");
-					request.setAttribute("msg", "회원님의 정보가 존재하지 않습니다.");
-					request.setAttribute("icon", "warning");
-					request.setAttribute("loc", "/member/loginFrm");
+				
 				}
 				
 				System.out.println("Email 전송 완료");
@@ -142,17 +137,21 @@ public class sendEmailCodeServlet extends HttpServlet {
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-			
-			response.getWriter().print(false);
-			
-			
-			
-		}else {
-			response.getWriter().print(false);
-		}
-	}
 
+			}
+
+		}else {
+			RequestDispatcher view = null;
+			
+			view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
+			request.setAttribute("title", "알림");
+			request.setAttribute("msg", "회원님의 정보가 존재하지 않습니다.");
+			request.setAttribute("icon", "warning");
+			request.setAttribute("loc", "/member/loginFrm");
+
+			view.forward(request, response);
+	}
+	}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

@@ -2,6 +2,8 @@ package kr.or.iei.member.model.service;
 
 import java.sql.Connection;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.member.model.dao.MemberDao;
 import kr.or.iei.member.model.vo.Member;
@@ -17,6 +19,10 @@ public class MemberService {
 		Connection conn = JDBCTemplate.getConnection();
 		Member loginM = dao.loginChk(conn, m);
 		JDBCTemplate.close(conn);
+		
+		System.out.println(loginM.getMemberId());
+		System.out.println(loginM.getMemberPw());
+
 		return loginM;
 	}
 
@@ -30,6 +36,8 @@ public class MemberService {
 
 	public int joinMember(Member m) {
 		Connection conn = JDBCTemplate.getConnection();
+		String memberPw = BCrypt.hashpw(m.getMemberPw(), BCrypt.gensalt());
+		m.setMemberPw(memberPw);
 		int result = dao.joinMember(conn, m);
 		if(result > 0) {
 			JDBCTemplate.commit(conn);
@@ -63,7 +71,9 @@ public class MemberService {
 
 	public int updateNewPw(String userId, String newRandomPw) {
 		Connection conn = JDBCTemplate.getConnection();
-		int result = dao.updateNewPw(conn, userId, newRandomPw);
+		String updateNewPw = BCrypt.hashpw(newRandomPw, BCrypt.gensalt());
+		
+		int result = dao.updateNewPw(conn, userId, updateNewPw);
 		if(result > 0) {
 			JDBCTemplate.commit(conn);
 		}else {
