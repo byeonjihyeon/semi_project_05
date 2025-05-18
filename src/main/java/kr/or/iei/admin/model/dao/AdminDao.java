@@ -159,7 +159,7 @@ public class AdminDao {
 				srchMember.setMemberEmail(rset.getString("member_email"));
 				srchMember.setMemberGrade(rset.getString("member_grade"));
 				srchMember.setMemberName(rset.getString("member_name"));
-				srchMember.setMemberNickname(rset.getString("member_nickname"));
+				//srchMember.setMemberNickname(rset.getString("member_nickname"));
 				srchMember.setMemberPhone(rset.getString("member_phone"));
 				srchMember.setReportedCnt(rset.getInt("reported_cnt"));
 			}
@@ -224,6 +224,48 @@ public class AdminDao {
 		}
 		
 		return result;
+	}
+
+	public ArrayList<Member> searchMembers(Connection conn, String field, String inputValue) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		ArrayList<Member> list = new ArrayList<Member>();
+		
+		String query = "select * from tbl_member where ? = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, field);
+			pstmt.setString(2, inputValue);
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				Member m = new Member();
+				
+				m.setMemberId(rset.getString("member_id"));
+				m.setMemberAddr(rset.getString("member_addr"));
+				m.setMemberDate(rset.getString("enrolldate"));
+				m.setMemberEmail(rset.getString("member_email"));
+				m.setMemberGrade(rset.getString("member_grade"));
+				m.setMemberName(rset.getString("member_name"));
+				//m.setMemberNickname(rset.getString("member_nickname"));
+				m.setMemberPhone(rset.getString("member_phone"));
+				m.setReportedCnt(rset.getInt("reported_cnt"));
+				
+				list.add(m);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return list;
 	}
 	
 }

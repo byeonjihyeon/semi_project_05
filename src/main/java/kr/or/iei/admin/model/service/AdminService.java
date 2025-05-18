@@ -155,6 +155,16 @@ public class AdminService {
 		
 		return result;
 	}
+
+	public ArrayList<Member> searchMembers(String field, String inputValue) {
+		Connection conn = JDBCTemplate.getConnection();
+		ArrayList<Member> list = dao.searchMembers(conn, field, inputValue);
+		
+		JDBCTemplate.close(conn);
+		
+		return list;
+		
+	}
 	
 
 
