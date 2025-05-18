@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import kr.or.iei.gym.model.service.GymService;
 import kr.or.iei.gym.model.vo.Gym;
 import kr.or.iei.member.model.service.MemberService;
@@ -44,22 +46,29 @@ public class LoginChkServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		RequestDispatcher view;
 		
-		
 		if(type == 2) {	//로그인시, 라디오버튼 회원을 선택시
 			Member m = new Member();
 			m.setMemberId(userId);
 			m.setMemberPw(password);
 			
 			// 로직
+			
 			MemberService service = new MemberService();
 			Member loginM = service.loginChk(m);
 			
 			//결과처리
 				// 페이지 이동할 경로 지정.
-				
+
+
 				//로그인 성공시 바로 메인으로
-				
-				if(loginM != null) {
+				boolean passwordChk = false;
+				System.out.println(loginM.getMemberId());
+				System.out.println(0);
+
+				if(loginM != null && loginM.getMemberPw() != null) {
+					passwordChk = BCrypt.checkpw(password, loginM.getMemberPw());
+					System.out.println(passwordChk);
+					System.out.println(loginM.getMemberPw());
 					view = request.getRequestDispatcher("index.jsp");
 					session.setAttribute("loginMember", loginM);				
 				} else {

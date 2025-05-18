@@ -13,9 +13,10 @@ public class Member {
 	private String memberName;				//회원 이름
 	private String memberAddr;				//회원 주소
 	private String memberEmail;				//회원 이메일
-	private String memberNickname;			//회원 닉네임
+	//private String memberNickname;			//회원 닉네임
 	private String memberGrade;				//회원 등급 (포인트에 따라 변경)
 	private String memberPhone;				//회원 전화번호(010-0000-0000)
 	private String memberDate;				//회원 가입일
 	private int reportedCnt;				//신고 당한 횟수
+	private int memberType;					//회원 타입
 }

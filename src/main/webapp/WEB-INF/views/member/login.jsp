@@ -37,21 +37,9 @@
           <button type="submit" class="login-btn">로그인</button>
       </form>
       <div class="links">
-          <a href="javascript:void(0);" onclick="searchInfo('id')">아이디 찾기</a> | <a href="javascript:void(0);" onclick="searchInfo('pw')">비밀번호 찾기</a> | <a href="/member/joinFrm">회원가입</a> | <a href="#">헬스장 등록</a>
+          <a href="/member/searchInfo?gb=id?" >아이디 찾기</a> | <a href="/member/searchInfo?gb=pw" >비밀번호 찾기</a> | <a href="/member/joinFrm">회원가입</a> | <a href="#">헬스장 등록</a>
       </div>
-      <script>
-      	function searchInfo(gb){
-      		
-      		if(gb == 'id'){
-      			location.href = "/member/searchInfo?gb=" + gb
-      		}
-      		
-      		if(gb == 'pw'){
-      			location.href = "/member/searchInfo?gb=" + gb
-      		}
-      		
-      	}
-      </script>
+
   </div>
 </body>
 </html>
