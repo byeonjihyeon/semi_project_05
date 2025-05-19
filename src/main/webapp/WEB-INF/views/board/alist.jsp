@@ -65,7 +65,7 @@
 	<section class='section notice-list-wrap'>
 	<div class="page-title">공지사항</div>
 		<br><br>
-		<br><br>
+		
 	<div class="list-header">
 		<a class="btn-point write-btn" href="/board/writeFrm">공지사항쓰기(매니저만 보이게)</a>
 		

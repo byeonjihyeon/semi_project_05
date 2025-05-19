@@ -1,5 +1,7 @@
 package kr.or.iei.board.model.vo;
 
+import java.util.ArrayList;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class Board {
 	private String boardId;				//게시판 번호
+	private String boardType;
 	private String boardTitle;			//게시판 제목
 	private String boardContent;		//게시판 내용
 	private String createdAt;			//게시판 작성일
@@ -17,4 +20,6 @@ public class Board {
 	private int viewCount;				//조회수
 	private String memberId;			//작성자 (회원아이디)
 	private int boardLikeCount;			//게시판 좋아요 횟수
+	
+	private ArrayList<BoardFile> fileList;
 }

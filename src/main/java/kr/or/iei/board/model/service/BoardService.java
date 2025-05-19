@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import kr.or.iei.board.model.dao.BoardDao;
 import kr.or.iei.board.model.vo.Board;
+import kr.or.iei.board.model.vo.BoardFile;
 import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.common.ListData;
 
@@ -122,6 +123,38 @@ public class BoardService {
 		JDBCTemplate.close(conn);
 		return listData;
 			
+	}
+
+
+	public int insertBoard(Board board, ArrayList<BoardFile> fileList) {
+		Connection conn = JDBCTemplate.getConnection();
+		
+		String boardId = dao.selectBoardNo(conn);
+	
+		board.setBoardId(boardId);
+		
+		int result = dao.insertBoard(conn, board);
+				
+		if(result > 0) {
+			for(BoardFile file : fileList) {
+				file.setFileTypeId(boardId);
+				
+				result = dao.insertBoardFile(conn, file);
+				
+				if(result <1) {
+					JDBCTemplate.rollback(conn);
+					JDBCTemplate.close(conn);
+					return 0;
+				}
+			}
+			JDBCTemplate.commit(conn);
+			
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		
+		return result;
 	}
 
 

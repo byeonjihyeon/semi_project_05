@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import kr.or.iei.board.model.vo.Board;
+import kr.or.iei.board.model.vo.BoardFile;
 import kr.or.iei.common.JDBCTemplate;
 
 public class BoardDao {
@@ -80,4 +81,92 @@ public class BoardDao {
 		
 		return totCnt;
 	}
+
+	public String selectBoardNo(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String boardNo = "";
+		
+		String query = "select to_char(sysdate, 'yymmdd') || lpad(seq_board.nextval, 5, '0') board_no from dual";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				boardNo = rset.getString("board_no");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return boardNo;
+	}
+
+	public int insertBoard(Connection conn, Board board) {
+		PreparedStatement pstmt = null;
+
+		int result = 0;
+		
+		String query = "insert into tbl_board values (?, ?, ?, ?, ?,sysdate, sysdate ,default, ?)";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			
+			pstmt.setString(1, board.getBoardId());
+			pstmt.setString(2, board.getBoardType());
+			pstmt.setString(3, board.getMemberId());
+			pstmt.setString(4, board.getBoardTitle());
+			pstmt.setString(5, board.getBoardContent());
+			pstmt.setInt(6, board.getBoardLikeCount());
+			
+			result = pstmt.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+				
+		return result;
+	}
+
+	public int insertBoardFile(Connection conn, BoardFile file) {
+		PreparedStatement pstmt =null;
+		
+			int result = 0;
+			
+			String query ="insert into tbl_file values(seq_tbl_file.nextval, ?, ?, ?, ?)";
+			
+			try {
+				pstmt = conn.prepareStatement(query);
+				
+				pstmt.setString(1, file.getFileType());
+				pstmt.setString(2, file.getFileTypeId());
+				pstmt.setString(3, file.getFileName());
+				pstmt.setString(4, file.getFilePath());
+				result = pstmt.executeUpdate();
+						
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+				JDBCTemplate.close(pstmt);
+			}
+		
+		return result;
+	}
+
+	
+		
+		
+	
+
+
 }
