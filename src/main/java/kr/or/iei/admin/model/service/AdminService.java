@@ -16,10 +16,10 @@ public class AdminService {
 		dao = new AdminDao();
 	}
 
-	//관리자 로그인 (모든 정보 조회)
-	public Admin adminLogin(String adminId, String adminPw) {
+	//관리자 회원 1명 조회
+	public Admin searchAdmin(String adminId, String adminPw) {
 		Connection conn = JDBCTemplate.getConnection();
-		Admin loginAdmin = dao.adminLogin(conn, adminId, adminPw);
+		Admin loginAdmin = dao.searchAdmin(conn, adminId, adminPw);
 		JDBCTemplate.close(conn);
 		return loginAdmin;
 	}
@@ -155,6 +155,34 @@ public class AdminService {
 		
 		return result;
 	}
+
+	public ArrayList<Member> searchMembers(String field, String inputValue) {
+		Connection conn = JDBCTemplate.getConnection();
+		ArrayList<Member> list = dao.searchMembers(conn, field, inputValue);
+		
+		JDBCTemplate.close(conn);
+		
+		return list;
+		
+	}
+
+	public ArrayList<Admin> selectAdmins() {
+		Connection conn = JDBCTemplate.getConnection();
+		ArrayList<Admin> list = dao.selectAdmins(conn);
+		JDBCTemplate.close(conn);
+		return list;
+	}
+
+	public ArrayList<Admin> searchIdAdmin(String adminId) {
+		Connection conn = JDBCTemplate.getConnection();
+		ArrayList<Admin> list = dao.searchIdAdmin(conn, adminId);
+		JDBCTemplate.close(conn);
+		return list;
+	}
+
+
+	
+
 	
 
 

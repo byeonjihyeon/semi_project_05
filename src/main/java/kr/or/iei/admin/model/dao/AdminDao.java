@@ -11,14 +11,15 @@ import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.member.model.vo.Member;
 
 public class AdminDao {
-
-	public Admin adminLogin(Connection conn, String adminId, String adminPw) {
+	
+	//관리자 조회 (아이디,패스워드)
+	public Admin searchAdmin(Connection conn, String adminId, String adminPw) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
 		Admin loginAdmin = null;
 		
-		//회원(관리자포함) 테이블과 관리자별 업무테이블 조인하여 select
+		//회원 테이블과 관리자별 업무테이블 조인하여 select
 		String query = "select * from tbl_member join tbl_admin_job using (member_id) where member_id =? and member_pw =?";
 		
 		try {
@@ -40,14 +41,14 @@ public class AdminDao {
 				loginAdmin.setMemberName(rset.getString("member_name"));
 				//loginAdmin.setMemberNickname(rset.getString("member_nickname"));
 				loginAdmin.setMemberPhone(rset.getString("member_phone"));
-				loginAdmin.setReportedCnt(rset.getInt("reported_cnt"));
+				
 				loginAdmin.setJobCode(rset.getString("job_code"));
 				loginAdmin.setUrl(rset.getString("url"));
-				loginAdmin.setSelYN("sel_yn");
-				loginAdmin.setInsYN("ins_yn");
-				loginAdmin.setUpdYN("upd_yn");
-				loginAdmin.setDelYN("del_yn");
-				loginAdmin.setRegDate("reg_date");
+				loginAdmin.setSelYN(rset.getString("sel_Yn"));
+				loginAdmin.setInsYN(rset.getString("ins_Yn"));
+				loginAdmin.setUpdYN(rset.getString("upd_Yn"));
+				loginAdmin.setDelYN(rset.getString("del_Yn"));
+				loginAdmin.setRegDate(rset.getString("reg_date"));
 				
 			}
 		} catch (SQLException e) {
@@ -62,7 +63,7 @@ public class AdminDao {
 		return loginAdmin;
 	}
 	
-	//전체회원 조회(관리자 포함)
+	//전체회원 조회(관리자 제외)
 	public ArrayList<Member> selectMemberList(Connection conn, int start, int end) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -70,7 +71,7 @@ public class AdminDao {
 		ArrayList<Member> list = new ArrayList<Member>();
 		
 		//가입일순으로 10명씩 조회
-		String query = "SELECT * FROM (SELECT ROWNUM RNUM, A.* FROM (SELECT * FROM TBL_Member A ORDER BY enrolldate DESC) A ) WHERE RNUM >=? AND RNUM <=?";
+		String query = "SELECT * FROM (SELECT ROWNUM RNUM, A.* FROM (SELECT * FROM TBL_Member A ORDER BY enrolldate DESC) A ) WHERE MEMBER_TYPE=3 and RNUM >=? AND RNUM <=?";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -90,8 +91,10 @@ public class AdminDao {
 				m.setMemberEmail(rset.getString("member_email"));
 				m.setMemberGrade(rset.getString("member_grade"));
 				m.setMemberName(rset.getString("member_name"));
+				//m.setMemberNickname(rset.getString("member_nickname"));
 				m.setMemberPhone(rset.getString("member_phone"));
 				m.setReportedCnt(rset.getInt("reported_cnt"));
+				
 				
 				list.add(m);
 				
@@ -224,5 +227,145 @@ public class AdminDao {
 		
 		return result;
 	}
+
+	public ArrayList<Member> searchMembers(Connection conn, String field, String inputValue) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		ArrayList<Member> list = new ArrayList<Member>();
+		
+		String query = null;
+		
+		if(field.equals("member_id")) {
+			query = "select * from tbl_member where member_type=3 and member_id like ?";
+		}else {
+			query = "select * from tbl_member where member_type=3 and member_name like ?";
+		}
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, "%" + inputValue + "%");
+			
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				Member m = new Member();
+				
+				m.setMemberId(rset.getString("member_id"));
+				m.setMemberName(rset.getString("member_name"));
+				m.setMemberAddr(rset.getString("member_addr"));
+				m.setMemberDate(rset.getString("enrolldate"));
+				m.setMemberEmail(rset.getString("member_email"));
+				m.setMemberGrade(rset.getString("member_grade"));
+				m.setMemberName(rset.getString("member_name"));
+				//m.setMemberNickname(rset.getString("member_nickname"));
+				m.setMemberPhone(rset.getString("member_phone"));
+				m.setReportedCnt(rset.getInt("reported_cnt"));
+			
+				list.add(m);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return list;
+	}
+
+	public ArrayList<Admin> selectAdmins(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		ArrayList<Admin> list = new ArrayList<Admin>();
+		
+		String query = "select * from tbl_member where member_type != 3";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				Admin admin = new Admin();
+				
+				admin.setMemberId(rset.getString("member_id"));
+				admin.setMemberAddr(rset.getString("member_addr"));
+				admin.setMemberDate(rset.getString("enrolldate"));
+				admin.setMemberEmail(rset.getString("member_email"));
+				admin.setMemberGrade(rset.getString("member_grade"));
+				admin.setMemberName(rset.getString("member_name"));
+				//loginAdmin.setMemberNickname(rset.getString("member_nickname"));
+				admin.setMemberPhone(rset.getString("member_phone"));
+/*
+				admin.setJobCode(rset.getString("job_code"));
+				admin.setUrl(rset.getString("url"));
+				admin.setSelYN(rset.getString("sel_Yn"));
+				admin.setInsYN(rset.getString("ins_Yn"));
+				admin.setUpdYN(rset.getString("upd_Yn"));
+				admin.setDelYN(rset.getString("del_Yn"));
+				admin.setRegDate(rset.getString("reg_date"));
+*/				
+				list.add(admin);
+	
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+			
+		}
+		
+		return list;
+	}
+
+	//1. 아이디로 관리자 조회 (권한 포함)
+	public ArrayList<Admin> searchIdAdmin(Connection conn, String adminId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		ArrayList<Admin> list = new ArrayList<Admin>();
+		
+		String query = "select * from tbl_member join tbl_admin_job using (member_id) where member_id = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, adminId);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				Admin admin = new Admin();
+				admin.setMemberId(rset.getString("member_id"));
+				admin.setMemberAddr(rset.getString("member_addr"));
+				admin.setMemberDate(rset.getString("enrolldate"));
+				admin.setMemberEmail(rset.getString("member_email"));
+				admin.setMemberGrade(rset.getString("member_grade"));
+				admin.setMemberName(rset.getString("member_name"));
+				//loginAdmin.setMemberNickname(rset.getString("member_nickname"));
+				admin.setMemberPhone(rset.getString("member_phone"));
+				admin.setJobCode(rset.getString("job_code"));
+				admin.setUrl(rset.getString("url"));
+				admin.setSelYN(rset.getString("sel_Yn"));
+				admin.setInsYN(rset.getString("ins_Yn"));
+				admin.setUpdYN(rset.getString("upd_Yn"));
+				admin.setDelYN(rset.getString("del_Yn"));
+				admin.setRegDate(rset.getString("reg_date"));
+				list.add(admin);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+
+	
 	
 }
