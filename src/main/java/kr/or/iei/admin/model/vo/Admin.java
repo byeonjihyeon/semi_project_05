@@ -1,5 +1,7 @@
 package kr.or.iei.admin.model.vo;
 
+import java.util.ArrayList;
+
 import kr.or.iei.member.model.vo.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
