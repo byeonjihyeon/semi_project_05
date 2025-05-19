@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -83,23 +85,24 @@
 
     <!-- 메인 콘텐츠 -->
     <div class="main-content">
-        <h2>마이페이지 (첫화면)</h2>
-        <div class="welcome-box">
-            <img src="/resources/images/user-icon.png" alt="User Icon" />
-            <div>
-                <p><strong>${sessionScope.loginMember.memberId}</strong>님, 환영합니다!</p>
-                <p>회원님의 등급은 <strong>${sessionScope.loginMember.memberGrade}</strong>입니다.</p>
-                <p>※ 프로필 설정 및 활동 통계는 추후 추가 예정입니다.</p>
-            </div>
-        </div>
-        <div class="gym-photo">
-            [헬스장 사진]
-        </div>
+        <h2 style="text-align: center;">회원 정보 수정</h2>
+       		
+       		<div>
+       			<form action="/member/update" method="post">
+       				<div class="input-group">
+       					<label for="userName">이름</label>
+       					<input type="text" id="userName" name="userName" value="${sessionScope.loginMember.memberName}" >
+       				</div>
+       			</form>
+       		</div>
     </div>
 </div>
 </main>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
+<script >
+
+</script>
 </body>
 
 </html>

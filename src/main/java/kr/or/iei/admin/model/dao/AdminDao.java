@@ -38,7 +38,7 @@ public class AdminDao {
 				loginAdmin.setMemberEmail(rset.getString("member_email"));
 				loginAdmin.setMemberGrade(rset.getString("member_grade"));
 				loginAdmin.setMemberName(rset.getString("member_name"));
-				loginAdmin.setMemberNickname(rset.getString("member_nickname"));
+				//loginAdmin.setMemberNickname(rset.getString("member_nickname"));
 				loginAdmin.setMemberPhone(rset.getString("member_phone"));
 				loginAdmin.setReportedCnt(rset.getInt("reported_cnt"));
 				loginAdmin.setJobCode(rset.getString("job_code"));
@@ -158,7 +158,7 @@ public class AdminDao {
 				srchMember.setMemberEmail(rset.getString("member_email"));
 				srchMember.setMemberGrade(rset.getString("member_grade"));
 				srchMember.setMemberName(rset.getString("member_name"));
-				srchMember.setMemberNickname(rset.getString("member_nickname"));
+				//srchMember.setMemberNickname(rset.getString("member_nickname"));
 				srchMember.setMemberPhone(rset.getString("member_phone"));
 				srchMember.setReportedCnt(rset.getInt("reported_cnt"));
 			}
