@@ -65,24 +65,45 @@
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>   
 </body>
 <script>
-//클릭 이벤트 발생시 이름 또는 아이디로 조회
+//'조회'클릭 이벤트 발생시 이름 또는 아이디로 조회
 $('#search').on('click', function(){
-	$('.memberlist').remove();
+	
 	
 	let field = $('#searchField').val();
 	let search = $('#searchValue').val();
 	
-	console.log(field);
-	console.log(search);
 	
 	$.ajax({
 		url : "/admin/member/searchInfo",
 		data : {"field": field, "search" : search},
 		type : "get",
 		success : function(res){
-			if(res != null){
-				
+			if(res.length === 0){
+				alert('검색한 회원이 존재하지 않습니다');
 			}else{
+				$('.memberlist').remove();
+		
+				$.each(res, function(idx,item){
+					let html = '';
+					
+					html += "<tr class='memberlist'>";
+					    html += "<td>" + (idx + 1) + "</td>";
+						html += "<td>" + item.memberId +"</td>";
+						html += "<td>" + item.memberName +"</td>";
+						html += "<td>" + item.memberGrade +"</td>";
+						html += "<td>" + item.memberEmail +"</td>";
+						html += "<td>" + item.memberDate +"</td>";
+					
+						html += "<td>";
+						html += "<a href='/admin/member/details?id="+item.memberId+"'><button>조회</button></a>";
+						html += "<a href='#'><button onclick='deleteMember("+item.memberId+")'>삭제</button></a>"
+						html += "</td>";
+						
+					html += "</tr>";
+						
+					$('.adminTbl').append(html);
+					$('#pageNavi').remove();
+				});
 				
 			}
 		},
@@ -117,7 +138,6 @@ function deleteMember(memberId) {
 		 }
 	  }).then(function(val){
 		if(val){ //삭제 버튼 클릭시 동작
-			console.log(memberId);
 			location.href="/admin/member/delete?id="+ memberId;
 		}  
 	  });

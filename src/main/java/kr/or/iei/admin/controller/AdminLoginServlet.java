@@ -41,7 +41,7 @@ public class AdminLoginServlet extends HttpServlet {
 			//3.2 일치하는 관리자의 컬럼 정보를 조회
 			//3.3 로그인 이후에도 어느 JSP로 이동하든 회원 정보를 사용할 수 있도록 session 
 			AdminService service = new AdminService();
-			Admin loginAdmin = service.adminLogin(adminId, adminPw);
+			Admin loginAdmin = service.searchAdmin(adminId, adminPw);
 		
 		//4. 결과 처리
 			RequestDispatcher view = null;
