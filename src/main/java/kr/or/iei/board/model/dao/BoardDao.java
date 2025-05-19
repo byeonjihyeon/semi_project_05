@@ -11,20 +11,24 @@ import kr.or.iei.common.JDBCTemplate;
 
 public class BoardDao {
 	
-	public ArrayList<Board> selectBoardList(Connection conn, int start, int end) {
+	public ArrayList<Board> selectBoardList(Connection conn, int start, int end, String gubun, String sortGubun) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
 		ArrayList<Board> list = new ArrayList<Board>();
 		
 		//게시글 번호, 제목, 작성자아이디, 작성일, 조회수, 좋아요수 select 
-		String query = "select board_id, board_title, member_id, created_at, view_count, board_like_count from (select rownum rnum, A.* FROM (SELECT * FROM TBL_board A ORDER BY created_at DESC) A ) WHERE RNUM >=? AND RNUM <=?";
+		String query = "select board_id, board_title, member_id, created_at, view_count, board_like_count from (select rownum rnum, A.* FROM (SELECT * FROM TBL_board a where board_type = ? ORDER BY created_at "+sortGubun+",  VIEW_COUNT "+sortGubun+", BOARD_LIKE_COUNT "+sortGubun+") A ) WHERE RNUM >=? AND RNUM <=?";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
 			
-			pstmt.setInt(1, start);
-			pstmt.setInt(2, end);
+			
+			//gubun == G == 공지사항
+			//gubun == B == 자유게시판
+			pstmt.setString(1, gubun);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
 			
 			rset = pstmt.executeQuery();
 			
@@ -51,16 +55,17 @@ public class BoardDao {
 		return list;
 	}
 
-	public int selectTotalCount(Connection conn) {
+	public int selectTotalCount(Connection conn, String gubun) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
 		int totCnt = 0;
 		
-		String query = "select count(*) as cnt from tbl_board";
+		String query = "select count(*) as cnt from tbl_board where board_type = ?";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, gubun);
 			rset = pstmt.executeQuery();
 			rset.next();
 			totCnt = rset.getInt("cnt");

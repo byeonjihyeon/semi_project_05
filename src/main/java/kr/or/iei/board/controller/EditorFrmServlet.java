@@ -1,6 +1,8 @@
 package kr.or.iei.board.controller;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class EditorFrmServlet
  */
-@WebServlet("/notice/write")
+@WebServlet("/board/1list")
 public class EditorFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -27,7 +29,9 @@ public class EditorFrmServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		request.getRequestDispatcher("/WEB-INF/views/board/list.jsp").forward(request, response);
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/board/1list.jsp");
+		
+		view.forward(request, response);
 	}
 
 	/**

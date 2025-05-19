@@ -70,7 +70,7 @@ public class LoginChkServlet extends HttpServlet {
 					System.out.println(passwordChk);
 					System.out.println(loginM.getMemberPw());
 					view = request.getRequestDispatcher("index.jsp");
-					session.setAttribute("loginMember", loginM);				
+					session.setAttribute("loginMember", loginM);
 				} else {
 					
 				// 로그인 실패시 msg로 문구 보여주고 로그인 창으로
