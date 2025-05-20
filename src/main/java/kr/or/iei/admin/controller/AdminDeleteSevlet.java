@@ -10,21 +10,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.or.iei.admin.model.service.AdminService;
-import kr.or.iei.member.model.service.MemberService;
-import kr.or.iei.member.model.vo.Member;
 
 /**
- * Servlet implementation class deleteMemberServlet
+ * Servlet implementation class AdminDeleteSevlet
  */
-
-@WebServlet("/admin/member/delete")
-public class MemberDeleteServlet extends HttpServlet {
+@WebServlet("/admin/super/delete")
+public class AdminDeleteSevlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MemberDeleteServlet() {
+    public AdminDeleteSevlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -56,8 +53,9 @@ public class MemberDeleteServlet extends HttpServlet {
 				request.setAttribute("icon", "error");
 			}
 			
-				request.setAttribute("loc", "/admin/member/list?page=1");
+				request.setAttribute("loc", "/admin/super/admins");
 				view.forward(request, response);
+	
 	}
 
 	/**
