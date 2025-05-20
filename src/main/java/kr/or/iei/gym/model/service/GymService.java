@@ -9,6 +9,7 @@ import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.gym.model.dao.GymDao;
 import kr.or.iei.gym.model.vo.Gym;
 import kr.or.iei.gym.model.vo.GymFile;
+import kr.or.iei.gym.model.vo.GymTicket;
 
 public class GymService {
 	
@@ -68,9 +69,16 @@ public class GymService {
 		Connection conn = JDBCTemplate.getConnection();
 		Gym loginGym = dao.loginChkGym(conn, userId);
 		//사용자가 입력한 비번이 암호화된 비번과 일치하지 않으면 조회해온 로그인 객체에 null로 변경
-		if(!BCrypt.checkpw(password, loginGym.getGymPw())) {
-			loginGym = null;
+		if(loginGym != null) {
+			if(!BCrypt.checkpw(password, loginGym.getGymPw())) {
+				loginGym = null;
+			}
+			GymTicket ticket = dao.loginGymTicket(conn, userId);
+			if(ticket != null) {
+				loginGym.setTicket(ticket);
+			}
 		}
+		
 		JDBCTemplate.close(conn);
 		
 		return loginGym;
@@ -105,6 +113,21 @@ public class GymService {
 	    JDBCTemplate.commit(conn);
 	    JDBCTemplate.close(conn);
 	    return 1;  // 모든 작업 성공 시 1 반환
+	}
+
+	public int updateGymPw(String gymId, String newGymPw) {
+		Connection conn = JDBCTemplate.getConnection();
+		
+		newGymPw = BCrypt.hashpw(newGymPw, BCrypt.gensalt());
+		
+		int result = dao.updateMemberPw(conn, gymId, newGymPw);
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
 	}
 	
 	

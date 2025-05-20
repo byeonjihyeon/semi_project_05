@@ -131,7 +131,48 @@ public class GymDao {
 		
 		return loginGym;
 	}
-
+	
+	
+	public GymTicket loginGymTicket(Connection conn, String userId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = "select * from tbl_ticket where gym_id = ?";
+		GymTicket ticket = null;
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, userId);
+			
+			rset = pstmt.executeQuery();
+			
+			ticket = new GymTicket();
+			while(rset.next()) {
+				
+				String ticket_period = rset.getString("ticket_period");
+				
+				if(ticket_period.equals("oneDay")) {
+					ticket.setOneDay(rset.getString("ticket_price"));
+				}else if(ticket_period.equals("oneMonth")) {
+					ticket.setOneMonth(rset.getString("ticket_price"));
+				}else if(ticket_period.equals("threeMonth")) {
+					ticket.setThreeMonth(rset.getString("ticket_price"));
+				}else if(ticket_period.equals("sixMonth")) {
+					ticket.setSixMonth(rset.getString("ticket_price"));
+				}else if(ticket_period.equals("oneYear")) {
+					ticket.setOneYear(rset.getString("ticket_price"));
+				}
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return ticket;
+	}
 	public int updateGym(Connection conn, Gym gym) {
 		PreparedStatement pstmt = null;
 		int result = 0;
@@ -176,14 +217,15 @@ public class GymDao {
 		
 		String query = "insert into tbl_ticket values (seq_tbl_ticket.nextval, ?, ?, ?, sysdate)";
 		try {
-			for(int i=0; i<ticketName.length; i++) {
+			
+			for(int i=0; i<5; i++) {
 				pstmt = conn.prepareStatement(query);
 				pstmt.setString(1, gymId);
 				pstmt.setString(2, ticketPrice[i]);
 				pstmt.setString(3, ticketName[i]);
 				
 				result = pstmt.executeUpdate();
-				if(result < 1) {
+				if(result <= 0) {
 					break;
 				}
 			}
@@ -199,6 +241,32 @@ public class GymDao {
 		
 		return result;
 	}
+
+	public int updateMemberPw(Connection conn, String gymId, String newGymPw) {
+		PreparedStatement pstmt = null;
+		
+		int result = 0;
+		
+		String query = "update tbl_gym set gym_pw= ? where gym_id = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, newGymPw);
+			pstmt.setString(2, gymId);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+
+	
 	
 	
 

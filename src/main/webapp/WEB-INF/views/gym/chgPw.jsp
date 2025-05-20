@@ -17,14 +17,14 @@
         <h3>헬스장 관리자 페이지</h3>
         <ul>
             <li><a href="/gym/updateInfoFrm">헬스장 정보 등록/수정</a></li>
-            <li><a href="/gym/changePassword">비밀번호 변경</a></li>
+            <li><a href="/gym/changePasswordFrm">비밀번호 변경</a></li>
             <li><a href="/gym/paymentList">결제 내역 조회</a></li>
             <li><a href="/gym/memberList">회원 조회</a></li>
         </ul>
     </div>
     <div class="content">
         <h2>비밀번호 변경</h2>
-        <form action="/gym/changePw" method="post">
+        <form action="/gym/changePassword" method="post">
             <table class="info-table">
                 <tr><td>현재 비밀번호</td><td><input type="password" name="currentPw" required></td></tr>
                 <tr><td>변경할 비밀번호</td><td><input type="password" name="newPw" required></td></tr>

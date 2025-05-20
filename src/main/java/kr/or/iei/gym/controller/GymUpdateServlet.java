@@ -81,6 +81,11 @@ public class GymUpdateServlet extends HttpServlet {
 				String oneYear = mRequest.getParameter("oneYear");
 				String oneDay = mRequest.getParameter("oneDay");
 				
+				System.out.println(oneMonth);
+				System.out.println(threeMonth);
+				System.out.println(sixMonth);
+				System.out.println(oneYear);
+				System.out.println(oneDay);
 				//한번에 여러 파일 첨부할때 코드처리해야 함
 				//input type이 file인 태그가 여러개일 때 처리 코드
 				Enumeration<String> files =  mRequest.getFileNames();

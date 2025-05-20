@@ -65,7 +65,7 @@
         <h3>헬스장 관리자 페이지</h3>
         <ul>
             <li><a href="/gym/updateInfoFrm">헬스장 정보 등록/수정</a></li>
-            <li><a href="/gym/changePassword">비밀번호 변경</a></li>
+            <li><a href="/gym/changePasswordFrm">비밀번호 변경</a></li>
             <li><a href="/gym/paymentList">결제 내역 조회</a></li>
             <li><a href="/gym/memberList">회원 조회</a></li>
         </ul>
@@ -80,7 +80,7 @@
                 <tr><td>전화번호*</td><td colspan = "2"><input type="tel" name="phone" value = "${loginGym.phone}"required></td></tr>
                 <tr><td>사진</td><td colspan = "2"><input type="file" name="photo"></td></tr>
                 <tr><td>운영시간</td><td colspan = "2"><input type="text" name="openHours" value = "${loginGym.openTime}"></td></tr>
-                <tr><td>상세설명</td><td colspan = "2"><textarea name="description" value = "${loginGym.detail}"></textarea></td></tr>
+                <tr><td>상세설명</td><td colspan = "2"><textarea name="description">${loginGym.detail}</textarea></td></tr>
                 <tr><td>편의시설</td><td colspan = "2"><input type="text" name="facilities" value = "${loginGym.facilities}"></td></tr>
                 <tr><td rowspan = "5">이용권*</td><td>1개월</td><td><input type="text" name="oneMonth" value = "${loginGym.ticket.oneMonth}"required></td></tr>
                 <tr><td>3개월</td><td><input type="text" name="threeMonth" value = "${loginGym.ticket.threeMonth}" required></td></tr>
@@ -99,7 +99,9 @@
 <div class = "withdraw-link">
 	<a href="/gym/deleteAccount">회원 탈퇴하기</a>
 </div>
-    	
+    	<script>
+    	console.log('${loginGym.ticket}');
+    	</script>
 	
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </body>
