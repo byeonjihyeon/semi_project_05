@@ -3,7 +3,7 @@
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <!-- JSTL 라이브러리 선언 -->
     <link rel="stylesheet" href="/resources/css/login.css"> <!-- CSS 파일 연결 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script src="/resources/js/sweetalert.min.js"></script>
 <!DOCTYPE html>
 <html>
 <head>
