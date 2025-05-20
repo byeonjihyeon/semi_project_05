@@ -1,7 +1,6 @@
 package kr.or.iei.gym.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,16 +13,16 @@ import kr.or.iei.gym.model.service.GymService;
 import kr.or.iei.gym.model.vo.Gym;
 
 /**
- * Servlet implementation class GymFindFrmServlet
+ * Servlet implementation class GymDetail
  */
-@WebServlet("/gym/list")
-public class GymListServlet extends HttpServlet {
+@WebServlet("/gym/detail")
+public class GymDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GymListServlet() {
+    public GymDetailServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,16 +31,13 @@ public class GymListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		//등록된 헬스장 리스트 가져오기
+		String gymId = request.getParameter("gymId");
 		GymService service = new GymService();
-		List<Gym> gymList = service.selectAllGym();
-		if(gymList.size()==0) gymList = null;
-		request.setAttribute("gymList", gymList);
-		
-		
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/gym/gymList.jsp");
+		Gym gym = service.selectOneGym(gymId);
+		request.setAttribute("gym", gym);
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/gym/gymDetail.jsp");
 		view.forward(request, response);
+		
 	}
 
 	/**
