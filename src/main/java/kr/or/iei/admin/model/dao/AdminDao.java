@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.mail.Session;
+
 import kr.or.iei.admin.model.vo.Admin;
 import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.member.model.vo.Member;
@@ -20,7 +22,8 @@ public class AdminDao {
 		Admin loginAdmin = null;
 		
 		//회원 테이블과 관리자별 업무테이블 조인하여 select
-		String query = "select * from tbl_member join tbl_admin_job using (member_id) where member_id =? and member_pw =?";
+		String query = "select * from tbl_member join tbl_admin_job using (member_id) where member_id = ? and member_pw = ?";
+		
 		
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -28,7 +31,8 @@ public class AdminDao {
 			pstmt.setString(2, adminPw);
 			
 			rset = pstmt.executeQuery();
-			
+			System.out.println(adminId);
+			System.out.println(adminPw);
 			if(rset.next()) {
 				loginAdmin = new Admin();
 				
@@ -39,7 +43,7 @@ public class AdminDao {
 				loginAdmin.setMemberEmail(rset.getString("member_email"));
 				loginAdmin.setMemberGrade(rset.getString("member_grade"));
 				loginAdmin.setMemberName(rset.getString("member_name"));
-				//loginAdmin.setMemberNickname(rset.getString("member_nickname"));
+				
 				loginAdmin.setMemberPhone(rset.getString("member_phone"));
 				
 				loginAdmin.setJobCode(rset.getString("job_code"));
@@ -49,7 +53,6 @@ public class AdminDao {
 				loginAdmin.setUpdYN(rset.getString("upd_Yn"));
 				loginAdmin.setDelYN(rset.getString("del_Yn"));
 				loginAdmin.setRegDate(rset.getString("reg_date"));
-				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

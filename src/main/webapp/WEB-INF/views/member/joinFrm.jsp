@@ -271,15 +271,7 @@
       	    e.preventDefault(); // 기본 제출 막기
 
       	    let str = '';
-
       	    
-      	    console.log(checkObj.userId);
-      	  	console.log(checkObj.idDuplChk);
-      		console.log(checkObj.userPw);
-      		console.log(checkObj.userPwRe);
-      		console.log(checkObj.userName);
-      		console.log(checkObj.userEmail);
-      		console.log(checkObj.userPhone);
       	    for(let key in checkObj){
       	        if(!checkObj[key]){
       	            switch(key){
