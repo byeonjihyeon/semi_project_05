@@ -107,3 +107,31 @@ body {
     margin-bottom: 5px;
 }
 
+/* 하단 고정 버튼 영역 */
+.action-bar {
+    margin-top: 40px;
+    text-align: center;
+}
+
+/* 회원권 구매 버튼 스타일 */
+.action-bar button {
+    background-color: #ff5c5c;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.action-bar button:hover {
+    background-color: #e14e4e;
+    transform: translateY(-2px);
+}
+
+.action-bar button:active {
+    background-color: #cc4444;
+    transform: translateY(0);
+}

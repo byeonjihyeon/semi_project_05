@@ -2,6 +2,7 @@ package kr.or.iei.gym.model.service;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -64,7 +65,16 @@ public class GymService {
 		
 		
 	}
-
+	public Gym selectOneGym(String gymId) {
+		Connection conn = JDBCTemplate.getConnection();
+		Gym gym = dao.selectOneGym(conn, gymId);
+		if(gym != null) {
+			GymTicket ticket = dao.selectGymTicket(conn, gymId);
+			gym.setTicket(ticket);
+		}
+		JDBCTemplate.close(conn);
+		return gym;
+	}
 	public Gym loginChkGym(String userId, String password) {
 		Connection conn = JDBCTemplate.getConnection();
 		Gym loginGym = dao.loginChkGym(conn, userId);
@@ -73,7 +83,7 @@ public class GymService {
 			if(!BCrypt.checkpw(password, loginGym.getGymPw())) {
 				loginGym = null;
 			}
-			GymTicket ticket = dao.loginGymTicket(conn, userId);
+			GymTicket ticket = dao.selectGymTicket(conn, userId);
 			if(ticket != null) {
 				loginGym.setTicket(ticket);
 			}
@@ -129,6 +139,21 @@ public class GymService {
 		JDBCTemplate.close(conn);
 		return result;
 	}
+
+	public List<Gym> selectAllGym() {
+		Connection conn = JDBCTemplate.getConnection();
+		
+		List<Gym> gymList = dao.selectAllGym(conn);
+		for(Gym gym: gymList) {
+			GymTicket ticket = dao.selectGymTicket(conn, gym.getGymId());
+			gym.setTicket(ticket);
+		}
+		
+		JDBCTemplate.close(conn);
+		return gymList;
+	}
+
+	
 	
 	
 }
