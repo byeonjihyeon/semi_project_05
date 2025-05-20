@@ -136,18 +136,15 @@ body {
 
     <!-- 메인 콘텐츠 -->
     <div class="main-content">
-        <h2>마이페이지 (첫화면)</h2>
+        <h2>나의 기록 일지</h2>
         <div class="welcome-box">
-            <img src="/resources/images/user-icon.png" alt="User Icon" />
             <div>
                 <p><strong>${sessionScope.loginMember.memberName}</strong>님, 환영합니다!</p>
                 <p>회원님의 등급은 <strong>${sessionScope.loginMember.memberGrade}</strong>입니다.</p>
                 <p>※ 프로필 설정 및 활동 통계는 추후 추가 예정입니다.</p>
             </div>
         </div>
-        <div class="gym-photo">
-            [헬스장 사진]
-        </div>
+
     </div>
 </div>
 </main>

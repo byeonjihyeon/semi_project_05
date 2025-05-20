@@ -1,12 +1,173 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%
+    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+    String today = sdf.format(new java.util.Date());
+    request.setAttribute("today", today);
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>나의 몸무게 일지</title>
+<title>마이페이지</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbit&display=swap');
+body {
+    font-family: 'Orbit', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+.mypage-container {
+    display: flex;
+    padding: 40px;
+    min-height: 700px;
+    width: 1200px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* 사이드바 스타일 */
+.sidebar {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    border-right: 1px solid #eee;
+    width: 240px;
+    background-color: #1a1a1a;
+    color: #fff;
+    padding: 30px 20px;
+}
+.sidebar h3 {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 14px;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.sidebar ul li a:hover {
+  color: #ff414d;
+  font-weight: bold;
+}
+
+/* 메인 콘텐츠 */
+.main-content {
+    flex: 1;
+    background-color: #fff;
+    padding: 40px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.main-content h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 22px;
+    color: #222;
+}
+
+.welcome-box {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    background-color: #fafafa;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.welcome-box img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+.welcome-box p {
+    margin: 6px 0;
+    font-size: 15px;
+    color: #333;
+}
+
+.gym-photo {
+    width : 900px;
+    max-width: 900px;
+    height: 250px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+    color: #999;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+</style>
 </head>
+
 <body>
-<h1>나의 몸무게 일지</h1>
+<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>	
+<main>
+	<div class="mypage-container">
+    <!-- 사이드바 -->
+    <div class="sidebar">
+        <h3>마이페이지</h3>
+        <ul>
+            <li><a href="/member/updateMemberFrm">회원 정보 수정</a></li>
+            <li><a href="/member/updatePwFrm">비밀번호 변경</a></li>
+            <li><a href="/member/userHistoryList">이용 내역 조회</a></li>
+            <li><a href="#">결제 내역 조회</a></li>
+            <li><a href="/member/recordGrowth" style="color:red;">나의 몸무게 일지</a></li>
+        </ul>
+    </div>
+
+    <!-- 메인 콘텐츠 -->
+    <div class="main-content">
+        <h2>나의 몸무게 일지</h2>
+        <div class="welcome-box">
+            <div>
+                <p style="margin-bottom: 25px;"><strong>${sessionScope.loginMember.memberName}</strong>님 오늘의 운동결과를 기록해주세요!</p>
+                <label for="memberTall" style="margin-left: 30px;">키 : </label>
+           		<input type="text" id="memberTall" name="memberTall" style="margin-right: 15px; width: 70px; border:none; border-bottom: 1px solid;">
+           		<label for="memberWeight">몸무게 :</label>
+           		<input type="text" id="memberWeight" name="memberWeight" style="margin-right: 15px; width: 70px; border:none; border-bottom: 1px solid;">
+           		<label for="hopeWeight">목표몸무게 : </label>
+            	<input type="text" id="hopeWeight" name="hopeWeight" style="width: 70px; margin-right: 15px; border:none; border-bottom: 1px solid;">
+				<label for="sysdate">운동한 오늘의 날짜 :</label>
+				<span style="color: #666; margin-right: 50px;" id="sysdate">(${today})</span>
+				<button type="button" onclick='sendMemberHistory()'>등록하기</button> 
+            </div>
+        </div>
+        <div class="gym-photo">
+            
+        </div>
+    </div>
+</div>
+</main>
+
+<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
+<script>
+function sendMemberHistory(){
+	
+}
+</script>
 </body>
 </html>

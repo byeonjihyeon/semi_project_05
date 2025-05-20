@@ -138,7 +138,6 @@ body {
     <div class="main-content">
         <h2>마이페이지</h2>
         <div class="welcome-box">
-            <img src="/resources/images/user-icon.png" alt="User Icon" />
             <div>
                 <p><strong>${sessionScope.loginMember.memberName}</strong>님, 환영합니다!</p>
                 <p>회원님의 등급은 <strong>${sessionScope.loginMember.memberGrade}</strong>입니다.</p>
