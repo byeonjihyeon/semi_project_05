@@ -7,7 +7,7 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<meta charset="UTF-8">
 	<title>헬스장 등록 페이지</title>
-	<link rel="stylesheet" href="<c:url value='\resources\css\register.css'/>">
+	<link rel="stylesheet" href="/resources/css/gym/register.css">
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>	

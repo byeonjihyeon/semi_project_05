@@ -1,0 +1,109 @@
+@charset "UTF-8";
+/*
+gymDetail, gymList.jsp에 해당하는 css
+*/
+
+/* gymDetail, gymList 관련 CSS 중 헤더/푸터 제외 */
+
+/* 공통 설정 */
+body {
+    font-family: 'Arial', sans-serif;
+    background: #fff;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.gym-container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
+}
+
+.gym-header h1 {
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.location {
+    font-size: 14px;
+    color: #888;
+}
+
+.image-gallery {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.main-photo {
+    width: 60%;
+    height: auto;
+}
+
+.thumbnail-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 40%;
+}
+
+.thumbnail {
+    width: 100%;
+    height: auto;
+}
+
+.tab-menu {
+    display: flex;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.tab {
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #333;
+    border-bottom: 3px solid transparent;
+}
+
+.tab.selected {
+    font-weight: bold;
+    border-color: #ff5c5c;
+    color: #ff5c5c;
+}
+
+.gym-info,
+.review-summary,
+.review-list,
+.inquiry-list {
+    margin-top: 30px;
+}
+
+.membership-table table,
+.inquiry-list table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.membership-table th, .membership-table td,
+.inquiry-list th, .inquiry-list td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+.review-list .review {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+}
+
+.review-rating {
+    color: #ff9900;
+    font-weight: bold;
+}
+
+.rating-breakdown div {
+    margin-bottom: 5px;
+}
+

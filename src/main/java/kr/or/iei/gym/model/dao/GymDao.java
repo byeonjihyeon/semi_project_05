@@ -89,18 +89,17 @@ public class GymDao {
 		return result;
 	}
 
-	public Gym loginChkGym(Connection conn, String userId, String password) {
+	public Gym loginChkGym(Connection conn, String userId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		String query = "select * from tbl_gym where gym_id = ? and gym_pw = ?";
-		
+		String query = "select * from tbl_gym where gym_id = ?";
+		//아이디가 존재하면 gym 반환, 그렇지 않으면 null 반환
 		Gym loginGym = null;
 		
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, userId);
-			pstmt.setString(2, password);
 			
 			rset = pstmt.executeQuery();
 			
@@ -128,7 +127,16 @@ public class GymDao {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
+		
 		return loginGym;
+	}
+
+	public int updateGym(Connection conn, Gym gym) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = "update tbl_gym set "
+		return 0;
 	}
 	
 	

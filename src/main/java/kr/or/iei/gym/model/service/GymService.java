@@ -3,6 +3,8 @@ package kr.or.iei.gym.model.service;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.gym.model.dao.GymDao;
 import kr.or.iei.gym.model.vo.Gym;
@@ -27,7 +29,8 @@ public class GymService {
 
 	public int insertGym(Gym gym, ArrayList<GymFile> fileList) {
 		Connection conn = JDBCTemplate.getConnection();
-		
+		String gymPw = BCrypt.hashpw(gym.getGymPw(), BCrypt.gensalt());
+		gym.setGymPw(gymPw);;
 		
 		
 		//(2) tbl_notice에 insert(게시글 정보 선등록)
@@ -63,10 +66,54 @@ public class GymService {
 
 	public Gym loginChkGym(String userId, String password) {
 		Connection conn = JDBCTemplate.getConnection();
-		Gym loginGym = dao.loginChkGym(conn, userId, password);
+		Gym loginGym = dao.loginChkGym(conn, userId);
+		//사용자가 입력한 비번이 암호화된 비번과 일치하지 않으면 조회해온 로그인 객체에 null로 변경
+		if(!BCrypt.checkpw(password, loginGym.getGymPw())) {
+			loginGym = null;
+		}
 		JDBCTemplate.close(conn);
 		
 		return loginGym;
+	}
+
+	public int updateGym(Gym gym, ArrayList<GymFile> fileList) {
+		Connection conn = JDBCTemplate.getConnection();
+		
+		
+		
+		//(2) tbl_notice에 insert(게시글 정보 선등록)
+		int result = dao.updateGym(conn, gym);
+		
+		if(result > 0) {
+			int result = dao.updateGymTicket(conn, gym.getTicket());
+			
+			if(result > 0) {
+				for(GymFile file : fileList) {
+					
+					//(3) tbl_notice_file에 insert(게시글에 대한 파일 등록)
+					result = dao.insertGymFile(conn, file);
+					
+					//파일 정보 등록 중, 정상 수행되지 않았을 경우 모두 롤백처리하고, 메소드 종료
+					if(result < 1) {
+						JDBCTemplate.rollback(conn);
+						JDBCTemplate.close(conn);
+						return 0;
+					}
+				}
+				
+				JDBCTemplate.commit(conn);
+			}else {
+				JDBCTemplate.rollback(conn);
+			}
+			
+			
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);
+		
+		return result;
 	}
 	
 	
