@@ -11,8 +11,8 @@
 	<%-- 자유게시판 글씨 --%>
 	div.page-title{
 	color : black;
-	
 	}
+	
 
 
 	

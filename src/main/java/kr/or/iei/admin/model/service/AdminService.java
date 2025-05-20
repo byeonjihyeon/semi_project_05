@@ -3,6 +3,8 @@ package kr.or.iei.admin.model.service;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import kr.or.iei.admin.model.dao.AdminDao;
 import kr.or.iei.admin.model.vo.Admin;
 import kr.or.iei.common.JDBCTemplate;
@@ -19,8 +21,8 @@ public class AdminService {
 	//관리자 회원 1명 조회
 	public Admin searchAdmin(String adminId, String adminPw) {
 		Connection conn = JDBCTemplate.getConnection();
-
-		Admin loginAdmin = dao.searchAdmin(conn, adminId, adminPw);
+		
+		Admin loginAdmin = dao.searchAdmin(conn, adminId);
 		
 		JDBCTemplate.close(conn);
 		return loginAdmin;

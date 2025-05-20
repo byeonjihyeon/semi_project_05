@@ -15,29 +15,29 @@ import kr.or.iei.member.model.vo.Member;
 public class AdminDao {
 	
 	//관리자 조회 (아이디,패스워드)
-	public Admin searchAdmin(Connection conn, String adminId, String adminPw) {
+	public Admin searchAdmin(Connection conn, String adminId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
 		Admin loginAdmin = null;
 		
 		//회원 테이블과 관리자별 업무테이블 조인하여 select
-		String query = "select * from tbl_member join tbl_admin_job using (member_id) where member_id = ? and member_pw = ?";
+		String query = "select * from tbl_member where member_id = ? and member_type in(0,1)";
 		
 		
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, adminId);
-			pstmt.setString(2, adminPw);
+			
 			
 			rset = pstmt.executeQuery();
 			System.out.println(adminId);
-			System.out.println(adminPw);
+			
 			if(rset.next()) {
 				loginAdmin = new Admin();
 				
 				loginAdmin.setMemberId(adminId);
-				loginAdmin.setMemberPw(adminPw);
+				loginAdmin.setMemberPw(rset.getString("member_pw"));
 				loginAdmin.setMemberAddr(rset.getString("member_addr"));
 				loginAdmin.setMemberDate(rset.getString("enrolldate"));
 				loginAdmin.setMemberEmail(rset.getString("member_email"));

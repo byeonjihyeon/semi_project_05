@@ -23,16 +23,14 @@ body {
 }
 
 /* =================== Layout =================== */
-.mypage-container {
+   .mypage-container {
     display: flex;
-    flex-direction: row;
-    margin: 40px auto;
-    max-width: 1100px;
-    min-height: 650px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    padding: 40px;
+    min-height: 700px;
+    width: 1200px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', sans-serif;
+
 }
 
 .sidebar {
@@ -265,13 +263,13 @@ button#deleteBtn {
 	<div class="mypage-container">
     <!-- 사이드바 -->
     <div class="sidebar">
-        <h3>마이페이지</h3>
+        <h3><a href=/member/myPageFrm>마이페이지</a></h3>
         <ul>
-            <li><a href="/member/updateMemberFrm">회원 정보 수정</a></li>
+            <li><a href="/member/updateMemberFrm" style="color:red;">회원 정보 수정</a></li>
             <li><a href="/member/updatePwFrm">비밀번호 변경</a></li>
-            <li><a href="#">이용 내역 조회</a></li>
+            <li><a href="/member/userHistoryList">이용 내역 조회</a></li>
             <li><a href="#">결제 내역 조회</a></li>
-            <li><a href="#">나의 몸무게 일지</a></li>
+            <li><a href="/member/recordGrowth">나의 몸무게 일지</a></li>
         </ul>
     </div>
 
