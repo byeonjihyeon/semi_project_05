@@ -74,19 +74,19 @@
         <h2>헬스장 정보 등록/수정</h2>
         <form action="/gym/updateInfo" method="post" enctype="multipart/form-data">
             <table class="info-table">
-                <tr><td>헬스장명*</td><td colspan = "2"><input type="text" name="gymName" required></td></tr>
-                <tr><td>헬스장 주소*</td><td colspan = "2"><input type="text" name="gymAddress" required></td></tr>
-                <tr><td>이메일*</td><td colspan = "2"><input type="email" name="email" required></td></tr>
-                <tr><td>전화번호*</td><td colspan = "2"><input type="tel" name="phone" required></td></tr>
+                <tr><td>헬스장명*</td><td colspan = "2"><input type="text" name="gymName" value = "${loginGym.gymName }"required></td></tr>
+                <tr><td>헬스장 주소*</td><td colspan = "2"><input type="text" name="gymAddress" value = "${loginGym.gymAddr}"required></td></tr>
+                <tr><td>이메일*</td><td colspan = "2"><input type="email" name="email" value = "${loginGym.email }"required></td></tr>
+                <tr><td>전화번호*</td><td colspan = "2"><input type="tel" name="phone" value = "${loginGym.phone}"required></td></tr>
                 <tr><td>사진</td><td colspan = "2"><input type="file" name="photo"></td></tr>
-                <tr><td>운영시간</td><td colspan = "2"><input type="text" name="openHours"></td></tr>
-                <tr><td>상세설명</td><td colspan = "2"><textarea name="description"></textarea></td></tr>
-                <tr><td>편의시설</td><td colspan = "2"><input type="text" name="facilities"></td></tr>
-                <tr><td rowspan = "5">이용권*</td><td>1개월</td><td><input type="text" name="oneMonth" required></td></tr>
-                <tr><td>3개월</td><td><input type="text" name="threeMonth" required></td></tr>
-                <tr><td>6개월</td><td><input type="text" name="sixMonth" required></td></tr>
-                <tr><td>12개월</td><td><input type="text" name="oneYear" required></td></tr>
-                <tr><td>일일권</td><td><input type="text" name="oneDay" required></td></tr>
+                <tr><td>운영시간</td><td colspan = "2"><input type="text" name="openHours" value = "${loginGym.openTime}"></td></tr>
+                <tr><td>상세설명</td><td colspan = "2"><textarea name="description" value = "${loginGym.detail}"></textarea></td></tr>
+                <tr><td>편의시설</td><td colspan = "2"><input type="text" name="facilities" value = "${loginGym.facilities}"></td></tr>
+                <tr><td rowspan = "5">이용권*</td><td>1개월</td><td><input type="text" name="oneMonth" value = "${loginGym.ticket.oneMonth}"required></td></tr>
+                <tr><td>3개월</td><td><input type="text" name="threeMonth" value = "${loginGym.ticket.threeMonth}" required></td></tr>
+                <tr><td>6개월</td><td><input type="text" name="sixMonth" value = "${loginGym.ticket.sixMonth}"required></td></tr>
+                <tr><td>12개월</td><td><input type="text" name="oneYear" value = "${loginGym.ticket.oneYear}"required></td></tr>
+                <tr><td>일일권</td><td><input type="text" name="oneDay" value = "${loginGym.ticket.oneDay}" required></td></tr>
                 
             </table>
             <div class="form-actions">

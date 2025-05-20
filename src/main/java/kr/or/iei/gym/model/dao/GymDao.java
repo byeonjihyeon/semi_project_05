@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.gym.model.vo.Gym;
 import kr.or.iei.gym.model.vo.GymFile;
+import kr.or.iei.gym.model.vo.GymTicket;
 
 public class GymDao {
 
@@ -116,7 +117,7 @@ public class GymDao {
 				loginGym.setPhone(rset.getString("gym_phone"));
 				loginGym.setOpenTime(rset.getString("open_time"));
 				loginGym.setDetail(rset.getString("detail"));
-				loginGym.setConvenience(rset.getString("convenience"));
+				loginGym.setFacilities(rset.getString("FACILITIES"));
 				 
 				System.out.println(loginGym.getGymId());
 			}
@@ -135,8 +136,68 @@ public class GymDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		
-		String query = "update tbl_gym set "
-		return 0;
+		String query = "update tbl_gym set gym_name = ?, gym_addr = ?, gym_email = ?, gym_phone = ?, open_time = ?, detail = ?, facilities = ? where gym_id = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, gym.getGymName());
+			pstmt.setString(2, gym.getGymAddr());
+			pstmt.setString(3, gym.getEmail());
+			pstmt.setString(4, gym.getPhone());
+			pstmt.setString(5, gym.getOpenTime());
+			pstmt.setString(6, gym.getDetail());
+			pstmt.setString(7, gym.getFacilities());
+			pstmt.setString(8, gym.getGymId());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int updateGymTicket(Connection conn, GymTicket ticket) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String gymId = ticket.getGymId();
+		String oneDay = ticket.getOneDay();
+		String oneMonth = ticket.getOneMonth();
+		String threeMonth = ticket.getThreeMonth();
+		String sixMonth = ticket.getSixMonth();
+		String oneYear = ticket.getOneYear();
+		
+		String[] ticketPrice = {oneDay, oneMonth, threeMonth, sixMonth, oneYear};
+		String[] ticketName = {"oneDay", "oneMonth", "threeMonth", "sixMonth", "oneYear"};
+		
+		String query = "insert into tbl_ticket values (seq_tbl_ticket.nextval, ?, ?, ?, sysdate)";
+		try {
+			for(int i=0; i<ticketName.length; i++) {
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, gymId);
+				pstmt.setString(2, ticketPrice[i]);
+				pstmt.setString(3, ticketName[i]);
+				
+				result = pstmt.executeUpdate();
+				if(result < 1) {
+					break;
+				}
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		
+		
+		return result;
 	}
 	
 	

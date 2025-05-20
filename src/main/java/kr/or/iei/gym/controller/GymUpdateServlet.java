@@ -101,7 +101,7 @@ public class GymUpdateServlet extends HttpServlet {
 						file.setFileName(fileName);
 						file.setFilePath(filePath);
 						//파일에 헬스장 아이디 저장
-						file.setGymId(gymId);
+						file.setGymId(gym.getGymId());
 						
 						
 						fileList.add(file);
@@ -143,7 +143,7 @@ public class GymUpdateServlet extends HttpServlet {
 					request.setAttribute("icon", "error");
 				}
 				
-				request.setAttribute("loc", "/WEB-INF/views/gym/gymUpdate.jsp");
+				request.setAttribute("loc", "/gym/updateInfoFrm");
 				
 				//4.3 페이지 이동
 				view.forward(request, response);

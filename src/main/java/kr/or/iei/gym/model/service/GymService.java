@@ -77,43 +77,34 @@ public class GymService {
 	}
 
 	public int updateGym(Gym gym, ArrayList<GymFile> fileList) {
-		Connection conn = JDBCTemplate.getConnection();
-		
-		
-		
-		//(2) tbl_notice에 insert(게시글 정보 선등록)
-		int result = dao.updateGym(conn, gym);
-		
-		if(result > 0) {
-			int result = dao.updateGymTicket(conn, gym.getTicket());
-			
-			if(result > 0) {
-				for(GymFile file : fileList) {
-					
-					//(3) tbl_notice_file에 insert(게시글에 대한 파일 등록)
-					result = dao.insertGymFile(conn, file);
-					
-					//파일 정보 등록 중, 정상 수행되지 않았을 경우 모두 롤백처리하고, 메소드 종료
-					if(result < 1) {
-						JDBCTemplate.rollback(conn);
-						JDBCTemplate.close(conn);
-						return 0;
-					}
-				}
-				
-				JDBCTemplate.commit(conn);
-			}else {
-				JDBCTemplate.rollback(conn);
-			}
-			
-			
-		}else {
-			JDBCTemplate.rollback(conn);
-		}
-		
-		JDBCTemplate.close(conn);
-		
-		return result;
+	    Connection conn = JDBCTemplate.getConnection();
+	    int result = dao.updateGym(conn, gym);
+
+	    if (result <= 0) {
+	        JDBCTemplate.rollback(conn);
+	        JDBCTemplate.close(conn);
+	        return 0;
+	    }
+
+	    result = dao.updateGymTicket(conn, gym.getTicket());
+	    if (result <= 0) {
+	        JDBCTemplate.rollback(conn);
+	        JDBCTemplate.close(conn);
+	        return 0;
+	    }
+
+	    for (GymFile file : fileList) {
+	        result = dao.insertGymFile(conn, file);
+	        if (result <= 0) {
+	            JDBCTemplate.rollback(conn);
+	            JDBCTemplate.close(conn);
+	            return 0;
+	        }
+	    }
+
+	    JDBCTemplate.commit(conn);
+	    JDBCTemplate.close(conn);
+	    return 1;  // 모든 작업 성공 시 1 반환
 	}
 	
 	
