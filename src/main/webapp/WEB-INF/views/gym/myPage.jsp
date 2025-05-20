@@ -87,7 +87,7 @@
             <img src="/resources/images/user-icon.png" alt="User Icon" />
             <div>
                 <p><strong>${sessionScope.loginMember.memberId}</strong>님, 환영합니다!</p>
-                <p>회원님의 등급은 <strong>${sessionScope.loginMember.grade}</strong>입니다.</p>
+                <p>회원님의 등급은 <strong>${sessionScope.loginMember.memberGrade}</strong>입니다.</p>
                 <p>※ 프로필 설정 및 활동 통계는 추후 추가 예정입니다.</p>
             </div>
         </div>

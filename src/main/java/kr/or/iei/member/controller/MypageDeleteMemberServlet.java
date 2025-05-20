@@ -1,4 +1,4 @@
-package kr.or.iei.admin.controller;
+package kr.or.iei.member.controller;
 
 import java.io.IOException;
 
@@ -8,23 +8,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import kr.or.iei.admin.model.service.AdminService;
 import kr.or.iei.member.model.service.MemberService;
 import kr.or.iei.member.model.vo.Member;
 
 /**
- * Servlet implementation class deleteMemberServlet
+ * Servlet implementation class MypageDeleteMemberServlet
  */
-
-@WebServlet("/admin/member/delete")
-public class MemberDeleteServlet extends HttpServlet {
+@WebServlet("/member/delete")
+public class MypageDeleteMemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MemberDeleteServlet() {
+    public MypageDeleteMemberServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,31 +32,31 @@ public class MemberDeleteServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//1. 인코딩 - 필터
-		//2. 값 추출 (회원 아이디)
-		String deleteId = request.getParameter("id");
-		//3. 로직 (회원 아이디 삭제)
-		AdminService service = new AdminService();
-		int result = service.deleteMember(deleteId);
+		HttpSession session = request.getSession(false); // 세션객체가 있으면 반환, 없으면 false
 		
-		//4. 결과 처리
-			//4.1 이동할 페이지 지정
-			RequestDispatcher view;
+		if(session != null) {
+			Member m = (Member) session.getAttribute("loginMember");
 			
-			if(result > 0) { //회원 삭제 성공
+			MemberService service = new MemberService();
+			int result = service.deleteMember(m);
+			
+			RequestDispatcher view = null;
+			if(result > 0) {
 				view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
-				request.setAttribute("title", "알림");
-				request.setAttribute("msg", "삭제 성공하였습니다.");
+				request.setAttribute("title", "성공");
+				request.setAttribute("msg", "정상적으로 탈퇴되었습니다.");
 				request.setAttribute("icon", "success");
-			}else { //회원 삭제 실패
+				request.setAttribute("loc", "/");
+				session.invalidate();
+			}else {
 				view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
-				request.setAttribute("title", "알림");
-				request.setAttribute("msg", "삭제중, 오류가 발생하였습니다.");
+				request.setAttribute("title", "실패");
+				request.setAttribute("msg", "회원탈퇴중, 오류가 발생하였습니다.");
 				request.setAttribute("icon", "error");
+				request.setAttribute("loc", "/member/updateMemberFrm");
 			}
-			
-				request.setAttribute("loc", "/admin/member/list?page=1");
-				view.forward(request, response);
+			view.forward(request, response);
+		}
 	}
 
 	/**

@@ -77,7 +77,7 @@
 				<c:choose>
 					<c:when test = '${not empty loginMember and empty loginAdmin and empty loginGym}'>
 						<%-- 회원용 마이페이지 --%>
-						<div class="menu-item"><a href='#'>마이페이지</a></div>
+						<div class="menu-item"><a href='/member/myPageFrm'>마이페이지</a></div>
 					</c:when>
              		<c:when test = '${empty loginMember and not empty loginAdmin and empty loginGym}'>
 						<%-- 관리자용 마이페이지 --%>

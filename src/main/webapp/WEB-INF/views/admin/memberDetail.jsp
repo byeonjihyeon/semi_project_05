@@ -13,8 +13,7 @@
 			<main class="content">
 	       		 <div class="member-info-card">
 				  <h2>회원 상세 정보</h2>
-				
-				  <table class="member-info-table">
+				 	 <table class="member-info-table">
 					    <tr>
 					    	<th>회원 아이디</th>
 					    	<td>${memberDetails.memberId}</td>
