@@ -16,7 +16,7 @@
             <ul>
               <li><a>관리자 페이지</a></li>
               
-              <li><a href="/admin/manager/insertFrm">관리자 등록</a></li>
+              <li><a href="/admin/super/insertAdminFrm">관리자 등록</a></li>
               <li><a href='/admin/super/admins'>관리자 조회</a>
               <li><a href="/admin/member/list?page=1">회원 관리</a></li>
               <li><a href="/admin/gym/list?page=1">헬스장 관리</a></li>
