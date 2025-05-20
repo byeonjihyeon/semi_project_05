@@ -19,8 +19,6 @@ public class AdminDao {
 		
 		Admin loginAdmin = null;
 		
-		//회원 테이블과 관리자별 업무테이블 조인하여 select
-		
 		String query = "select * from tbl_member where member_id =? and member_pw =? and member_type in(0,1)";
 		//String query = "select * from tbl_member join tbl_admin_job using (member_id) where member_id =? and member_pw =?";
 		
@@ -43,7 +41,7 @@ public class AdminDao {
 				loginAdmin.setMemberName(rset.getString("member_name"));
 				loginAdmin.setMemberPhone(rset.getString("member_phone"));
 				
-				loginAdmin.setJobCode(rset.getString("job_code"));
+				//loginAdmin.setJobCode(rset.getString("job_code"));
 				loginAdmin.setUrl(rset.getString("url"));
 				loginAdmin.setSelYN(rset.getString("sel_Yn"));
 				loginAdmin.setInsYN(rset.getString("ins_Yn"));
@@ -72,7 +70,7 @@ public class AdminDao {
 		ArrayList<Member> list = new ArrayList<Member>();
 		
 		//가입일순으로 10명씩 조회
-		String query = "SELECT * FROM (SELECT ROWNUM RNUM, A.* FROM (SELECT * FROM TBL_Member A ORDER BY enrolldate DESC) A ) WHERE MEMBER_TYPE=3 and RNUM >=? AND RNUM <=?";
+		String query = "SELECT * FROM (SELECT ROWNUM RNUM, A.* FROM (SELECT * FROM TBL_Member A where member_type=3 ORDER BY enrolldate DESC) A ) WHERE RNUM >=? AND RNUM <=?";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -346,7 +344,6 @@ public class AdminDao {
 				admin.setMemberEmail(rset.getString("member_email"));
 				admin.setMemberGrade(rset.getString("member_grade"));
 				admin.setMemberName(rset.getString("member_name"));
-				//loginAdmin.setMemberNickname(rset.getString("member_nickname"));
 				admin.setMemberPhone(rset.getString("member_phone"));
 				admin.setJobCode(rset.getString("job_code"));
 				admin.setUrl(rset.getString("url"));
@@ -447,7 +444,30 @@ public class AdminDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			JDBCTemplate.close(conn);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int changeGrade(Connection conn, String id, String grade) {
+		PreparedStatement pstmt = null;
+		
+		int result = 0;
+		
+		String query = "update tbl_member set member_grade =? where member_id =?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, grade);
+			pstmt.setString(2, id);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
 		}
 		
 		return result;

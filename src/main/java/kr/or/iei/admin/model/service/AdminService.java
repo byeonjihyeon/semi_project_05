@@ -259,6 +259,35 @@ public class AdminService {
 		
 		return newRandomPw;
 	}
+
+	public int changeGrade(String id, String grade) {
+		Connection conn = JDBCTemplate.getConnection();
+		
+		switch(grade) {
+		case "allMng" : grade = "총괄 관리자";
+				break;
+		case "memberMng" : grade = "회원 관리자";
+				break;
+		case "gymMng" : grade = "헬스장 관리자";
+			break;
+		case "boardMng" : grade = "게시판 관리자";
+			break;
+		case "noMng" : grade = "미정";
+			break;	
+		}
+		
+		int result = dao.changeGrade(conn, id, grade);
+		
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
 	
 	
 	

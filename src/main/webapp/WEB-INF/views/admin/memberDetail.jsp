@@ -5,6 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>회원 세부정보 조회</title>
+<style>
+.member-info-btn-small {
+  margin-left : 0px;
+}
+</style>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>

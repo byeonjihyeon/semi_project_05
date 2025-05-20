@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<link rel="stylesheet" href="/resources/css/default.css"> <!-- 선생님이 이미 만든 파일 연결 -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> <!-- jQuery 연결 -->    
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <!-- JSTL 라이브러리 선언 -->    
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +21,12 @@
             <p>전화: 02-1234-5678</p>
             <p>이메일: support@mutgym.com</p>
             <p>© 2025 MyCompany. All rights reserved.</p>
-            <p id=footer-admin><a href="/admin/loginFrm" style="font-size: 0.8em; color: #888;" id='footer-admin-link'>관리자 페이지</a></p>
+            <c:if test="${empty loginAdmin}">
+            	<p id=footer-admin><a href="/admin/loginFrm" style="font-size: 0.8em; color: #888;" id='footer-admin-link'>관리자 로그인</a></p>
+            </c:if>
+             <c:if test="${not empty loginAdmin}">
+            	<p id=footer-admin><a href="/admin/member/list?page=1" style="font-size: 0.8em; color: #888;" id='footer-admin-link'>관리자 페이지</a></p>
+            </c:if>
         </div>
       </footer>
 </body>
