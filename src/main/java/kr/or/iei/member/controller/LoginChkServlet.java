@@ -56,19 +56,21 @@ public class LoginChkServlet extends HttpServlet {
 			MemberService service = new MemberService();
 			Member loginM = service.loginChk(m);
 			
+			//회원정보(암호화된 비밀번호) =?> askjhwqklbhioqwbnfkowqhbgfkjwqgkjfegbqik;
+			//password = 1231234;
+			
+			
+			Boolean passwordChk = BCrypt.checkpw(password, loginM.getMemberPw());
+			
 			//결과처리
 				// 페이지 이동할 경로 지정.
 
 
 				//로그인 성공시 바로 메인으로
-				boolean passwordChk = false;
-				System.out.println(loginM.getMemberId());
-				System.out.println(0);
 
-				if(loginM != null && loginM.getMemberPw() != null) {
-					passwordChk = BCrypt.checkpw(password, loginM.getMemberPw());
-					System.out.println(passwordChk);
-					System.out.println(loginM.getMemberPw());
+
+				if(loginM != null && passwordChk) {
+					
 					view = request.getRequestDispatcher("index.jsp");
 					session.setAttribute("loginMember", loginM);				
 				} else {

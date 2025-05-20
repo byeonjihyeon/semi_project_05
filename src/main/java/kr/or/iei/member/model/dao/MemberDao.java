@@ -87,16 +87,21 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		
-		String query = "insert into tbl_member values(?,?,?,'null',?,'회원',?,sysdate,0, 3)";
+		String query = "insert into tbl_member values(?,?,?,'.',?,'회원',?,sysdate, default, 3)";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
 			
 			pstmt.setString(1, m.getMemberId());
+			
 			pstmt.setString(2, m.getMemberPw());
+			
 			pstmt.setString(3, m.getMemberName());
+			
 			pstmt.setString(4, m.getMemberEmail());
+			
 			pstmt.setString(5, m.getMemberPhone());
+			
 			
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -217,6 +222,135 @@ public class MemberDao {
 		} finally {
 			JDBCTemplate.close(pstmt);
 		}
+		
+		return result;
+	}
+
+	public int updateMember(Connection conn, Member m) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "update tbl_member set member_name = ?, member_phone = ?, member_email = ?, member_addr = ? where member_id = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, m.getMemberName());
+			pstmt.setString(2, m.getMemberPhone());
+			pstmt.setString(3, m.getMemberEmail());
+			pstmt.setString(4, m.getMemberAddr());
+			pstmt.setString(5, m.getMemberId());
+			
+			result = pstmt.executeUpdate();
+
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+				
+				
+		return result;
+	}
+
+	public int emailDuplChk(Connection conn, String userEmail) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		int cnt = 0;
+		String query = "select count(*) cnt from tbl_member where member_email = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, userEmail);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				cnt = rset.getInt("cnt"); // 1
+			}
+		
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			
+			JDBCTemplate.close(pstmt);
+		}
+		
+		
+		return cnt;
+	}
+
+	public String pwDuplChk(Connection conn, String userId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String pwChk = null;
+		
+		String query = "select member_pw from tbl_member where member_id = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, userId);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				pwChk = rset.getString("member_pw");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return pwChk;
+	}
+
+	public int updatePw(Connection conn, String userId, String updateNewPw) {
+		PreparedStatement pstmt = null;
+		int result = 0 ;
+		
+		String query = "update tbl_member set member_pw = ? where member_id = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, updateNewPw);
+			pstmt.setString(2, userId);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int deleteMember(Connection conn, Member m) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = "delete tbl_member where member_id = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, m.getMemberId());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
 		
 		return result;
 	}

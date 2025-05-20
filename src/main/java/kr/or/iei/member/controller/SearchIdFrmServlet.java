@@ -38,19 +38,24 @@ public class SearchIdFrmServlet extends HttpServlet {
 
 			if(gb.equals("id")) {				
 				view = request.getRequestDispatcher("/WEB-INF/views/member/searchId.jsp"); //단순 로그인 화면으로 이동하기 위해 만들어진 서블릿
+				view.forward(request, response);
 			}else if(gb.equals("pw")){
 				view = request.getRequestDispatcher("/WEB-INF/views/member/searchPw.jsp");
+				view.forward(request, response);
+
 			}else {
+				view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
 				request.setAttribute("title", "알림");
 				request.setAttribute("msg", "잘못된 접근입니다.");
 				request.setAttribute("icon", "warning");
 				request.setAttribute("loc", "/");
-			}
+				view.forward(request, response);
 
+			}
 			
 			// 화면 구현에 필요한 데이터 등록 X
 			// 페이지 이동
-			view.forward(request, response);
+
 	}
 
 	/**
