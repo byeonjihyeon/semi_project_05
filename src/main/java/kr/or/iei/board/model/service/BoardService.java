@@ -159,26 +159,14 @@ public class BoardService {
 	}
 
 
-
-	public Board selectOneBoard(String boardId, boolean b) {
+	public Board selectOneBoard(String boardNo) {
 		Connection conn = JDBCTemplate.getConnection();
-		
-		Board board = dao.selectOneBoard(conn, boardId);
-		
-		if(board != null) {
-			int result = 0;
-			
-			if(b) {
-				result = dao.boardLikeCount(conn, boardId);
-			}
-			if(result > 0 || !b) {
-				JDBCTemplate.commit(conn);
-				
-				ArrayList<BoardFile> fileList = dao.selectBoardFileList(conn, boardId)
-			}
-		}
-		return null;
+		Board oneB = dao.selectOneBoard(conn, boardNo);
+		return oneB;
 	}
 
+
+
+	
 
 }

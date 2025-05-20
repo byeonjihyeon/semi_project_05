@@ -24,7 +24,7 @@ import kr.or.iei.common.KhRenamePolicy;
 /**
  * Servlet implementation class WriteAServlet
  */
-@WebServlet("/")
+@WebServlet("/asdasd")
 public class WriteAServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

@@ -2,6 +2,7 @@ package kr.or.iei.board.model.vo;
 
 import java.util.ArrayList;
 
+import kr.or.iei.member.model.vo.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Board {
+public class Board extends Member{
 	private String boardId;				//게시판 번호
 	private String boardType;
 	private String boardTitle;			//게시판 제목

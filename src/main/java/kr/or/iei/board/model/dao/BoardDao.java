@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import kr.or.iei.board.model.service.BoardFile;
+
 import kr.or.iei.board.model.vo.Board;
 import kr.or.iei.board.model.vo.BoardFile;
 import kr.or.iei.common.JDBCTemplate;
@@ -84,28 +84,8 @@ public class BoardDao {
 	}
 
 
-	public Board selectOneBoard(Connection conn, String boardId) {
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
+	
 		
-		Board board = null;
-		
-		String query = "select board_title, board_content, board_";
-		
-		try {
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, boardId);
-			rset = pstmt.executeQuery();
-			
-			if(rset.next()) {
-				board = new Board();
-				board.setBoardId(rset.getString("board_id"));
-				board.setBoardTitle(rset.getString("board_title"));
-				board.setBoardContent(rset.getString("board_content"));
-				board.setUpdateAt(rset.getString("update_at"));
-				board.setBoardLikeCount(rset.getInt("boardlike_count"));
-			}
-			
 
 	public String selectBoardNo(Connection conn) {
 		PreparedStatement pstmt = null;
@@ -131,22 +111,29 @@ public class BoardDao {
 		}
 
 		
-		return board;
+		return boardNo;
 	}
 
-	public int boardLikeCount(Connection conn, String boardId) {
+	public int boardViewCount(Connection conn, String boardId) {
 		PreparedStatement pstmt = null;
 		
 		int result = 0;
 		
-		String query = "";
+		String query = "update tbl_board set read_count = read_count + 1 where board_id = ?";
 		
-		try {
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, boardId);
-			result = pstmt.executeUpdate();
+		
+			try {
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, boardId);
+				result = pstmt.executeUpdate();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				JDBCTemplate.close(pstmt);
+			}
 
-		return boardNo;
+		return result;
 	}
 
 	public int insertBoard(Connection conn, Board board) {
@@ -207,12 +194,40 @@ public class BoardDao {
 		return result;
 	}
 
-
-	public ArrayList<BoardFile> selectBoardFileList(Connection conn, String boardId) {
+	public Board selectOneBoard(Connection conn, String boardNo) {
 		PreparedStatement pstmt = null;
-		// TODO Auto-generated method stub
-		return null;
+		ResultSet rset= null;
+		
+		String query = "select * from tbl_board where board_id = ?";
+		Board oneB = null;
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, boardNo);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				oneB = new Board();
+				
+				oneB.setBoardTitle(rset.getString("board_title"));
+				oneB.setBoardContent(rset.getString("BOARD_CONTENT"));
+				oneB.setMemberId(rset.getString("member_id"));
+				System.out.println(oneB.getBoardContent());
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return oneB;
 	}
+
+
+	
+
+	
 
 	
 		
