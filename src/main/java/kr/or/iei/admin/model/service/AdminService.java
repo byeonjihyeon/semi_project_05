@@ -182,6 +182,21 @@ public class AdminService {
 		return list;
 	}
 
+	public int updateAdminPreviliege(Admin admin) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.updateAdminPreviliege(conn, admin);
+		
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
+
 
 	
 

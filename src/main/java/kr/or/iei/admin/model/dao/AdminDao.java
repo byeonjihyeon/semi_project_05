@@ -369,6 +369,35 @@ public class AdminDao {
 		return list;
 	}
 
+	public int updateAdminPreviliege(Connection conn, Admin admin) {
+		PreparedStatement pstmt = null;
+		
+		int result = 0;
+		
+		String query = "update tbl_admin_job set sel_yn =?, upd_yn =?, del_yn =? where member_id =? and url = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, admin.getSelYN());
+			pstmt.setString(2, admin.getUpdYN());
+			pstmt.setString(3, admin.getDelYN());
+			pstmt.setString(4, admin.getMemberId());
+			pstmt.setString(5, admin.getUrl());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(conn);
+		}
+		
+		
+		return result;
+	}
+
 	
 	
 }

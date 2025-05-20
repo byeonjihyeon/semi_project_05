@@ -44,7 +44,7 @@
 	         <button type="submit" class="login-btn">로그인</button>
 	     </form>
 	     <div class="links">
-	         <a href="#">비밀번호 찾기</a> 
+	         <a href="#">아이디찾기</a> | <a href="#">비밀번호 찾기</a> 
 	     </div>
 	 </div>
 	 <script>
