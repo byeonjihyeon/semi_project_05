@@ -56,6 +56,16 @@
 	width : 180px;
 	height : 100px;
 	}
+	.box7{
+	border:2px solid black;
+	width : 180px;
+	height : 100px;
+	}
+	.box8{
+	border:2px solid black;
+	width : 180px;
+	height : 100px;
+	}
 	
 	.box-container2{
 	display : flex;
@@ -104,40 +114,71 @@
 			 <main class="content">
 	         	<section class='section notice-list-wrap'>
 				<div class='page-title'>자유 게시판</div>
-				<div class='page-title2'>최근 많이 본 TOP 10</div>
+				<div class='page-title2'>최근 많이 본 TOP 5</div>
+			 	
+			 	
+			 		<c:if test="${sortGubun eq 'asc' }">
+			 		<div class="box2"> <a href='/board/list?reqPage=1&sortGubun=desc'>왼쪽</a> <%-- 자료 한번 넣어봤음 a href--%></div> 
+			 		</c:if>
+			 		<c:if test="${sortGubun eq 'desc' }">
+			 		<div class="box3"> <a href='/board/list?reqPage=1&sortGubun=desc'>오른쪽</a> <%-- 자료 한번 넣어봤음 a href--%></div> 
+			 		</c:if>
+			 		
 			 	<div class='box-container'>
-			 		<div class="box1">
-			 			<a href="https:/www.naver.com">네이버</a> <%-- 자료 한번 넣어봤음 a href--%>
-			 		</div> 
-			 		<div  class="box2">박스</div>
-			 		<div class="box3">박스</div>
+			 		
+			 		<div class="box3">박스3</div>
+			 		<br><br>
+			 		<div class="box7">박스4</div>
+			 		<div class="box8">박스5</div>
 			 	</div>
 			 	
 			 	<br><br>
 				<br><br>
 					<div class='list-header'>
+					
+					<%-- 로그인 안했을때 보여줌과 로그인 했을때 보여줌 --%>
+					<c:choose>
+						<c:when test="${not empty sessionScope.boardId }">
+						</c:when>
+						</c:choose>
 						<a class='btn-point write-btn' href='/board/writeFrm'>글쓰기(일반)</a> <%-- 나중에 로그인시 보이게 추가해줄것 --%>
-						
 						<div class='box-container2'>
-			 			<div class="box4">최신순/오래된순</div>  <%-- onclick --%>
-			 			<div class="box5">조회수</div>
-			 			<div class="box6">추천수</div>
-			 	</div>
+							<c:if test="${sortGubun eq 'asc'}">
+					 			<div class="box4"><a href='/board/list?reqPage=1&sortGubun=desc'>최신순/오래된순</a></div>
+							</c:if>
+							<c:if test="${sortGubun eq 'desc'}">
+								<div class="box4"><a href='/board/list?reqPage=1&sortGubun=asc'>최신순/오래된순</a></div>
+							</c:if>
+				 			
+				 			<c:if test="${sortGubun eq 'asc'}">
+				 				<div class="box5"><a href='/board/list?reqPage=1&sortGubun=desc'>조회수</a></div>
+				 			</c:if>
+				 			<c:if test="${sortGubun eq 'desc' }">
+				 				<div class="box5"><a href='/board/list?reqPage=1&sortGubun=asc'>조회수</a></div>
+				 			</c:if>
+				 			<c:if test="${sortGubun eq 'asc'}">
+				 				<div class="box6"><a href='/board/list?reqPage=1&sortGubun=desc'>추천수</a></div>
+				 			</c:if>
+				 			<c:if test="${sortGubun eq 'desc' }">
+				 				<div class="box6"><a href='/board/list?reqPage=1&sortGubun=asc'>추천수</a></div>
+				 			</c:if>
+			 			</div>
 					</div>
 				<br>
 				<div class='list-content'>
 					<table class='tbl tbl-hover'>
 						<tr>
-							<th style='width:10%;'>번호</th>
-							<th style='width:30%;'>제목</th>
-							<th style='width:15%;'>작성자</th>
-							<th style='width:20%;'>작성일</th>
-							<th style='width:10%;'>조회수</th>
-							<th style='width:10%;'>추천수</th>
+							<th style="width:15%">번호</th>
+							<th style="width:25%">제목</th>
+							<th style="width:15%">작성자</th>
+							<th style="width:15%">작성일자</th>
+							<th style="width:15%">조회수</th>
+							<th style="width:15%">추천수</th>
 						</tr>
 						<c:forEach var="board" items="${boardList}">
 							<tr>
-								<td class='boardTitle'><a href='/board/view?boardNo=${board.boardId}&updChk=true'>${board.boardTitle}</a></td>
+								<td><a href='/board/view?boardNo=${board.boardId}&updChk=true'>${board.boardId}</a></td>
+								<td class='boardTitle'>${board.boardTitle}</td>
 								<td>${board.memberId}</td>
 								<td>${board.createdAt}</td>
 								<td>${board.viewCount}</td>
@@ -146,25 +187,11 @@
 						</c:forEach>
 					</table>
 				</div>
-				
-				<table class="tbl tbl-hover">
-				<tr>
-					<th style='width:10%;'>번호</th>
-					<th style='width:30%;'>제목을 써야합니다</th>
-					<th style='width:15%;'>작성자</th>
-					<th style='width:20%;'>작성일</th>
-					<th style='width:10%;'>조회수</th>
-					<th style='width:10%;'>추천수</th>
-				</tr>
-				</table>
-				
 				<div class="page-Navi" id='pageNavi'>${pageNavi}</div>
-				<div class="box-container3">
-		
-			
-				</div>
-				<div class="box7"></div>
-				<button class="btn-primary lg" >입력</button>
+				<form id="chat">
+				<input type="text" id="chat-input" placeholder="메세지를 입력하세요 " autocomplete="off">
+				<button type="submit">입력</button>
+				</form>
 				
 			</section>
 	         </main>

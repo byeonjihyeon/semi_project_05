@@ -4,30 +4,24 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>자유 게시판 작성</title>
+<title>공지사항 작성</title>
 </head>
 <body>
-	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>	
-		<div class="container">
-		 <jsp:include page="/WEB-INF/views/common/sidemenuBoard.jsp"></jsp:include>
-			 <main class="content">
-	         	<section class='section notice-write-wrap'>
+	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
+		<div class="container"></div>
+	<jsp:include page="/WEB-INF/views/common/sidemenuAdmin.jsp"></jsp:include>
+	<main class="content">
+	<section class='section notice-write-wrap'>
 				<div class='page-title'>게시판 작성</div>
 				<form action='/board/write'
 						method='post' <%--첨부파일 업로드시, method는 모조건 post로 지정하고, enctype은 multipart로 지정해야함. --%>
 						enctype='multipart/form-data'
-<<<<<<< HEAD
-						onsubmit='return validateForm()'>
-						<%-- tbl_notice의 notice_writer(작성자) 컬럼의 값은 회원 번호! --%>
-						<input type='hidden' name='boardWriter' value='${loginMember.memberNo}'>
-=======
 						>
 						<%-- tbl_notice의 board_writer(작성자) 컬럼의 값은 회원 번호! 
 						<input type='hidden' name='memberId' value='${loginMember.memberId}'>
 						--%>
 						<input type='hidden' name='memberId' value='user01'>
-						<input type='hidden' name='boardType' value='B'>
->>>>>>> dev
+						<input type='hidden' name='boardType' value='G'>
 						<table class='tbl'>
 							<tr>
 								<th class="name-title">제목</th>
@@ -77,11 +71,8 @@
 							</tr>
 						</table>
 				</form>
-			</section>
-	         </main>
-		</div>     
-	<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>	
-	<script>
-	
-	</script>
+				</section>
+				</main>
+	<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
+</body>
 </html>

@@ -8,24 +8,29 @@ import java.util.ArrayList;
 
 import kr.or.iei.board.model.service.BoardFile;
 import kr.or.iei.board.model.vo.Board;
+import kr.or.iei.board.model.vo.BoardFile;
 import kr.or.iei.common.JDBCTemplate;
 
 public class BoardDao {
 	
-	public ArrayList<Board> selectBoardList(Connection conn, int start, int end) {
+	public ArrayList<Board> selectBoardList(Connection conn, int start, int end, String gubun, String sortGubun) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
 		ArrayList<Board> list = new ArrayList<Board>();
 		
 		//게시글 번호, 제목, 작성자아이디, 작성일, 조회수, 좋아요수 select 
-		String query = "select board_id, board_title, member_id, created_at, view_count, board_like_count from (select rownum rnum, A.* FROM (SELECT * FROM TBL_board A ORDER BY created_at DESC) A ) WHERE RNUM >=? AND RNUM <=?";
+		String query = "select board_id, board_title, member_id, created_at, view_count, board_like_count from (select rownum rnum, A.* FROM (SELECT * FROM TBL_board a where board_type = ? ORDER BY created_at "+sortGubun+",  VIEW_COUNT "+sortGubun+", BOARD_LIKE_COUNT "+sortGubun+") A ) WHERE RNUM >=? AND RNUM <=?";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
 			
-			pstmt.setInt(1, start);
-			pstmt.setInt(2, end);
+			
+			//gubun == G == 공지사항
+			//gubun == B == 자유게시판
+			pstmt.setString(1, gubun);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
 			
 			rset = pstmt.executeQuery();
 			
@@ -52,16 +57,17 @@ public class BoardDao {
 		return list;
 	}
 
-	public int selectTotalCount(Connection conn) {
+	public int selectTotalCount(Connection conn, String gubun) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
 		int totCnt = 0;
 		
-		String query = "select count(*) as cnt from tbl_board";
+		String query = "select count(*) as cnt from tbl_board where board_type = ?";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, gubun);
 			rset = pstmt.executeQuery();
 			rset.next();
 			totCnt = rset.getInt("cnt");
@@ -76,6 +82,7 @@ public class BoardDao {
 		
 		return totCnt;
 	}
+
 
 	public Board selectOneBoard(Connection conn, String boardId) {
 		PreparedStatement pstmt = null;
@@ -99,6 +106,22 @@ public class BoardDao {
 				board.setBoardLikeCount(rset.getInt("boardlike_count"));
 			}
 			
+
+	public String selectBoardNo(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String boardNo = "";
+		
+		String query = "select to_char(sysdate, 'yymmdd') || lpad(seq_board.nextval, 5, '0') board_no from dual";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				boardNo = rset.getString("board_no");
+			}
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -106,6 +129,7 @@ public class BoardDao {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
+
 		
 		return board;
 	}
@@ -121,19 +145,80 @@ public class BoardDao {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, boardId);
 			result = pstmt.executeUpdate();
+
+		return boardNo;
+	}
+
+	public int insertBoard(Connection conn, Board board) {
+		PreparedStatement pstmt = null;
+
+		int result = 0;
+		
+		String query = "insert into tbl_board values (?, ?, ?, ?, ?,sysdate, sysdate ,default, ?)";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			
+			pstmt.setString(1, board.getBoardId());
+			pstmt.setString(2, board.getBoardType());
+			pstmt.setString(3, board.getMemberId());
+			pstmt.setString(4, board.getBoardTitle());
+			pstmt.setString(5, board.getBoardContent());
+			pstmt.setInt(6, board.getBoardLikeCount());
+			
+			result = pstmt.executeUpdate();
+			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			JDBCTemplate.close(pstmt);
 		}
-		
+
+				
 		return result;
 	}
+
+	public int insertBoardFile(Connection conn, BoardFile file) {
+		PreparedStatement pstmt =null;
+		
+			int result = 0;
+			
+			String query ="insert into tbl_file values(seq_tbl_file.nextval, ?, ?, ?, ?)";
+			
+			try {
+				pstmt = conn.prepareStatement(query);
+				
+				pstmt.setString(1, file.getFileType());
+				pstmt.setString(2, file.getFileTypeId());
+				pstmt.setString(3, file.getFileName());
+				pstmt.setString(4, file.getFilePath());
+				result = pstmt.executeUpdate();
+						
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+				JDBCTemplate.close(pstmt);
+			}
+
+		return result;
+	}
+
 
 	public ArrayList<BoardFile> selectBoardFileList(Connection conn, String boardId) {
 		PreparedStatement pstmt = null;
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
+		
+		
+	
+
+
+
 }

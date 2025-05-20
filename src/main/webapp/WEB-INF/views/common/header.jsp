@@ -36,6 +36,7 @@
                <div class="submenu">
                  <a href="/board/alist?reqPage=1">공지사항</a>
                  <a href="/board/list?reqPage=1">자유게시판</a>
+                 <a href="/board/Inlist?reqPage=1">1대1 문의사항</a>
                </div>
              </div>
              	<%--관리자인 경우에만 보이는 관리자페이지--%>
