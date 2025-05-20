@@ -60,11 +60,12 @@ font-weight: normal;
 					    <tr>
 					      <th>관리자</th>
 					      <td>
+					    	<input type="hidden" name="id" value="${adminDetails[0].memberId}">
 					      	<input type="hidden" name="url" value="/admin/super">
-					        <input type="checkbox" name="sel" value="Y" ${adminDetails[0].insYN eq 'Y' ? 'checked' : ''}>조회
+					        <input type="checkbox" name="sel" value="Y" ${adminDetails[0].selYN eq 'Y' ? 'checked' : ''}>조회
 					        <input type="checkbox" name="upd" value="Y" ${adminDetails[0].updYN eq 'Y' ? 'checked' : ''}>수정
 					        <input type="checkbox" name="del" value="Y" ${adminDetails[0].delYN eq 'Y' ? 'checked' : ''}>삭제
-					   	    <button type="button" class="previliegeBtn member-info-btn-small" >수정</button>
+					   	    <button type="submit" class="previliegeBtn member-info-btn-small" >수정</button>
 					      </td>
 					    </tr>
 					  </form>
@@ -74,8 +75,9 @@ font-weight: normal;
 					    <tr>
 					      <th>회원</th>
 					      <td>
-					    	<input type="hidden" name="url" value="/admin/member">
-					        <input type="checkbox" name="sel" value="Y" ${adminDetails[1].insYN eq 'Y' ? 'checked' : ''}>조회
+					   	    <input type="hidden" name="id" value="${adminDetails[0].memberId}">
+					  	  	<input type="hidden" name="url" value="/admin/member">
+					        <input type="checkbox" name="sel" value="Y" ${adminDetails[1].selYN eq 'Y' ? 'checked' : ''}>조회
 					        <input type="checkbox" name="upd" value="Y" ${adminDetails[1].updYN eq 'Y' ? 'checked' : ''}>수정
 					        <input type="checkbox" name="del" value="Y" ${adminDetails[1].delYN eq 'Y' ? 'checked' : ''}>삭제
 					        <button type="submit" class="previliegeBtn member-info-btn-small">수정</button>
@@ -88,8 +90,9 @@ font-weight: normal;
 					    <tr>
 					      <th>헬스장</th>
 					      <td>
+					        <input type="hidden" name="id" value="${adminDetails[0].memberId}">
 					      	<input type="hidden" name="url" value="/admin/gym">
-					        <input type="checkbox" name="sel" value="Y" ${adminDetails[2].insYN eq 'Y' ? 'checked' : ''}>조회
+					        <input type="checkbox" name="sel" value="Y" ${adminDetails[2].selYN eq 'Y' ? 'checked' : ''}>조회
 					        <input type="checkbox" name="upd" value="Y" ${adminDetails[2].updYN eq 'Y' ? 'checked' : ''}>수정
 					        <input type="checkbox" name="del" value="Y" ${adminDetails[2].delYN eq 'Y' ? 'checked' : ''}>삭제
 					        <button type="submit" class="previliegeBtn member-info-btn-small">수정</button>
@@ -102,8 +105,9 @@ font-weight: normal;
 					    <tr>
 					      <th>게시판</th>
 					      <td>
+					      	<input type="hidden" name="id" value="${adminDetails[0].memberId}">
 					      	<input type="hidden" name="url" value="/admin/board">
-					        <input type="checkbox" name="sel" value="Y" ${adminDetails[3].insYN eq 'Y' ? 'checked' : ''}>조회
+					        <input type="checkbox" name="sel" value="Y" ${adminDetails[3].selYN eq 'Y' ? 'checked' : ''}>조회
 					        <input type="checkbox" name="upd" value="Y" ${adminDetails[3].updYN eq 'Y' ? 'checked' : ''}>수정
 					        <input type="checkbox" name="del" value="Y" ${adminDetails[3].delYN eq 'Y' ? 'checked' : ''}>삭제
 					        <button type="submit" class="previliegeBtn member-info-btn-small">수정</button>
@@ -121,30 +125,9 @@ font-weight: normal;
 </body>
 <script>
 function confirmMsg(){
-	swal({
-		icon : "warning",
-		text : "권한을 변경하시겠습니까?",
-		buttons : {
-			confirm : {
-				text : "확인",
-				value : true,
-				visible : true,
-				closeModal :true
-			},
-			cancel : {
-				text : "취소",
-				value : false,
-				visible : true,
-				closeModal :true
-			}
-		}
-	}).then(function(val){
-		if(val){
-			location.href='/aaa';
-		}	
-	});
-	
-	
+	if(!confirm('권한을 변경하시겠습니까?')){
+		return false;
+	}
 }
 
 </script>
