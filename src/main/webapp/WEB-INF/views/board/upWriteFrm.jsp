@@ -1,19 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <!-- JSTL 라이브러리 선언 -->
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공지사항 게시판 작성</title>
+<title>게시글 수정하기</title>
 </head>
 <body>
-	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>	
-		<div class="container">
+	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
+	<div class="container">
 		 <jsp:include page="/WEB-INF/views/common/sidemenuBoard.jsp"></jsp:include>
-			 <main class="content">
-	         	<section class='section notice-write-wrap'>
-				<div class='page-title'>게시판 작성</div>
-				<form action='/board/write'
+		<main class='content'>
+		 <section class='section notice-write-wrap'>
+				<div class='page-title'>게시글 수정</div>
+				<form action='/board/upWrite'
 						method='post' <%--첨부파일 업로드시, method는 모조건 post로 지정하고, enctype은 multipart로 지정해야함. --%>
 						enctype='multipart/form-data'
 						onsubmit='return validateForm()'>
@@ -71,8 +72,6 @@
 			</section>
 	         </main>
 		</div>     
-	<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>	
-	<script>
-	
-	</script>
+	<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
+</body>
 </html>

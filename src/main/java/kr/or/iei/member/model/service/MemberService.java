@@ -20,9 +20,6 @@ public class MemberService {
 		Member loginM = dao.loginChk(conn, m);
 		JDBCTemplate.close(conn);
 		
-		System.out.println(loginM.getMemberId());
-		System.out.println(loginM.getMemberPw());
-
 		return loginM;
 	}
 
@@ -81,6 +78,60 @@ public class MemberService {
 		}
 		JDBCTemplate.close(conn);
 		
+		return result;
+	}
+
+	public int updateMember(Member m) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.updateMember(conn, m);
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public int emailDuplChk(String userEmail) {
+		Connection conn = JDBCTemplate.getConnection();
+		int cnt = dao.emailDuplChk(conn,userEmail);
+		
+		
+		JDBCTemplate.close(conn);
+		return cnt;
+	}
+
+	public String pwDuplChk(String userId) {
+		Connection conn = JDBCTemplate.getConnection();
+		String pwChk = dao.pwDuplChk(conn, userId);
+		JDBCTemplate.close(conn);
+		return pwChk;
+	}
+
+	public int updatePw(String userId, String updatePw) {
+		Connection conn = JDBCTemplate.getConnection();
+		String updateNewPw = BCrypt.hashpw(updatePw, BCrypt.gensalt());
+		int result = dao.updatePw(conn, userId, updateNewPw);
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public int deleteMember(Member m) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.deleteMember(conn, m);
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
 		return result;
 	}
 

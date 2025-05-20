@@ -7,63 +7,116 @@
 <meta charset="UTF-8">
 <title>마이페이지</title>
 <style>
-    .mypage-container {
-        display: flex;
-        margin: 30px;
-        min-height: 600px;
-    }
-    .sidebar {
-        width: 220px;
-        border-right: 1px solid #ccc;
-        padding: 20px;
-    }
-    .sidebar h3 {
-        margin-bottom: 20px;
-        font-size: 18px;
-    }
-    .sidebar ul {
-        list-style: none;
-        padding: 0;
-    }
-    .sidebar ul li {
-        margin-bottom: 12px;
-    }
-    .sidebar ul li a {
-        color: #333;
-        text-decoration: none;
-    }
-    .main-content {
-        flex: 1;
-        padding: 30px;
-    }
-    .main-content h2 {
-        margin-bottom: 20px;
-    }
-    .welcome-box {
-        display: flex;
-        align-items: center;
-        margin-bottom: 30px;
-    }
-    .welcome-box img {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        margin-right: 20px;
-    }
-    .gym-photo {
-        width: 400px;
-        height: 250px;
-        border: 1px solid #ccc;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 16px;
-        color: #999;
-        background-color: #f9f9f9;
-    }
+@import url('https://fonts.googleapis.com/css2?family=Orbit&display=swap');
+body {
+    font-family: 'Orbit', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+.mypage-container {
+    display: flex;
+    padding: 40px;
+    min-height: 700px;
+    width: 1200px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* 사이드바 스타일 */
+.sidebar {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    border-right: 1px solid #eee;
+    width: 240px;
+    background-color: #1a1a1a;
+    color: #fff;
+    padding: 30px 20px;
+}
+.sidebar h3 {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 14px;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.sidebar ul li a:hover {
+  color: #ff414d;
+  font-weight: bold;
+}
+
+/* 메인 콘텐츠 */
+.main-content {
+    flex: 1;
+    background-color: #fff;
+    padding: 40px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.main-content h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 22px;
+    color: #222;
+}
+
+.welcome-box {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    background-color: #fafafa;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.welcome-box img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+.welcome-box p {
+    margin: 6px 0;
+    font-size: 15px;
+    color: #333;
+}
+
+.gym-photo {
+    width: 25%;
+    max-width: 600px;
+    height: 150px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+    color: #999;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
 </style>
 </head>
-
 
 <body>
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>	
@@ -74,7 +127,7 @@
         <h3>헬스장 관리자 페이지</h3>
         <ul>
             <li><a href="/member/updateMemberFrm">회원 정보 수정</a></li>
-            <li><a href="#">비밀번호 변경</a></li>
+            <li><a href="/member/updatePwFrm">비밀번호 변경</a></li>
             <li><a href="#">이용 내역 조회</a></li>
             <li><a href="#">결제 내역 조회</a></li>
             <li><a href="#">나의 몸무게 일지</a></li>
@@ -101,5 +154,4 @@
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
 </body>
-
 </html>
