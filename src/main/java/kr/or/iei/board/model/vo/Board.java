@@ -22,4 +22,5 @@ public class Board {
 	private int boardLikeCount;			//게시판 좋아요 횟수
 	
 	private ArrayList<BoardFile> fileList;
+	private ArrayList<BoardAdmin> boardAdmin;
 }

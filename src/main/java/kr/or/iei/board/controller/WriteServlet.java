@@ -40,7 +40,7 @@ public class WriteServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//이게 listservlet 
+		//listservlet 
 		//값 추출
 		
 		//오늘 날짜(yyyymmdd) 폴더 생성을 위한 String 변수

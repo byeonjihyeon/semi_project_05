@@ -14,7 +14,7 @@
               <li><a>게시판</a></li>
               <li><a href="/board/alist?reqPage=1">공지사항</a></li>
               <li><a href="/board/list?reqPage=1">자유게시판</a></li>
-               <li><a href="/board/1list?reqPage=1">1대1 문의사항</a></li>
+               <li><a href="/board/Inlist?reqPage=1">1대1 문의사항</a></li>
             </ul>
           </nav>
         </aside>

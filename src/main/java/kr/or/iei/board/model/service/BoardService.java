@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import kr.or.iei.board.model.dao.BoardDao;
 import kr.or.iei.board.model.vo.Board;
+import kr.or.iei.board.model.vo.BoardAdmin;
 import kr.or.iei.board.model.vo.BoardFile;
 import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.common.ListData;
@@ -156,6 +157,7 @@ public class BoardService {
 		
 		return result;
 	}
+
 
 
 
