@@ -28,7 +28,7 @@
              <a id='logo' href="/">MUTGYM LOGO</a>
              <div class="menu-item">헬스
                <div class="submenu">
-                 <a href="#">헬스장 찾기</a>
+                 <a href="/gym/list">헬스장 찾기</a>
                  <a href="/gym/registerFrm">헬스장 등록</a>
                </div>
              </div>
