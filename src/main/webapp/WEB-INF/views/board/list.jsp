@@ -1,27 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <!-- JSTL 라이브러리 선언 -->            
+<link rel="stylesheet" href="/resources/css/login.css">
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>자유 게시판</title>
-</head>
 <style>
 	<%-- 자유게시판 글씨 --%>
 	div.page-title{
 	color : black;
-	
 	}
 
-
-	
 	<%-- 제목,작성자~ 글씨 --%>
 	.list-content{
 
 	color : black;
 
 	}
+	
 	
 	<%-- 글쓰기 일반 --%>
 	.btn-point.write-btn{
@@ -31,6 +29,7 @@
 	color : black;
 	
 	}
+	
 	
 	.active-page{
 	color : black;
@@ -66,6 +65,7 @@
 	width : 180px;
 	height : 100px;
 	}
+	
 	
 	.box-container2{
 	display : flex;
@@ -104,9 +104,9 @@
 	color : blue;
 	width: 100%;
 	
-	}
-	
+	}  
 </style>
+</head>
 <body>
 	  <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 	  	<div class="container">
@@ -177,8 +177,12 @@
 						</tr>
 						<c:forEach var="board" items="${boardList}">
 							<tr>
-								<td><a href='/board/view?boardNo=${board.boardId}&updChk=true'>${board.boardId}</a></td>
-								<td class='boardTitle'>${board.boardTitle}</td>
+								<td>
+								<a href="/board/view?boardNo=${board.boardId}&title=${board.boardTitle}&writer=${board.memberId}&updChk=true">${board.boardId}</a>
+								</td>
+								<td class='boardTitle'>${board.boardTitle}
+								console.log(${board.boardTitle});
+								</td>
 								<td>${board.memberId}</td>
 								<td>${board.createdAt}</td>
 								<td>${board.viewCount}</td>
@@ -188,14 +192,15 @@
 					</table>
 				</div>
 				<div class="page-Navi" id='pageNavi'>${pageNavi}</div>
-				<form id="chat">
+				<div class="input-group">
 				<input type="text" id="chat-input" placeholder="메세지를 입력하세요 " autocomplete="off">
-				<button type="submit">입력</button>
-				</form>
+				<button type="button">입력</button>
+				</div>
+				
 				
 			</section>
 	         </main>
 		</div>     
-		
+
 </body>
 </html>

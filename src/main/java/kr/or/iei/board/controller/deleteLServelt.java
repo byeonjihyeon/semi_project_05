@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class UpdateServletFrm
+ * Servlet implementation class deleteLServelt
  */
-@WebServlet("/board/upWriteFrm")
-public class UpdateServletFrm extends HttpServlet {
+@WebServlet("/deleteLServelt")
+public class deleteLServelt extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UpdateServletFrm() {
+    public deleteLServelt() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -26,8 +26,7 @@ public class UpdateServletFrm extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	request.getRequestDispatcher("/WEB-INF/views/board/upWriteFrm.jsp").forward(request, response);
-	
+		
 	}
 
 	/**

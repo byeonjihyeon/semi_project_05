@@ -16,18 +16,17 @@
 				<form action='/board/write'
 						method='post' <%--첨부파일 업로드시, method는 모조건 post로 지정하고, enctype은 multipart로 지정해야함. --%>
 						enctype='multipart/form-data'
-<<<<<<< HEAD
+
 						onsubmit='return validateForm()'>
 						<%-- tbl_notice의 notice_writer(작성자) 컬럼의 값은 회원 번호! --%>
 						<input type='hidden' name='boardWriter' value='${loginMember.memberNo}'>
-=======
-						>
+						
 						<%-- tbl_notice의 board_writer(작성자) 컬럼의 값은 회원 번호! 
 						<input type='hidden' name='memberId' value='${loginMember.memberId}'>
 						--%>
 						<input type='hidden' name='memberId' value='user01'>
 						<input type='hidden' name='boardType' value='B'>
->>>>>>> dev
+
 						<table class='tbl'>
 							<tr>
 								<th class="name-title">제목</th>
