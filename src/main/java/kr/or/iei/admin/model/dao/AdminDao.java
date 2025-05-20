@@ -20,7 +20,9 @@ public class AdminDao {
 		Admin loginAdmin = null;
 		
 		//회원 테이블과 관리자별 업무테이블 조인하여 select
-		String query = "select * from tbl_member join tbl_admin_job using (member_id) where member_id =? and member_pw =?";
+		
+		String query = "select * from tbl_member where member_id =? and member_pw =? and member_type in(0,1)";
+		//String query = "select * from tbl_member join tbl_admin_job using (member_id) where member_id =? and member_pw =?";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -39,7 +41,6 @@ public class AdminDao {
 				loginAdmin.setMemberEmail(rset.getString("member_email"));
 				loginAdmin.setMemberGrade(rset.getString("member_grade"));
 				loginAdmin.setMemberName(rset.getString("member_name"));
-				//loginAdmin.setMemberNickname(rset.getString("member_nickname"));
 				loginAdmin.setMemberPhone(rset.getString("member_phone"));
 				
 				loginAdmin.setJobCode(rset.getString("job_code"));
@@ -258,7 +259,6 @@ public class AdminDao {
 				m.setMemberEmail(rset.getString("member_email"));
 				m.setMemberGrade(rset.getString("member_grade"));
 				m.setMemberName(rset.getString("member_name"));
-				//m.setMemberNickname(rset.getString("member_nickname"));
 				m.setMemberPhone(rset.getString("member_phone"));
 				m.setReportedCnt(rset.getInt("reported_cnt"));
 			
@@ -282,7 +282,7 @@ public class AdminDao {
 		
 		ArrayList<Admin> list = new ArrayList<Admin>();
 		
-		String query = "select * from tbl_member where member_type != 3";
+		String query = "select * from tbl_member where member_type in (0,1)";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -391,6 +391,64 @@ public class AdminDao {
 			JDBCTemplate.close(conn);
 		}
 		
+		
+		return result;
+	}
+
+	public int createAdmin(Connection conn, Admin admin) {
+		PreparedStatement pstmt = null;
+		
+		int result = 0;
+		
+		String query = "insert into tbl_member values (?, ?, ? , null, ?, '미정', '010-1234-1234', sysdate, default, 1)";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, admin.getMemberId() );
+			pstmt.setString(2, admin.getMemberPw() );
+			pstmt.setString(3, admin.getMemberName() );
+			pstmt.setString(4, admin.getMemberEmail());
+			
+			result= pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int createPreviliges(Connection conn, String memberId) {
+		PreparedStatement pstmt = null;
+		
+		int result = 0;
+		
+		String [] urlArr = {"/admin/super", "/admin/member", "/admin/gym", "/admin/board"};
+		
+		String query = "insert into tbl_admin_job values (? , 'J5', ?, 'N', 'N', 'N', 'N', sysdate)";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			for(int i =0; i<urlArr.length; i++) {
+				pstmt.setString(1, memberId);
+				pstmt.setString(2, urlArr[i]);
+				result = pstmt.executeUpdate();
+				
+				if(result == 0) {
+					return 0;
+				}
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(conn);
+		}
 		
 		return result;
 	}

@@ -13,13 +13,13 @@ import javax.servlet.http.HttpServletResponse;
  * Servlet implementation class AdminInsert
  */
 @WebServlet("/admin/super/insertAdminFrm")
-public class AdminInsert extends HttpServlet {
+public class AdminInsertFrm extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminInsert() {
+    public AdminInsertFrm() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,7 +32,7 @@ public class AdminInsert extends HttpServlet {
 		//2. 값 추출 - x
 		//3. 로직 - 관리자 등록창으로 이동
 		//4. 결과 처리
-		request.getRequestDispatcher("/WEB-INF/views/admin/adminJoinFrm.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/admin/registrationForm.jsp").forward(request, response);
 		
 		
 	}
