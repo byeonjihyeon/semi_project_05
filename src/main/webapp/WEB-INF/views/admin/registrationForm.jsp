@@ -10,11 +10,56 @@
 	width: 600px;
 }
 .valid {
-  color: #1065dc;
+  font-size : 10px;
+  color: #333;
 }
 .invalid {
-  color: #ff3d00;
+  font-size : 10px;
+  color: #333;
 }
+
+ input[type="text"], input[type="password"], input[type="email"], input[type="tel"] {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    padding: 6px 8px;
+    font-size: 14px;
+    width: 240px;
+    outline: none;
+    background-color: transparent;
+    transition: border-color 0.2s ease;
+  }
+
+  input[type="text"]:focus,
+  input[type="password"]:focus,
+  input[type="email"]:focus,
+  input[type="tel"]:focus {
+    border-bottom: 1px solid #CE2029;
+  }
+
+  button {
+    background-color: #CE2029;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  button:hover {
+    background-color: #a91b22;
+  }
+  
+   #idDuplChkBtn {
+    background-color: #e0e0e0;
+    color: #333;
+    margin-left: 10px;
+  }
+  
+
+  
+  
 </style>
 </head>
 <body>
@@ -47,30 +92,16 @@
 					    </tr>
 					     <tr>
 						    <th>이메일</th>
-						    <td><input id='email' type='text' name='adminName'> <br>
+						    <td><input id='email' type='text' name='email'> <br>
 						    <span id='emailMsg'></span>
 						    </td>
 					    </tr>
-					    <tr>
-					        <th>담당업무</th>
-						    <td>
-								<select name='role' id='role' >
-									<option value='allRole'>총괄</option>
-									<option value='memberManage'>회원 관리</option>
-									<option value='gymManage'>헬스장 관리</option>
-									<option value='boardManage'>게시판 관리</option>
-									<option value='none' selected>미정</option>
-								</select>						    
-						    </td>
-						    <td></td>
-					    </tr>
+					  
 				  </table>
-				</form>
 				  <div class="member-info-button-wrapper">
-		  		   	<a href='javascript:void(0);' onclick="updateMemberInfo('${memberDetails.memberId}');">
 					    <button type='submit' class="member-info-btn">등록</button>
-					</a>
 				  </div>
+				</form>
 				</div>  	
 		   		</main>
 		</div>  
@@ -84,7 +115,7 @@
 			"adminId" : false,
 			"adminName" : false,
 			"adminEmail" : false,
-			"ipDuplChk" : false //아이디 중복체크 여부(true면 중복x, false면 중복o 또는 중복체크 미진행)
+			"idDuplChk" : false //아이디 중복체크 여부(true면 중복x, false면 중복o 또는 중복체크 미진행)
 			
 	};
 	
@@ -93,7 +124,7 @@
 	
 	$(adminId).on('input', function(){
 		//아이디 입력시마다, 중복체크값 false로 변경하여 다시 중복체크 할 수 있도록	
-		checkObj.inDulChk = false;
+		checkObj.idDuplChk = false;
 		
 		//아래 코드 작성하지 않으면, 클래스를 추가해주기만 하기 때문에, 두 클래스가 공존할수 없음.
 		$(idMsg).removeClass('valid');
@@ -122,8 +153,8 @@
 	const idDuplChkBtn = $('#idDuplChkBtn');
 	
 	$(idDuplChkBtn).on('click', function(){
-		$(idMsg).removeClass('valid');
-		$(idMsg).removeClass('invalid');
+		//$(idMsg).removeClass('valid');
+		//$(idMsg).removeClass('invalid');
 		
 		//아이디 유효성 검증 결과가 false일 때,
 		if(!checkObj.adminId){
@@ -133,7 +164,6 @@
 			});
 			return;
 		}
-		
 		
 		//중복체크 코드
 		$.ajax({
@@ -148,6 +178,7 @@
 					});
 					
 					checkObj.idDuplChk = true;
+					
 				}else{
 					swal({
 						icon : "warning",
@@ -159,14 +190,11 @@
 			},
 			
 			error : function(){
-				
 				console.log('ajax오류');
 			}
 		});
-		
-		
-		
 	});
+	
 	
 	//이름 유효성 검사
 	const adminName = $('#adminName');
@@ -182,7 +210,7 @@
 		if(regExp.test($(this).val())){
 			$(nameMsg).text('');
 			$(nameMsg).addClass('valid');
-			chekObj.adminName = true;
+			checkObj.adminName = true;
 		}else{
 			$(nameMsg).text('이름은 최소 2~10글자 입니다.');
 			$(nameMsg).addClass('invalid');
@@ -201,14 +229,42 @@
 		const regExp = /^[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*@[a-zA-Z]([-_.]?[0-9a-zA-Z])+(\.[a-z]{2,3})$/;
 		
 		if(regExp.test($(this).val())){
+			/*
 			$(emailMsg).text('');
 			$(emailMsg).addClass('valid');
-			checkObj.adminEmail = true;
+			*/
+			$.ajax({
+				url : "/member/emailDuplChk",
+				data : {"userEmail" : $(adminEmail).val()},
+				type : "get",
+				success : function(res){
+					//중복이메일이 있을 경우
+					if(res != 0){
+						console.log(res);
+						$(emailMsg).text('중복된 이메일이 존재합니다.');
+						$(emailMsg).addClass('invalid');
+						checkObj.adminEmail = false;
+					//없을 경우	
+					}else{
+						console.log(res);
+						$(emailMsg).text('');
+						$(emailMsg).addClass('valid');
+						checkObj.adminEmail = true;
+					}
+				},
+				error : function(){
+					console.log('ajax 오류');
+				}
+			});
+			
+			
 		}else{
 			$(emailMsg).text('이메일 형식이 올바르지 않습니다.');
 			$(emailMsg).addClass('invalid');
 			checkObj.adminEmail = false;
 		}
+		
+		
 	});
 	
 	//등록 버튼 클릭시, checkObj의 모든 속성에 접근하여 true인지 검증
@@ -217,24 +273,28 @@
 		let str = "";
 		
 		for(let key in checkObj){
+			console.log(checkObj);
 			if(!checkObj[key]){
 				switch(key){
 					case "adminId" : str ="아이디 형식"; break;
 					case "adminName" : str ="이름 형식"; break;
 					case "adminEmail" : str ="이메일 형식"; break;
-					case "idDuplChk" : str ="아이디 중복체크를 진행하세요." break;
+					case "idDuplChk" : str ="아이디 중복체크를 진행하세요."; break;
 				}
 				
 				if(key != 'idDuplChk'){
-					str += ""
-				}else {
-					
+					str += "이 유효하지 않습니다.";
 				}
-			}
 			
-		
+				swal({
+				title : '관리자 등록 실패',
+				icon : 'error',
+				text : str
+				});
+			
+			return false;
+			}
 		}
-		
 	}
 	
 	

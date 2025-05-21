@@ -1,6 +1,7 @@
 package kr.or.iei.admin.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,11 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.mindrot.jbcrypt.BCrypt;
-
 import kr.or.iei.admin.model.service.AdminService;
 import kr.or.iei.admin.model.vo.Admin;
-import kr.or.iei.member.model.vo.Member;
 
 /**
  * Servlet implementation class AdminLoginServlet
@@ -39,26 +37,19 @@ public class AdminLoginServlet extends HttpServlet {
 		//2. 값 추출
 		String adminId = request.getParameter("loginId");
 		String adminPw = request.getParameter("password");
-
 		//3. 로직 - 관리자 로그인
 			//3.1 입력한 아이디와 비밀번호랑 일치하고, 관리자가 DB에 존재하는지
 			//3.2 일치하는 관리자의 컬럼 정보를 조회
-			//3.3 로그인 이후에도 어느 JSP로 이동하든 회원 정보를 사용할 수 있도록 session
-		
-			
+			//3.3 로그인 이후에도 어느 JSP로 이동하든 회원 정보를 사용할 수 있도록 session 
 			AdminService service = new AdminService();
-			Admin loginAdmin = service.searchAdmin(adminId, adminPw);
-			
-			
-			
-		//4. 결과 처리
+			ArrayList<Admin> loginAdmin = service.searchAdmin(adminId, adminPw);
+		
+			//4. 결과 처리
 			RequestDispatcher view = null;
-			boolean pwChk = false;
 			
 			//관리자가 아닌 경우
-			if(loginAdmin == null) {
+			if(loginAdmin.isEmpty()) {
 				view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
-				
 				request.setAttribute("title", "알림");
 				request.setAttribute("msg", "아이디 또는 비밀번호를 확인하세요.");
 				request.setAttribute("icon", "error");
@@ -67,7 +58,6 @@ public class AdminLoginServlet extends HttpServlet {
 				view.forward(request, response);
 			//관리자인 경우	 
 			}else { 
-				pwChk = BCrypt.checkpw(adminPw, loginAdmin.getMemberPw());
 				HttpSession session = request.getSession();
 				session.setAttribute("loginAdmin", loginAdmin);
 				

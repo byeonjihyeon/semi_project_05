@@ -34,7 +34,6 @@ public class AdminIdDuplChkServlet extends HttpServlet {
 		//1. 인코딩 - 필터
 		//2. 값 추출
 		String chkId = request.getParameter("adminId");
-		System.out.println(chkId);
 		//3. 로직 - 아이디 중복 체크
 		AdminService service = new AdminService();
 		Member m = service.selectMember(chkId);

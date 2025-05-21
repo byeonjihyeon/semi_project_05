@@ -758,13 +758,14 @@ section.section.bg-section {
 }
 
 .member-info-btn-small {
-  padding: 6px 10px;
+  padding: 5px 10px;
   font-size: 0.9rem;
   background-color: #CE2029;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  margin-left : 15px;
 }
 
 /* 회원 정보 수정 */
