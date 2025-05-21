@@ -21,10 +21,10 @@
             <p>전화: 02-1234-5678</p>
             <p>이메일: support@mutgym.com</p>
             <p>© 2025 MyCompany. All rights reserved.</p>
-            <c:if test="${empty loginAdmin}">
+            <c:if test="${empty loginAdmin[0]}">
             	<p id=footer-admin><a href="/admin/loginFrm" style="font-size: 0.8em; color: #888;" id='footer-admin-link'>관리자 로그인</a></p>
             </c:if>
-             <c:if test="${not empty loginAdmin}">
+             <c:if test="${not empty loginAdmin[0]}">
             	<p id=footer-admin><a href="/admin/member/list?page=1" style="font-size: 0.8em; color: #888;" id='footer-admin-link'>관리자 페이지</a></p>
             </c:if>
         </div>

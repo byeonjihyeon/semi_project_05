@@ -91,7 +91,6 @@ public class GymRegisterServlet extends HttpServlet {
 				//파일에 헬스장 아이디 저장
 				file.setGymId(gymId);
 				
-				
 				fileList.add(file);
 			}
 		}

@@ -18,9 +18,9 @@ public class AdminService {
 	}
 
 	//관리자 회원 1명 조회
-	public Admin searchAdmin(String adminId, String adminPw) {
+	public ArrayList<Admin> searchAdmin(String adminId, String adminPw) {
 		Connection conn = JDBCTemplate.getConnection();
-		Admin loginAdmin = dao.searchAdmin(conn, adminId, adminPw);
+		ArrayList<Admin> loginAdmin = dao.searchAdmin(conn, adminId, adminPw);
 		JDBCTemplate.close(conn);
 		return loginAdmin;
 	}

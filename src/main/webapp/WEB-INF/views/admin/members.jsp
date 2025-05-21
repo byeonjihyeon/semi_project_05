@@ -171,7 +171,6 @@ $('#search').on('click', function(){
 						html += "<td>" + item.memberId +"</td>";
 						html += "<td>" + item.memberName +"</td>";
 						html += "<td>" + item.memberGrade +"</td>";
-						html += "<td>" + item.memberEmail +"</td>";
 						html += "<td>" + item.memberDate +"</td>";
 					
 						html += "<td>";

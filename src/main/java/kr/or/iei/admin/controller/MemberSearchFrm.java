@@ -41,7 +41,6 @@ public class MemberSearchFrm extends HttpServlet {
 		//3. 비즈니스로직 (필드랑 입력값 전달에서 찾기)
 		AdminService service = new AdminService();
 		ArrayList<Member> list =  service.searchMembers(field,inputValue);
-		System.out.println(list);
 		
 		
 		Gson gson =new Gson();
