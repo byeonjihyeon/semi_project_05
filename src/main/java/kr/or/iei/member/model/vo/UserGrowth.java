@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 public class UserGrowth extends Member{
 	
-	private int memberTall;
-	private int memberWeight;
-	private int memberHopeWeight;
+	private String memberTall;
+	private String memberWeight;
+	private String memberHopeWeight;
 	private String HistoryId;
+	private String recordDate;
 }

@@ -142,11 +142,12 @@ body {
     <!-- 메인 콘텐츠 -->
     <div class="main-content">
         <h2>나의 몸무게 일지</h2>
+        <form action="/member/insertGrowth" method="post">
         <div class="welcome-box">
             <div>
                 <p style="margin-bottom: 25px;"><strong>${sessionScope.loginMember.memberName}</strong>님 오늘의 운동결과를 기록해주세요!</p>
                 <input type="hidden" name="memberId" id="memberId" value="${sessionScope.loginMember.memberId}">
-                <label for="memberTall" style="margin-left: 30px;">키 : </label>
+                <label for="memberTall" style="margin-left: 50px;">키 : </label>
            		<input type="text" id="memberTall" name="memberTall" style="margin-right: 15px; width: 70px; border:none; border-bottom: 1px solid;">
            		
            		<label for="memberWeight">몸무게 :</label>
@@ -156,26 +157,24 @@ body {
             	<input type="text" id="hopeWeight" name="hopeWeight" style="width: 70px; margin-right: 15px; border:none; border-bottom: 1px solid;">
             	
 				<label for="sysdate">운동한 오늘의 날짜 :</label>
-				<span style="color: #666; margin-right: 50px;" id="sysdate">(${today})</span>
-				<button type="button" onclick='sendMemberHistory()'>등록하기</button> 
+				<span style="color: #666; margin-right: 15px;" id="sysdate">(${today})</span>
+				<button type="submit" id="validateForm">등록하기</button> 
             </div>
         </div>
+        </form>
+
         <div class="gym-photo">
-            <table border="1" >
+            <table border="1" class="recordList">
             	<tr>
             		<th colspan="4"> ${loginMember.memberName}님의 기록일지</th>
             	</tr>
             	<tr>
             		<th>기록한 날짜</th>
             		<th>키</th>
-            		<th>몸무게</th>
-            		<th>목표까지 남은 몸무게</th>
+            		<th>몸무게 </th>
+            		<th>목표까지 남은 무게</th>
             	</tr>
             	<tr>
-            		<td></td>
-            		<td></td>
-            		<td></td>
-            		<td></td>
             	</tr>
             </table>
         </div>
@@ -195,7 +194,7 @@ body {
 	$('#memberTall').on('input',function(){
 		checkObj.tall = false;
 		
-		const regExp = /^[0-9]/;
+		const regExp = /^\d+(\.\d+)?$/;
 		
 		if($(this).val().length > 0){			
 		if(regExp.test($(this).val())){
@@ -212,7 +211,7 @@ body {
 	$('#memberWeight').on('input',function(){
 		checkObj.weight = false;
 		
-		const regExp = /^[0-9]/;
+		const regExp = /^\d+(\.\d+)?$/;
 		
 		if($(this).val().length > 0){			
 		if(regExp.test($('#memberWeight').val())){
@@ -230,7 +229,7 @@ body {
 	$('#hopeWeight').on('input',function(){
 		checkObj.hopeWeight = false;
 		
-		const regExp = /^[0-9]/;
+		const regExp = /^\d+(\.\d+)?$/;
 		
 		if($(this).val().length > 0){			
 		if(regExp.test($('#hopeWeight').val())){
@@ -244,68 +243,48 @@ body {
 		}
 	});
 	
-function sendMemberHistory(){
-	let str = '';
-	
-	if(${sessionScope.loginMember != null}){
+	$('#validateForm').on('click',function(){
+
+	    let str = '';
 		
-	for(let key in checkObj){
-		if(!checkObj[key]){
-			switch(key){
-			case "tall" : 
-				str = "키 입력은 숫자로만 입력 가능합니다."; 
-				console.log('난 키야.');
-				break;
-				
-			case "weight" : 
-				str = "몸무게 입력은 숫자로만 입력 가능합니다.";
-				console.log('난 무게야');
-				break;
-				
-			case "hopeWeight" :
-				str = "목표몸무게 입력은 숫자로만 입력 가능합니다.";
-				console.log('난 목표무게야');
-				
-			}
-			
-			swal({
-				title :"알림",
-				text : str,
-				icon : "warning"
-			});
-			
-			break;
-		}
-		
-	}
-	
-	$.ajax({
-		url : "/member/insertGrowth",
-		data : {
-			"memberTall" : $('#memberTall').val(),
-			"memberWeight" : $('#memberWeight').val(),
-			"hopeWeight" : $('#hopeWeight').val(),
-			"memberId" : $('#memberId').val()
-			},
-		type : 'get',
-		success : function(res){
-			if(res != 0){
-				swal({
-					title : "알림",
-					text : "정상적으로 입력 되었습니다.",
-					icon : "success"
-				});
-			}else{
-				swal({
-					title : "알림",
-					text : "입력중, 오류가 발생하였습니다.",
-					icon : "warning"
-				})
-			}
-		}
+	    if (${sessionScope.loginMember != null}) {
+
+	        for (let key in checkObj) {
+	        	
+	            if (!checkObj[key]) {
+
+	                switch (key) {
+	                
+	                    case "tall":
+	                        str = "키 입력은 숫자로만 입력 가능합니다.";
+	                        break;
+	                    case "weight":
+	                        str = "몸무게 입력은 숫자로만 입력 가능합니다.";
+	                        break;
+	                    case "hopeWeight":
+	                        str = "목표몸무게 입력은 숫자로만 입력 가능합니다.";
+	                        break;
+	                        
+	                }
+
+	                swal({
+	                    title: "알림",
+	                    text: str,
+	                    icon: "warning"
+	                });
+
+	                return false; // submit 막기
+	                
+	            }
+	        }
+
+	      	return;
+	        
+	    }
+
+	    return false;
 	});
-	}
-}
+	
 </script>
 </body>
 </html>

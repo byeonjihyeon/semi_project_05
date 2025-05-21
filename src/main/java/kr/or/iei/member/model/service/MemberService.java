@@ -1,6 +1,7 @@
 package kr.or.iei.member.model.service;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -142,6 +143,14 @@ public class MemberService {
 		JDBCTemplate.close(conn);
 		return result;
 	}
+
+	public ArrayList<UserGrowth> searchHistory(UserGrowth growth) {
+		Connection conn = JDBCTemplate.getConnection();
+		ArrayList<UserGrowth> list = dao.searchHistory(conn, growth);
+		JDBCTemplate.close(conn);
+		return list;
+	}
+
 
 
 	

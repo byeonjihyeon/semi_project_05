@@ -1,10 +1,12 @@
 package kr.or.iei.member.model.dao;
 
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.member.model.vo.Member;
@@ -358,6 +360,7 @@ public class MemberDao {
 
 	public int insertGrowth(Connection conn, UserGrowth growth, String memberId) {
 		PreparedStatement pstmt = null;
+		ResultSet rest = null;
 		int result = 0;
 		
 		String query = "insert into tbl_my_history values(seq_my_history.nextval, ?, sysdate, ?, ?, ?)";
@@ -366,9 +369,9 @@ public class MemberDao {
 			pstmt = conn.prepareStatement(query);
 			
 			pstmt.setString(1, memberId);
-			pstmt.setInt(2, growth.getMemberTall());
-			pstmt.setInt(3, growth.getMemberWeight());
-			pstmt.setInt(4, growth.getMemberHopeWeight());
+			pstmt.setString(2, growth.getMemberTall());
+			pstmt.setString(3, growth.getMemberWeight());
+			pstmt.setString(4, growth.getMemberHopeWeight());
 			
 			result = pstmt.executeUpdate();
 			
@@ -381,6 +384,43 @@ public class MemberDao {
 		
 		return result;
 	}
+
+	public ArrayList<UserGrowth> searchHistory(Connection conn, UserGrowth growth) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<UserGrowth> list = new ArrayList<UserGrowth>();
+		String query = "select * from tbl_member join tbl_my_history using(member_id) where member_id = ? and height is not null";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, growth.getMemberId());
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				UserGrowth uG = new UserGrowth();
+				uG.setRecordDate(rset.getString("RECODE_DATE"));
+				uG.setMemberTall(rset.getString("HEIGHT"));
+				uG.setMemberWeight(rset.getString("WEIGHT"));
+				uG.setMemberHopeWeight(rset.getString("GOAL_WEIGHT"));
+				uG.setMemberId(rset.getString("member_id"));
+				
+				list.add(uG);
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return list;
+	}
+
+
 
 	
 
