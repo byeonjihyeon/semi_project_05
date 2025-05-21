@@ -17,11 +17,11 @@
 
         <div id="gymContainer">
             <c:forEach var="gym" items="${gymList}">
-                <div class="gym-card" onclick="location.href='gymDetail.jsp?gymId=${gym.id}'">
-                    <img src="${gym.image}" alt="헬스장 사진">
+                <div class="gym-card" onclick="location.href='/gym/detail?gymId=${gym.gymId}'">
+                    <img src="" alt="헬스장 사진">
                     <div class="gym-info">
-                        <h3>${gym.name}</h3>
-                        <p>${gym.location}</p>
+                        <h3>${gym.gymName}</h3>
+                        <p>${gym.gymAddr}</p>
                     </div>
                 </div>
             </c:forEach>

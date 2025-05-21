@@ -12,28 +12,28 @@
     <main>
 	    <div class="gym-container">
 	        <div class="gym-header">
-	            <h1>${gym.name}</h1>
-	            <p class="location">📍 ${gym.address}</p>
+	            <h1>${gym.gymName}</h1>
+	            <p class="location">📍 ${gym.gymAddr}</p>
 	        </div>
 	
 	        <div class="image-gallery">
-	            <img src="${gym.mainPhoto}" class="main-photo" alt="헬스장 대표사진" />
+	            <img src="" class="main-photo" alt="헬스장 대표사진" />
 	            <div class="thumbnail-container">
-	                <c:forEach var="photo" items="${gym.photos}" varStatus="status">
-	                    <img src="${photo}" class="thumbnail" alt="헬스장 사진 ${status.index+1}" />
+	                <c:forEach var="photo" items="" varStatus="status">
+	                    <img src="" class="thumbnail" alt="헬스장 사진 " />
 	                </c:forEach>
 	            </div>
 	        </div>
 	
 	        <div class="tab-menu">
-	            <a href="gymDetail.jsp?gymId=${gym.id}" class="tab selected">상세</a>
-	            <a href="gymReview.jsp?gymId=${gym.id}" class="tab">리뷰</a>
-	            <a href="gymInquiry.jsp?gymId=${gym.id}" class="tab">문의</a>
+	            <a href="/gym/detail?gymId=${gym.gymId}" class="tab selected">상세</a>
+	            <a href="/gym/review?gymId=${gym.gymId}" class="tab">리뷰</a>
+	            <a href="/gym/inquiry?gymId=${gym.gymId}" class="tab">문의</a>
 	        </div>
 	
 	        <div class="gym-info">
 	            <h2>헬스장 정보</h2>
-	            <p>${gym.description}</p>
+	            <p>${gym.detail}</p>
 	        </div>
 	
 	        <div class="membership-table">
@@ -42,25 +42,45 @@
 	                    <tr>
 	                        <th>이용권</th>
 	                        <th>헬스</th>
-	                        <th>운동복</th>
-	                        <th>사물함</th>
 	                    </tr>
 	                </thead>
 	                <tbody>
-	                    <c:forEach var="ticket" items="${gym.tickets}">
-	                        <tr>
-	                            <td>${ticket.period}</td>
-	                            <td>${ticket.price}원</td>
-	                            <td>${ticket.uniform}</td>
-	                            <td>${ticket.locker}</td>
-	                        </tr>
-	                    </c:forEach>
+	                    <tr>
+	                    <td>1개월</td>
+	                    <td>${gym.ticket.oneMonth}</td>
+	                    </tr>
+	                    <tr>
+	                    <td>3개월</td>
+	                    <td>${gym.ticket.threeMonth}</td>
+	                    </tr>
+	                    <tr>
+	                    <td>6개월</td>
+	                    <td>${gym.ticket.sixMonth}</td>
+	                    </tr>
+	                    <tr>
+	                    <td>12개월</td>
+	                    <td>${gym.ticket.oneYear}</td>
+	                    </tr>
+	                    <tr>
+	                    <td>일일권</td>
+	                    <td>${gym.ticket.oneDay}</td>
+	                    </tr>
 	                </tbody>
 	            </table>
 	        </div>
+	             <!-- 하단 버튼 (예: 회원권 구매) -->
+	         <div class="action-bar">
+	             <button onclick="location.href='/ticket/purchase?gymId=${gym.gymId}'">회원권 구매</button>
+	         </div>
 	    </div>
+	    
+         
+        
     </main>
     
     <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>	
+    <script>
+    console.log(${gym.ticket});
+    </script>
 </body>
 </html>
