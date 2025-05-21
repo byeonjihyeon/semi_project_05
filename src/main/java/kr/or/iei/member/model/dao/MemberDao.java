@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.member.model.vo.Member;
+import kr.or.iei.member.model.vo.UserGrowth;
 
 public class MemberDao {
 
@@ -351,6 +352,32 @@ public class MemberDao {
 			JDBCTemplate.close(pstmt);
 		}
 		
+		
+		return result;
+	}
+
+	public int insertGrowth(Connection conn, UserGrowth growth, String memberId) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = "insert into tbl_my_history values(seq_my_history.nextval, ?, sysdate, ?, ?, ?)";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, memberId);
+			pstmt.setInt(2, growth.getMemberTall());
+			pstmt.setInt(3, growth.getMemberWeight());
+			pstmt.setInt(4, growth.getMemberHopeWeight());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
 		
 		return result;
 	}

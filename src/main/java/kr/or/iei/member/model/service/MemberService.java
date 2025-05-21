@@ -7,6 +7,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.member.model.dao.MemberDao;
 import kr.or.iei.member.model.vo.Member;
+import kr.or.iei.member.model.vo.UserGrowth;
 
 public class MemberService {
 	private MemberDao dao;
@@ -131,6 +132,13 @@ public class MemberService {
 		}else {
 			JDBCTemplate.rollback(conn);
 		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public int insertGrowth(UserGrowth growth, String memberId) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.insertGrowth(conn, growth, memberId);
 		JDBCTemplate.close(conn);
 		return result;
 	}
