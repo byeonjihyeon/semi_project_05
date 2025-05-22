@@ -1,12 +1,14 @@
 package kr.or.iei.member.model.service;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 
 import org.mindrot.jbcrypt.BCrypt;
 
 import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.member.model.dao.MemberDao;
 import kr.or.iei.member.model.vo.Member;
+import kr.or.iei.member.model.vo.UserGrowth;
 
 public class MemberService {
 	private MemberDao dao;
@@ -134,6 +136,29 @@ public class MemberService {
 		JDBCTemplate.close(conn);
 		return result;
 	}
+
+	public int insertGrowth(UserGrowth growth, String memberId) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.insertGrowth(conn, growth, memberId);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public ArrayList<UserGrowth> selectGrowthList(String memberId) {
+		Connection conn = JDBCTemplate.getConnection();
+	    ArrayList<UserGrowth> list = dao.selectGrowthList(conn, memberId);
+	    JDBCTemplate.close(conn);
+	    return list;
+		
+	}
+
+	
+
 
 
 	

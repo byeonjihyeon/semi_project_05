@@ -1,4 +1,4 @@
-package kr.or.iei.admin.controller;
+package kr.or.iei.member.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,23 +8,23 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import com.google.gson.Gson;
-
-import kr.or.iei.admin.model.service.AdminService;
+import kr.or.iei.member.model.service.MemberService;
 import kr.or.iei.member.model.vo.Member;
+import kr.or.iei.member.model.vo.UserGrowth;
 
 /**
- * Servlet implementation class MemberSearchFrm
+ * Servlet implementation class ShowHistoryList
  */
-@WebServlet("/admin/member/searchInfo")
-public class MemberSearchFrm extends HttpServlet {
+@WebServlet("/member/showList")
+public class ShowHistoryList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MemberSearchFrm() {
+    public ShowHistoryList() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,25 +33,15 @@ public class MemberSearchFrm extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//1. 인코딩 - 필터
-		//2. 값 추출 (필드, 입력값)
-		//필드 (이름 또는 아이디)
-		String field = request.getParameter("field"); //memberId 또는 name
-		String inputValue = request.getParameter("search");
-		//3. 비즈니스로직 (필드랑 입력값 전달에서 찾기)
-		AdminService service = new AdminService();
-		ArrayList<Member> list =  service.searchMembers(field,inputValue);
-		
-		
-		Gson gson =new Gson();
-		String json = gson.toJson(list);
-		
-		
-		response.setContentType("application/json");
-		response.setCharacterEncoding("utf-8");
-		
-		response.getWriter().print(json);
-		
+		  HttpSession session = request.getSession();
+	        Member loginMember = (Member) session.getAttribute("loginMember");
+	        String memberId = loginMember.getMemberId();
+
+	        MemberService service = new MemberService();
+	        ArrayList<UserGrowth> list = service.selectGrowthList(memberId);
+
+	        request.setAttribute("list", list);
+	        request.getRequestDispatcher("/WEB-INF/views/member/recordGrowth.jsp").forward(request, response);
 	}
 
 	/**

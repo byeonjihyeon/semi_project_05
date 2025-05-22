@@ -42,7 +42,7 @@ public class MemberDeleteServlet extends HttpServlet {
 		
 		//4. 결과 처리
 			//4.1 이동할 페이지 지정
-			RequestDispatcher view;
+			RequestDispatcher view = null;
 			
 			if(result > 0) { //회원 삭제 성공
 				view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");

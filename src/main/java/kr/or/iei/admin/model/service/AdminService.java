@@ -1,5 +1,6 @@
 package kr.or.iei.admin.model.service;
 
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.util.ArrayList;
 
@@ -17,9 +18,9 @@ public class AdminService {
 	}
 
 	//관리자 회원 1명 조회
-	public Admin searchAdmin(String adminId, String adminPw) {
+	public ArrayList<Admin> searchAdmin(String adminId, String adminPw) {
 		Connection conn = JDBCTemplate.getConnection();
-		Admin loginAdmin = dao.searchAdmin(conn, adminId, adminPw);
+		ArrayList<Admin> loginAdmin = dao.searchAdmin(conn, adminId, adminPw);
 		JDBCTemplate.close(conn);
 		return loginAdmin;
 	}
@@ -195,7 +196,100 @@ public class AdminService {
 		return result;
 	}
 
+	public int createAdmin(Admin admin) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = -1;
+		result = dao.createAdmin(conn, admin);
+		
+		if(result > 0) {
+			result = dao.createPreviliges(conn, admin.getMemberId());
+			
+			if(result > 0) {
+				JDBCTemplate.commit(conn);
+			}else{
+				JDBCTemplate.rollback(conn);
+			}
+			
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		return result;
+	}
 
+	//임시 비밀번호(10자리) 만들기 
+	public String makeRandomPw() {
+		String upper = "ABCDEFGHIZKLMNOPQRSTUVWXYZ"; 
+		String lower = "abcdefghijklmnopqrstuvwxyz";
+		String digit = "0123456789";
+		String special = "!@#$";
+		
+		String allChar = upper + lower + digit + special;
+		
+		//난수 발생 객체 
+		SecureRandom random = new SecureRandom();
+		//임시 비밀번호 10자리 저장 객체
+		StringBuilder randomPw = new StringBuilder();
+		
+		//영대소문자, 숫자, 특수문자 각각 최소 1개씩은 임시 비밀번호에 포함되도록 처리
+		randomPw.append(upper.charAt(random.nextInt(upper.length())));
+		randomPw.append(lower.charAt(random.nextInt(lower.length())));
+		randomPw.append(digit.charAt(random.nextInt(digit.length())));
+		randomPw.append(special.charAt(random.nextInt(special.length())));
+		
+		//위에 4자리 추가후, 나머지 6자리 임시 비밀번호 발행 처리
+		for(int i=0; i<6; i++) {
+			//전체 문자열에서 무작위 추출하여 추가
+			randomPw.append(allChar.charAt(random.nextInt(allChar.length())));
+		}
+		
+		//발행된 임시비밀번호 10자리를 무작위로 섞기
+		char [] charArr = randomPw.toString().toCharArray();
+		for(int i=0; i<charArr.length; i++) {
+			//0~9 난수
+			int randomIdx = random.nextInt(charArr.length);
+			
+			char temp = charArr[i];
+			charArr[i] = charArr[randomIdx];
+			charArr[randomIdx] = temp;
+		}
+		
+		//최종 임시 비밀번호
+		String newRandomPw = new String(charArr);
+		
+		return newRandomPw;
+	}
+
+	public int changeGrade(String id, String grade) {
+		Connection conn = JDBCTemplate.getConnection();
+		
+		switch(grade) {
+		case "allMng" : grade = "총괄 관리자";
+				break;
+		case "memberMng" : grade = "회원 관리자";
+				break;
+		case "gymMng" : grade = "헬스장 관리자";
+			break;
+		case "boardMng" : grade = "게시판 관리자";
+			break;
+		case "noMng" : grade = "미정";
+			break;	
+		}
+		
+		int result = dao.changeGrade(conn, id, grade);
+		
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
+	
+	
 	
 
 	

@@ -12,6 +12,7 @@
 	div.page-title{
 	color : black;
 	}
+	
 
 	<%-- 제목,작성자~ 글씨 --%>
 	.list-content{

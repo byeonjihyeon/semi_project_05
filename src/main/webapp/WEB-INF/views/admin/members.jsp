@@ -9,7 +9,89 @@
 <title>회원 관리</title>
 <style>
 .list-content {
-	height: 700px;
+	height: 800px;
+}
+button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  color: #333;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* 검색창 (input type=text) */
+input[type="text"] {
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.2s ease;
+  height: 34px;
+  vertical-align: middle;
+}
+
+input[type="text"]:focus {
+  border-color: #888;
+}
+
+/* 조회 버튼 (input type=button) */
+input[type="button"] {
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  height: 36px;
+  vertical-align: middle;
+  margin-left: 6px;
+  transition: background-color 0.2s ease;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 14px;
+  color: #333;
+  width: 80px;
+  height: 36px;
+  vertical-align: middle;
+  outline: none;
+  cursor: pointer;
+ 
+  /* 오른쪽 화살표 아이콘 (SVG) */
+  background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+}
+
+select:focus {
+  border-color: #888;
+}
+
+[name='search']{
+width: 150px;
+}
+.member-info-btn-small {
+  padding: 5px 10px;
+  font-size: 0.9rem;
+  background-color: #CE2029;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left : 15px;
 }
 </style>
 </head>
@@ -38,7 +120,6 @@
 								<th style='width:15%;'>회원 아이디</th>
 								<th style='width:15%;'>이름</th>
 								<th style='width:15%;'>등급</th>
-								<th style='width:15%;'>이메일</th>
 								<th style='width:15%;'>가입일</th>
 								<th style='width:15%'>관리</th>
 							</tr>
@@ -48,7 +129,6 @@
 									<td id='memberId'>${member.memberId}</td>
 									<td>${member.memberName}</td>
 									<td>${member.memberGrade}</td>
-									<td>${member.memberEmail}</td>
 									<td>${member.memberDate}</td>
 									<td>
 										<a href="/admin/member/details?id=${member.memberId}"><button>조회</button></a>
@@ -91,7 +171,6 @@ $('#search').on('click', function(){
 						html += "<td>" + item.memberId +"</td>";
 						html += "<td>" + item.memberName +"</td>";
 						html += "<td>" + item.memberGrade +"</td>";
-						html += "<td>" + item.memberEmail +"</td>";
 						html += "<td>" + item.memberDate +"</td>";
 					
 						html += "<td>";

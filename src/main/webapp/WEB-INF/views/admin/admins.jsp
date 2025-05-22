@@ -7,6 +7,80 @@
 <head>
 <meta charset="UTF-8">
 <title>관리자 권한 설정</title>
+<style>
+button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  color: #333;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* 검색창 (input type=text) */
+input[type="text"] {
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.2s ease;
+  height: 34px;
+  vertical-align: middle;
+}
+
+input[type="text"]:focus {
+  border-color: #888;
+}
+
+/* 조회 버튼 (input type=button) */
+input[type="button"] {
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  height: 36px;
+  vertical-align: middle;
+  margin-left: 6px;
+  transition: background-color 0.2s ease;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 14px;
+  color: #333;
+  width: 80px;
+  height: 36px;
+  vertical-align: middle;
+  outline: none;
+  cursor: pointer;
+ 
+  /* 오른쪽 화살표 아이콘 (SVG) */
+  background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+}
+
+select:focus {
+  border-color: #888;
+}
+
+[name='search']{
+width: 150px;
+}
+</style>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
@@ -33,7 +107,7 @@
 								<th style='width:15%;'>전화번호</th>
 								<th style='width:15%;'>이메일</th>
 								<th style='width:15%;'>담당업무</th>
-								<th style='width:15%'>관리</th>
+								<th style='width:20%'>관리</th>
 								
 							</tr>
 							<c:forEach var='admin' items="${adminList}" varStatus='status'>	
