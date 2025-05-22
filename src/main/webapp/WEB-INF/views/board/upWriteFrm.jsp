@@ -46,6 +46,7 @@
 									</div>
 								</td>
 							</tr>
+								<c:if test="${loginMember.memberId eq boardInfo.memberId}">	
 							<tr>
 								<th style='width:10%'>이미지 첨부</th>
 								<td style='width:40%'>
@@ -54,7 +55,8 @@
 								</td>
 								<td>이미지는 gif, jpg, png 파일 형식만 가능합니다.(5MB 이하)</td>
 							</tr>
-							
+								</c:if>
+								<c:if test="${loginMember.memberId eq boardInfo.memberId}">		
 							<tr>
 								<th style='width:10%'>첨부파일</th>
 								<td style='width:40%'>
@@ -62,6 +64,7 @@
 								</td>
 								<td>pdf, doc, docx, ppt, pptx, xls, xlsx, mp3 파일형식만 가능합니다.(5MB 이하)</td>
 							</tr>
+								</c:if>
 							<c:if test="${loginMember.memberId eq boardInfo.memberId}">
 							<tr>
 								<td>
