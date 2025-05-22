@@ -515,8 +515,6 @@ public class AdminDao {
 				Gym gym = new Gym();
 				gym.setGymName(rset.getString("gym_name"));
 				gym.setGymId(rset.getString("gym_id"));
-				gym.setGymPw(rset.getString("gym_pw"));
-				gym.setGymName(rset.getString("gym_name"));
 				gym.setGymAddr(rset.getString("gym_addr"));
 				gym.setGymMemberCnt(rset.getInt("gym_member"));
 				gym.setGymEnrollDate(rset.getString("gym_enrolldate"));
@@ -531,8 +529,8 @@ public class AdminDao {
 				application.setGymId(rset.getString("gym_id"));
 				application.setInsertGymNo(rset.getString("insert_gym_no"));
 				application.setScreeningDate(rset.getString("screening_date"));
-				application.setJudgeId("judge_id");
-				application.setFileNo("file_no");
+				application.setJudgeId(rset.getString("judge_id"));
+				application.setFileNo(rset.getString("file_no"));
 				
 				gym.setGymApplication(application);
 				
@@ -577,6 +575,55 @@ public class AdminDao {
 		}
 		
 		return cnt;
+	}
+
+	public Gym selectGymApplication(Connection conn, String applyNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		Gym gym = null;
+		
+		String query = "select * FROM tbl_gym join tbl_applygym using(gym_id) where insert_gym_no = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, applyNo);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				gym = new Gym();
+			
+				gym.setGymId(rset.getString("gym_id"));
+				gym.setGymName(rset.getString("gym_name"));
+				gym.setGymAddr(rset.getString("gym_addr"));
+				gym.setGymEnrollDate(rset.getString("gym_enrolldate"));
+				gym.setApprovalCode(rset.getString("approval_code"));
+				gym.setEmail(rset.getString("gym_email"));
+				gym.setPhone(rset.getString("gym_phone"));
+				gym.setOpenTime(rset.getString("open_time"));
+				gym.setDetail(rset.getString("detail"));
+				gym.setFacilities(rset.getString("FACILITIES"));
+				
+				GymApplication application = new GymApplication();
+				application.setGymId(rset.getString("gym_id"));
+				application.setInsertGymNo(rset.getString("insert_gym_no"));
+				application.setScreeningDate(rset.getString("screening_date"));
+				application.setJudgeId(rset.getString("judge_id"));
+				application.setFileNo(rset.getString("file_no"));
+				gym.setGymApplication(application);
+				
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return gym;
 	}
 
 	

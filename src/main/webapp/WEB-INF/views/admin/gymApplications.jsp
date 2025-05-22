@@ -17,7 +17,7 @@
 					<div class='list-content'>
 						<table class='adminTbl tbl-hover'>
 							<tr>
-								<th style='width:15%'></th>
+								<th style='width:15%'>등록신청번호</th>
 								<th style='width:15%;'>헬스장명</th>
 								<th style='width:15%;'>아이디</th>
 								<th style='width:15%;'>신청일자</th>
@@ -25,24 +25,24 @@
 							</tr>
 							
 							<c:forEach var='gym' items="${gymApplications}">	
-								<tr>
+								<tr class='oneApplication'>
+									<td><a href='/admin/gym/application/details?no=${gym.gymApplication.insertGymNo}'>${gym.gymApplication.insertGymNo}</a></td>
 									<td>${gym.gymName}</td>
 									<td>${gym.gymId}</td>
-									<td></td>
-									<td>${gym.gymName}</td>
-									<td>
-										<button type='submit'>조회</button>
-										<button>삭제</button>
-									</td>
+									<td>${gym.gymEnrollDate}</td>
+									<td>${gym.gymApplication.judgeId}</td>
 								</tr>
 							</c:forEach>
 							 
 						</table>
 					</div>
-					<div id='applyNavi'>${applyNavi}</div>
-			</section>	
+					<!-- <div id='applyNavi'>${applyNavi}</div>   -->
+				</section>	
 	   		</main>
 	</div>  
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>  
 </body>
+<script>
+
+</script>
 </html>

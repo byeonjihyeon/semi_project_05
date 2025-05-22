@@ -381,6 +381,15 @@ public class AdminService {
 		
 		return listData;
 	}
+
+	public Gym selectGymApplication(String applyNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		Gym gym = dao.selectGymApplication(conn, applyNo);
+		
+		JDBCTemplate.close(conn);
+		
+		return gym;
+	}
 	
 	
 	
