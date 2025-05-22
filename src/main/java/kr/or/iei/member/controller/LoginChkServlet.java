@@ -16,6 +16,7 @@ import kr.or.iei.gym.model.service.GymService;
 import kr.or.iei.gym.model.vo.Gym;
 import kr.or.iei.member.model.service.MemberService;
 import kr.or.iei.member.model.vo.Member;
+import kr.or.iei.member.model.vo.UserGrowth;
 
 /**
  * Servlet implementation class LoginChk

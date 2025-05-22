@@ -1,6 +1,8 @@
 package kr.or.iei.member.controller;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,16 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class deleteMemberServlet
+ * Servlet implementation class UserHistoryListServlet
  */
-@WebServlet("/member/deleteMember")
-public class deleteMemberServlet extends HttpServlet {
+@WebServlet("/member/userHistoryList")
+public class UserHistoryListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public deleteMemberServlet() {
+    public UserHistoryListServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -26,10 +28,8 @@ public class deleteMemberServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 인코딩 - 필터
-		// 값 추출
-		// 로직
-		// 결과처리
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/member/userHistoryList.jsp");
+		view.forward(request, response);
 	}
 
 	/**
