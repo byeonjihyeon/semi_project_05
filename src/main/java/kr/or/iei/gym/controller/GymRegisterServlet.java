@@ -95,7 +95,6 @@ public class GymRegisterServlet extends HttpServlet {
 				file.setFileSavePath(fileSavePath);			
 				file.setGymId(gymId);
 				
-				
 				fileList.add(file);
 			}
 		}
