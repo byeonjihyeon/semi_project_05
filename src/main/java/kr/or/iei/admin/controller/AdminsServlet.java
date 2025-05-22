@@ -39,7 +39,6 @@ public class AdminsServlet extends HttpServlet {
 		AdminService service = new AdminService();
 		ArrayList<Admin> list = service.selectAdmins();
 		
-		
 		//4. 결과처리
 			//4.1 페이지 이동
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/admin/admins.jsp");

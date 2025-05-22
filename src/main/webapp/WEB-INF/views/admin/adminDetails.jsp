@@ -12,6 +12,39 @@ span {
 font-size: 15px;
 font-weight: normal;
 }
+#roleChgBtn {
+padding: 5px 10px;
+    font-size: 0.9rem;
+    background-color: #CE2029;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 15px;
+}
+select {
+  appearance: none; /* 기본 브라우저 스타일 제거 */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #333;
+  width: 200px;
+  outline: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+}
+
+select:focus {
+  border-color: #CE2029;
+}
 </style>
 </head>
 <body>
@@ -31,10 +64,6 @@ font-weight: normal;
 						    <td>${adminDetails[0].memberName}</td>
 					    </tr>
 					    <tr>
-					   	    <th>비밀번호</th>
-					    	<td><button class="member-info-btn-small">초기화</button></td>
-					    </tr>
-					    <tr>
 					    	<th>전화번호</th>
 					    	<td>${adminDetails[0].memberPhone}</td>
 				    	</tr>
@@ -47,8 +76,16 @@ font-weight: normal;
 					    	<td>${adminDetails[0].memberAddr}</td>
 				    	</tr>
 					    <tr>
-					    	<th>담당업무</th>
-					    	<td>${adminDetails[0].memberGrade}</td>
+					    	<th>담당</th>
+					    	<td>
+					    		<select name='role'>
+					    			<option value='allMng' ${adminDetails[1].memberGrade == '총괄 관리자' ? 'selected' : ''}>총괄 관리자</option>
+					    			<option value='memberMng' ${adminDetails[1].memberGrade == '회원 관리자' ? 'selected' : ''}>회원 관리자</option>
+					    			<option value='gymMng' ${adminDetails[1].memberGrade == '헬스장 관리자' ? 'selected' : ''}>헬스장 관리자</option>
+					    			<option value='boardMng' ${adminDetails[1].memberGrade == '게시판 관리자' ? 'selected' : ''}>게시판 관리자</option>
+					    			<option value='noMng' ${adminDetails[1].memberGrade == '미정' ? 'selected' : ''}>미정</option>
+					    		</select>
+					    		<button id='roleChgBtn'>변경</button></td>
 				    	</tr>    	
 					   </table>
 				    
@@ -115,15 +152,43 @@ font-weight: normal;
 					    </tr>
 					  </form>
 					</table>
-				
-				
-				  
 				</div>
 	   		</main>
 	</div>  
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
 </body>
 <script>
+//이메일 유효성 및 중복확인 검사
+$('#roleChgBtn').on('click',function(){
+	let role = $('[name=role]'); //select 요소 추출
+	let id = '${adminDetails[0].memberId}';
+	$.ajax({
+		url : "/admin/super/chgAdminGrade",
+		data : {"grade" : role.val(), "id" : id },
+		type : "get",
+		success : function(res){
+			if(res>0){
+				swal({
+					icon : "success",
+					text : "변경 완료하였습니다."
+				});
+			}else{
+				swal({
+					icon : "error",
+					text : "변경중 오류가 발생하였습니다."
+				});
+			}
+		},
+		error : function(){
+			console.log('ajax 오류');
+		}
+	});
+	
+	
+});
+
+
+//권한 변경 메소드
 function confirmMsg(){
 	if(!confirm('권한을 변경하시겠습니까?')){
 		return false;

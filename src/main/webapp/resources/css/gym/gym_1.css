@@ -1,0 +1,183 @@
+@charset "UTF-8";
+
+/* 메인 컨테이너 */
+
+
+.main-container {
+    display: flex;
+    min-height: 600px;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+/* 왼쪽 사이드바 */
+.sidebar {
+    width: 220px;
+    padding: 20px;
+    background-color: #eaeaea;
+    border-right: 1px solid #ddd;
+}
+
+.sidebar h3 {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    margin: 10px 0;
+}
+
+.sidebar li a {
+    color: #333;
+    text-decoration: none;
+}
+
+.sidebar li.selected {
+    color: #d94f4f;
+    font-weight: bold;
+}
+
+.sidebar li.selected a {
+    color: #d94f4f;
+    font-weight: bold;
+}
+
+/* 오른쪽 콘텐츠 */
+.content {
+    flex: 1;
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 4px rgba(0,0,0,0.05);
+}
+
+.content h2 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* 정보 테이블 */
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.info-table th,
+.info-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.info-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.info-table input[type="text"],
+.info-table input[type="email"],
+.info-table input[type="tel"],
+.info-table input[type="password"],
+.info-table input[type="file"],
+.info-table textarea {
+    width: 95%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* 버튼 영역 */
+.form-actions {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.form-actions button {
+    background-color: #d94f4f;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+/* 페이징 */
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    margin: 0 5px;
+    text-decoration: none;
+    color: #d94f4f;
+}
+
+/* 회원 탈퇴 링크 */
+.withdraw-link {
+    text-align: right;
+    margin-top: 10px;
+    padding-right: 20px;
+}
+
+.withdraw-link a {
+    color: #d94f4f;
+    font-size: 0.9em;
+    text-decoration: none;
+}
+
+/* 푸터 */
+.footer {
+    background-color: #ddd;
+    padding: 20px 40px;
+    font-size: 0.9em;
+    color: #333;
+    line-height: 1.6;
+    border-top: 1px solid #ccc;
+}
+
+.footer a {
+    margin-right: 10px;
+    text-decoration: none;
+    color: #444;
+    font-size: 0.85em;
+}
+
+.footer .copyright {
+    margin-top: 10px;
+    color: #666;
+    font-size: 0.85em;
+    text-align: left;
+}
+
+/* 회원 탈퇴 링크 - 업데이트 */
+.withdraw-link {
+	background-color: #f9f9f9;
+    text-align: right;
+    margin-top: 0px;
+    padding-right: 30px;
+    padding-bottom: 10px;
+}
+
+.withdraw-link a{
+	
+    color: #d94f4f; /* 등록 CSS 색상과 일치 */
+    font-size: 0.95em;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.withdraw-link a:hover {
+    text-decoration: underline;
+}
+

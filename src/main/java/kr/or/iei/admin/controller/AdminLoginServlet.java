@@ -1,6 +1,7 @@
 package kr.or.iei.admin.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -41,15 +42,14 @@ public class AdminLoginServlet extends HttpServlet {
 			//3.2 일치하는 관리자의 컬럼 정보를 조회
 			//3.3 로그인 이후에도 어느 JSP로 이동하든 회원 정보를 사용할 수 있도록 session 
 			AdminService service = new AdminService();
-			Admin loginAdmin = service.searchAdmin(adminId, adminPw);
+			ArrayList<Admin> loginAdmin = service.searchAdmin(adminId, adminPw);
 		
-		//4. 결과 처리
+			//4. 결과 처리
 			RequestDispatcher view = null;
 			
 			//관리자가 아닌 경우
-			if(loginAdmin == null) {
+			if(loginAdmin.isEmpty()) {
 				view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
-				
 				request.setAttribute("title", "알림");
 				request.setAttribute("msg", "아이디 또는 비밀번호를 확인하세요.");
 				request.setAttribute("icon", "error");

@@ -28,7 +28,7 @@
              <a id='logo' href="/">MUTGYM LOGO</a>
              <div class="menu-item">헬스
                <div class="submenu">
-                 <a href="#">헬스장 찾기</a>
+                 <a href="/gym/list">헬스장 찾기</a>
                  <a href="/gym/registerFrm">헬스장 등록</a>
                </div>
              </div>
@@ -56,7 +56,7 @@
            <nav class="main-menu">
            <c:choose>
            		<%--회원(헬스장포함) , 관리자 session 둘다 null 인 경우 --%>
-				<c:when test='${empty loginMember and empty loginAdmin and empty loginGym}'>
+				<c:when test='${empty loginMember and empty loginAdmin[0] and empty loginGym}'>
 	             <div class="menu-item"><a href='/member/loginFrm'>로그인</a>
 	              <%-- 서브 메뉴 만들시 사용할
 	               <div class="submenu">
@@ -76,15 +76,15 @@
 	             </c:when>
 				<c:otherwise>
 				<c:choose>
-					<c:when test = '${not empty loginMember and empty loginAdmin and empty loginGym}'>
+					<c:when test = '${not empty loginMember and empty loginAdmin[0] and empty loginGym}'>
 						<%-- 회원용 마이페이지 --%>
 						<div class="menu-item"><a href='/member/myPageFrm'>마이페이지</a></div>
 					</c:when>
-             		<c:when test = '${empty loginMember and not empty loginAdmin and empty loginGym}'>
+             		<c:when test = '${empty loginMember and not empty loginAdmin[0] and empty loginGym}'>
 						<%-- 관리자용 마이페이지 --%>
 						<div class="menu-item"><a href='#'>마이페이지</a></div>
 					</c:when>
-					<c:when test = '${empty loginMember and empty loginAdmin and not empty loginGym}'>
+					<c:when test = '${empty loginMember and empty loginAdmin[0] and not empty loginGym}'>
 						<%-- 헬스장용 마이페이지 --%>
 						<div class="menu-item"><a href='/gym/myPage'>마이페이지</a></div>
 					</c:when>

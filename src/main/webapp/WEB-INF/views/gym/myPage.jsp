@@ -73,11 +73,10 @@
     <div class="sidebar">
         <h3>헬스장 관리자 페이지</h3>
         <ul>
-            <li><a href="/gym/updateInfo">헬스장 정보 등록/수정</a></li>
-            <li><a href="/gym/changePassword">비밀번호 변경</a></li>
-            <li><a href="/gym/postList">글쓴 내역 조회</a></li>
-            <li><a href="/gym/reviewList">회원 조회</a></li>
-            <li><a href="/gym/quit">회원 탈퇴</a></li>
+            <li><a href="/gym/updateInfoFrm">헬스장 정보 등록/수정</a></li>
+            <li><a href="/gym/changePasswordFrm">비밀번호 변경</a></li>
+            <li><a href="/gym/paymentList">결제 내역 조회</a></li>
+            <li><a href="/gym/memberList">회원 조회</a></li>
         </ul>
     </div>
 

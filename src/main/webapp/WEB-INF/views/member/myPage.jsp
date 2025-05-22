@@ -124,23 +124,22 @@ body {
 	<div class="mypage-container">
     <!-- 사이드바 -->
     <div class="sidebar">
-        <h3>헬스장 관리자 페이지</h3>
+        <h3>마이페이지</h3>
         <ul>
             <li><a href="/member/updateMemberFrm">회원 정보 수정</a></li>
             <li><a href="/member/updatePwFrm">비밀번호 변경</a></li>
-            <li><a href="#">이용 내역 조회</a></li>
+            <li><a href="/member/userHistoryList">이용 내역 조회</a></li>
             <li><a href="#">결제 내역 조회</a></li>
-            <li><a href="#">나의 몸무게 일지</a></li>
+            <li><a href="/member/recordGrowth?reqPage=1">나의 몸무게 일지</a></li>
         </ul>
     </div>
 
     <!-- 메인 콘텐츠 -->
     <div class="main-content">
-        <h2>마이페이지 (첫화면)</h2>
+        <h2>마이페이지</h2>
         <div class="welcome-box">
-            <img src="/resources/images/user-icon.png" alt="User Icon" />
             <div>
-                <p><strong>${sessionScope.loginMember.memberId}</strong>님, 환영합니다!</p>
+                <p><strong>${sessionScope.loginMember.memberName}</strong>님, 환영합니다!</p>
                 <p>회원님의 등급은 <strong>${sessionScope.loginMember.memberGrade}</strong>입니다.</p>
                 <p>※ 프로필 설정 및 활동 통계는 추후 추가 예정입니다.</p>
             </div>

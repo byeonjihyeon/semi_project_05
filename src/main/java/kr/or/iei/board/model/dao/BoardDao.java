@@ -173,6 +173,11 @@ public class BoardDao {
 		
 			int result = 0;
 			
+			System.out.println(file.getBoardType());
+			System.out.println(file.getFileTypeId());
+			System.out.println(file.getFileName());
+			System.out.println(file.getFilePath());
+			
 			String query ="insert into tbl_file values(seq_tbl_file.nextval, ?, ?, ?, ?)";
 			
 			try {

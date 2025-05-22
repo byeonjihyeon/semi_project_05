@@ -43,7 +43,6 @@ public class MemberSearchFrm extends HttpServlet {
 		ArrayList<Member> list =  service.searchMembers(field,inputValue);
 		
 		
-		
 		Gson gson =new Gson();
 		String json = gson.toJson(list);
 		

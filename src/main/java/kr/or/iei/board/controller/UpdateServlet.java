@@ -65,11 +65,7 @@ public class UpdateServlet extends HttpServlet {
 		
 		String memberId = mRequest.getParameter("memberId");
 	
-		String boardId = mRequest.getParameter("boardId");
-		
-		String fileTypeId = mRequest.getParameter("fileTypeId");
-		
-		
+		String boardId = mRequest.getParameter("boardId");		
 		
 		
 		//파일을 전송한 input 요소들의 name 속성값들을 Enumeration 형태로 반환합니다.
@@ -82,13 +78,16 @@ public class UpdateServlet extends HttpServlet {
 		
 		String fileName = mRequest.getOriginalFileName(name);
 		String filePath = mRequest.getFilesystemName(name);
+		File fileType = mRequest.getFile(name);
+		File fileTypeId = mRequest.getFile(name);
 		
 		if(filePath != null) {
 			BoardFile file = new BoardFile();
 			file.setFileName(fileName);
 			file.setFilePath(filePath);
 			file.setMemberId(memberId);
-			file.setFileTypeId(fileTypeId);
+			file.setFileType(name);
+			file.setFileTypeId(name);
 			addFileList.add(file);
 		}
 		}
