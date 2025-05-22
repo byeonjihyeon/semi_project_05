@@ -381,16 +381,20 @@ public class GymDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		String query = "select max(ticket_kind) as ticket_kind from tbl_ticket where gym_id = ? and ticket_period = ?";
-		String ticketId = "";
+		String query = "select max(to_number(ticket_kind)) as ticket_kind from tbl_ticket where gym_id = ? and ticket_period = ?";
+		String ticketId = null;
 		try {
 			pstmt = conn.prepareStatement(query);
+			System.out.println("dao gymId: "+gymId);
 			pstmt.setString(1, gymId);
+			System.out.println("dao membership: "+membership);
 			pstmt.setString(2, membership);
+			
 			rset = pstmt.executeQuery();
 			
 			if(rset.next()) {
 				ticketId = rset.getString("ticket_kind");
+				System.out.println("rset ticketId:"+ ticketId);
 			}
 			
 		} catch (SQLException e) {
@@ -408,7 +412,7 @@ public class GymDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		
-		String query = "insert into tbl_buy values(seq_tbl_buy.nextval, ?, ?, ?, ?, sysdate)";
+		String query = "insert into tbl_buy values(seq_tbl_buy.nextval, ?, ?, ?, ?, sysdate, ?)";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -416,8 +420,10 @@ public class GymDao {
 			pstmt.setString(2, payment.getTicketPrice());
 			pstmt.setString(3, payment.getPayMethod());
 			pstmt.setString(4, payment.getCardName());
+			pstmt.setString(5, payment.getMerchantId());
 			
 			result = pstmt.executeUpdate();
+			System.out.println("dao 결제내역 db 처리 후 result: " + result);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -431,7 +437,7 @@ public class GymDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		
-		String query = "insert into tbl_user_history values(seq_tbl_user_history.nextval, sysdate, 30, ?, ?, ?)";
+		String query = "insert into tbl_user_history values(seq_tbl_user_history.nextval, sysdate, ?, ?, ?)";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -440,6 +446,7 @@ public class GymDao {
 			pstmt.setString(3, usage.getGymIdRef());
 			
 			result = pstmt.executeUpdate();
+			System.out.println("dao 이용내역 db 처리 후 result: " + result);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

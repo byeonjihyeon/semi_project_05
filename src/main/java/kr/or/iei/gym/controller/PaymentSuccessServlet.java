@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class PaymentSuccessServlet
  */
-@WebServlet("/PaymentSuccessServlet")
+@WebServlet("/payment/success")
 public class PaymentSuccessServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -31,7 +31,11 @@ public class PaymentSuccessServlet extends HttpServlet {
 		String orderId = request.getParameter("orderId");
 		
 		request.setAttribute("orderId", orderId);
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/gym/paymentSuccess.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
+		request.setAttribute("title", "결제성공");
+		request.setAttribute("msg", "주문번호"+orderId+"이 정상적으로 처리되었습니다.");
+		request.setAttribute("icon", "success");
+		request.setAttribute("loc", "/WEB-INF/views/gym/paymentSuccess.jsp");
 		view.forward(request, response);
 	}
 
