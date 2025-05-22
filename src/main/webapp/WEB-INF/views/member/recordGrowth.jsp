@@ -153,7 +153,7 @@ body {
 }
 
 .recordList th {
-    background-color: #ff414d;
+    background-color: olive;
     color: #fff;
     font-weight: bold;
 }
@@ -229,7 +229,7 @@ button:hover {
 .gym-photo {
     width: 700px;
     max-width: 700px;
-    height: 300px;
+    height: 400px;
     border: 1px solid #ccc;
     border-radius: 12px;
     background-color: #f9f9f9;
