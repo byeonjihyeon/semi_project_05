@@ -1,0 +1,111 @@
+.membership-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: var(--gray8);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  font-family: ns-r;
+}
+
+.intro {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 16px;
+  color: var(--gray2);
+}
+
+.membership-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.membership-table th {
+  background-color: var(--main2);
+  color: white;
+  font-family: ns-b;
+  padding: 12px;
+  border: 1px solid var(--line2);
+}
+
+.membership-table td {
+  padding: 12px;
+  border: 1px solid var(--line3);
+  color: var(--gray1);
+  text-align: center;
+}
+
+.membership-notice {
+  font-size: 14px;
+  color: var(--gray3);
+  margin-top: 10px;
+  text-align: center;
+}
+
+.membership-button-wrapper {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.membership-button-wrapper a {
+  margin: 0 6px;
+}
+
+  .membership-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--line3);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    background-color: white;
+  }
+
+  .membership-radio {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-family: ns-b;
+    color: var(--gray1);
+  }
+
+  .membership-price {
+    text-align: right;
+    font-family: ns-b;
+  }
+
+  .membership-price del {
+    color: var(--gray3);
+    font-size: 14px;
+  }
+
+  .membership-price .discount {
+    color: red;
+    font-weight: bold;
+    margin-left: 10px;
+  }
+
+  .membership-price .final-price {
+    font-size: 18px;
+    color: var(--gray1);
+  }
+
+  .purchase-button {
+    display: block;
+    margin: 30px auto 0;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-family: ns-b;
+    background-color: var(--main2);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .purchase-button:hover {
+    background-color: var(--main1);
+  }
