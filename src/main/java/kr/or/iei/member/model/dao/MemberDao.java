@@ -90,7 +90,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		
-		String query = "insert into tbl_member values(?,?,?,'.',?,'회원',?,sysdate, default, 3)";
+		String query = "insert into tbl_member values(?,?,?,'.',?,'회원',?,sysdate, default, 2)";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -360,7 +360,7 @@ public class MemberDao {
 
 	public int insertGrowth(Connection conn, UserGrowth growth, String memberId) {
 		PreparedStatement pstmt = null;
-		ResultSet rest = null;
+		
 		int result = 0;
 		
 		String query = "insert into tbl_my_history values(seq_my_history.nextval, ?, sysdate, ?, ?, ?)";
@@ -372,6 +372,10 @@ public class MemberDao {
 			pstmt.setString(2, growth.getMemberTall());
 			pstmt.setString(3, growth.getMemberWeight());
 			pstmt.setString(4, growth.getMemberHopeWeight());
+			
+			System.out.println(growth.getMemberTall());
+			System.out.println(growth.getMemberWeight());
+			System.out.println(growth.getMemberHopeWeight());
 			
 			result = pstmt.executeUpdate();
 			
@@ -385,40 +389,41 @@ public class MemberDao {
 		return result;
 	}
 
-	public ArrayList<UserGrowth> searchHistory(Connection conn, UserGrowth growth) {
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		ArrayList<UserGrowth> list = new ArrayList<UserGrowth>();
-		String query = "select * from tbl_member join tbl_my_history using(member_id) where member_id = ? and height is not null";
-		
-		try {
-			pstmt = conn.prepareStatement(query);
-			
-			pstmt.setString(1, growth.getMemberId());
-			
-			rset = pstmt.executeQuery();
-			
-			while(rset.next()) {
-				UserGrowth uG = new UserGrowth();
-				uG.setRecordDate(rset.getString("RECODE_DATE"));
-				uG.setMemberTall(rset.getString("HEIGHT"));
-				uG.setMemberWeight(rset.getString("WEIGHT"));
-				uG.setMemberHopeWeight(rset.getString("GOAL_WEIGHT"));
-				uG.setMemberId(rset.getString("member_id"));
-				
-				list.add(uG);
-				
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(rset);
-			JDBCTemplate.close(pstmt);
-		}
-		
-		return list;
+	public ArrayList<UserGrowth> selectGrowthList(Connection conn, String memberId) {
+	    PreparedStatement pstmt = null;
+	    ResultSet rset = null;
+	    ArrayList<UserGrowth> list = new ArrayList<>();
+
+	    String query = "SELECT RECODE_DATE, height, weight, goal_weight "
+	                 + "FROM tbl_my_history "
+	                 + "WHERE member_id = ? "
+	                 + "ORDER BY recode_date DESC";
+
+	    try {
+	        pstmt = conn.prepareStatement(query);
+	        pstmt.setString(1, memberId);
+	        rset = pstmt.executeQuery();
+
+	        while (rset.next()) {
+	            UserGrowth ug = new UserGrowth();
+	            ug.setGrowthDate(rset.getString("recode_date"));
+	            ug.setMemberTall(rset.getString("height"));
+	            ug.setMemberWeight(rset.getString("weight"));
+	            ug.setMemberHopeWeight(rset.getString("goal_weight"));
+
+	            list.add(ug);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCTemplate.close(rset);
+	        JDBCTemplate.close(pstmt);
+	    }
+
+	    return list;
 	}
+
+	
 
 
 

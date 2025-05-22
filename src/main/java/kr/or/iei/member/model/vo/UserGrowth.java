@@ -13,5 +13,5 @@ public class UserGrowth extends Member{
 	private String memberWeight;
 	private String memberHopeWeight;
 	private String HistoryId;
-	private String recordDate;
+	private String growthDate;
 }

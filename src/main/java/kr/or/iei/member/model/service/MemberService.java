@@ -140,16 +140,24 @@ public class MemberService {
 	public int insertGrowth(UserGrowth growth, String memberId) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.insertGrowth(conn, growth, memberId);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
 		JDBCTemplate.close(conn);
 		return result;
 	}
 
-	public ArrayList<UserGrowth> searchHistory(UserGrowth growth) {
+	public ArrayList<UserGrowth> selectGrowthList(String memberId) {
 		Connection conn = JDBCTemplate.getConnection();
-		ArrayList<UserGrowth> list = dao.searchHistory(conn, growth);
-		JDBCTemplate.close(conn);
-		return list;
+	    ArrayList<UserGrowth> list = dao.selectGrowthList(conn, memberId);
+	    JDBCTemplate.close(conn);
+	    return list;
+		
 	}
+
+	
 
 
 

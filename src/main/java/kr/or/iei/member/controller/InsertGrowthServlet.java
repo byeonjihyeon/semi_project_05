@@ -50,11 +50,7 @@ public class InsertGrowthServlet extends HttpServlet {
 		
 		MemberService service = new MemberService();
 		int result =  service.insertGrowth(growth, memberId);
-		 
-		ArrayList<UserGrowth> list = service.searchHistory(growth);
-		list.add(growth);
-		
-		System.out.println(list);
+
 		RequestDispatcher view = null;
 		System.out.println(result);
 		if(result > 0) {
@@ -63,7 +59,8 @@ public class InsertGrowthServlet extends HttpServlet {
 			request.setAttribute("title", "알림");
 			request.setAttribute("msg", "정상적으로 등록완료 되었습니다.");
 			request.setAttribute("icon", "success");
-			request.setAttribute("loc", "/member/recordGrowth");
+			request.setAttribute("loc", "/member/showList");
+			request.setAttribute("list", growth);
 			
 		}else {
 			view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
