@@ -8,32 +8,33 @@ import java.util.ArrayList;
 
 import kr.or.iei.admin.model.vo.Admin;
 import kr.or.iei.common.JDBCTemplate;
+import kr.or.iei.gym.model.vo.Gym;
+import kr.or.iei.gym.model.vo.GymApplication;
 import kr.or.iei.member.model.vo.Member;
 
 public class AdminDao {
 	
 	//관리자(각 url마다 권한을 포함하려 arraylist사용) 조회 (아이디,패스워드)
-	public ArrayList<Admin> searchAdmin(Connection conn, String adminId, String adminPw) {
+	public ArrayList<Admin> searchAdmin(Connection conn, String adminId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
 		ArrayList<Admin> loginAdmin = new ArrayList<Admin>();
 		
 		//String query = "select * from tbl_member where member_id =? and member_pw =? and member_type in (0,1)";
-		String query = "select * from tbl_member join tbl_admin_job using (member_id) where member_id =? and member_pw =?";
+		String query = "select * from tbl_member join tbl_admin_job using (member_id) where member_id =?";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, adminId);
-			pstmt.setString(2, adminPw);
 			
 			rset = pstmt.executeQuery();
-			//[0] => 슈퍼관리자, [1] => 회원 [2]=>헬스 [3] => 게시판
+			//[0] => 슈퍼관리자 권한 url, [1] => 회원 권한 url [2]=>헬스 권한url [3] => 게시판 권한url
 			while(rset.next()) {
 				Admin admin = new Admin();
 				
 				admin.setMemberId(adminId);
-				admin.setMemberPw(adminPw);
+				admin.setMemberPw(rset.getString("member_pw"));
 				admin.setMemberAddr(rset.getString("member_addr"));
 				admin.setMemberDate(rset.getString("enrolldate"));
 				admin.setMemberEmail(rset.getString("member_email"));
@@ -472,6 +473,110 @@ public class AdminDao {
 		}
 		
 		return result;
+	}
+
+	public int updateAdminPw(Connection conn, String adminId, String newAdminPw) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = "update tbl_member set member_pw =? where member_id =?";
+		
+		try {
+			pstmt= conn.prepareStatement(query);
+			pstmt.setString(1, newAdminPw);
+			pstmt.setString(2, adminId);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+	
+		return result;
+	}
+
+	public ArrayList<Gym> selectGymApplications(Connection conn, int start, int end) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		ArrayList<Gym> list = new ArrayList<Gym>();
+		
+		String query = "SELECT * FROM (SELECT ROWNUM RNUM, A.* FROM (SELECT * FROM TBL_gym join tbl_applygym using(gym_id) ORDER by judge_id DESC) A ) WHERE RNUM >=? AND RNUM <=?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, start);
+			pstmt.setInt(2, end);
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				Gym gym = new Gym();
+				gym.setGymName(rset.getString("gym_name"));
+				gym.setGymId(rset.getString("gym_id"));
+				gym.setGymPw(rset.getString("gym_pw"));
+				gym.setGymName(rset.getString("gym_name"));
+				gym.setGymAddr(rset.getString("gym_addr"));
+				gym.setGymMemberCnt(rset.getInt("gym_member"));
+				gym.setGymEnrollDate(rset.getString("gym_enrolldate"));
+				gym.setApprovalCode(rset.getString("approval_code"));
+				gym.setEmail(rset.getString("gym_email"));
+				gym.setPhone(rset.getString("gym_phone"));
+				gym.setOpenTime(rset.getString("open_time"));
+				gym.setDetail(rset.getString("detail"));
+				gym.setFacilities(rset.getString("FACILITIES"));
+				
+				GymApplication application = new GymApplication();
+				application.setGymId(rset.getString("gym_id"));
+				application.setInsertGymNo(rset.getString("insert_gym_no"));
+				application.setScreeningDate(rset.getString("screening_date"));
+				application.setJudgeId("judge_id");
+				application.setFileNo("file_no");
+				
+				gym.setGymApplication(application);
+				
+				list.add(gym);
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return list;
+	}
+
+	public int selectTotalApplications(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		int cnt = 0;
+		
+		String query = "select count(*) as cnt FROM TBL_gym join tbl_applygym using(gym_id)";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+			
+			rset.next();
+			int total = rset.getInt("cnt");
+			
+			cnt = total;
+			System.out.println(cnt);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return cnt;
 	}
 
 	

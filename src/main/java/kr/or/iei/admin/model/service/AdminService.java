@@ -4,10 +4,13 @@ import java.security.SecureRandom;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import kr.or.iei.admin.model.dao.AdminDao;
 import kr.or.iei.admin.model.vo.Admin;
 import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.common.ListData;
+import kr.or.iei.gym.model.vo.Gym;
 import kr.or.iei.member.model.vo.Member;
 
 public class AdminService {
@@ -20,9 +23,20 @@ public class AdminService {
 	//관리자 회원 1명 조회
 	public ArrayList<Admin> searchAdmin(String adminId, String adminPw) {
 		Connection conn = JDBCTemplate.getConnection();
-		ArrayList<Admin> loginAdmin = dao.searchAdmin(conn, adminId, adminPw);
+		ArrayList<Admin> loginAdmin = dao.searchAdmin(conn, adminId);
 		JDBCTemplate.close(conn);
-		return loginAdmin;
+		
+		if(loginAdmin.isEmpty()) {
+			return null;
+		}else {
+			boolean pwChk = BCrypt.checkpw(adminPw, loginAdmin.get(1).getMemberPw());
+			
+			if(pwChk) {
+				return loginAdmin;
+			}else {
+				return null;
+			}
+		}
 	}
 
 	public ListData<Member> selectMemberList(int page) {
@@ -129,8 +143,6 @@ public class AdminService {
 		
 		int result = dao.deleteMember(conn, deleteId);
 		
-		System.out.println(deleteId);
-		System.out.println(result);
 		if(result > 0) {
 			JDBCTemplate.commit(conn);
 		}else {
@@ -198,10 +210,17 @@ public class AdminService {
 
 	public int createAdmin(Admin admin) {
 		Connection conn = JDBCTemplate.getConnection();
+		
+		String encPw = BCrypt.hashpw(admin.getMemberPw(), BCrypt.gensalt());
+		admin.setMemberPw(encPw);
+		
 		int result = -1;
+		
+		//회원 테이블에 관리자 등록
 		result = dao.createAdmin(conn, admin);
 		
 		if(result > 0) {
+			//권한 부여
 			result = dao.createPreviliges(conn, admin.getMemberId());
 			
 			if(result > 0) {
@@ -287,6 +306,80 @@ public class AdminService {
 		JDBCTemplate.close(conn);
 		
 		return result;
+	}
+
+	public int updateAdminPw(String adminId, String newAdminPw) {
+		Connection conn = JDBCTemplate.getConnection();
+		
+		newAdminPw = BCrypt.hashpw(newAdminPw, BCrypt.gensalt());
+		
+		int result = dao.updateAdminPw(conn, adminId, newAdminPw);
+		
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public ListData<Gym> selectGymApplications(int page) {
+		Connection conn = JDBCTemplate.getConnection();
+		
+		//한 페이지 보여줄 헬스장 등록내역 10개
+		int viewGymApplicationsCnt = 20;
+		
+		//요청페이지 행 끝번호
+		int end = page * viewGymApplicationsCnt;
+		//요청페이지 행 시작번호 
+		int start = end - viewGymApplicationsCnt + 1;
+		
+		
+		//dao에 등록신청헬스장리스트 요청
+		ArrayList<Gym> list = dao.selectGymApplications(conn, start, end);
+		
+		//페이지네이션 작업 < >
+		
+		//전체 신청내역 수 조회
+		int totalApplications = dao.selectTotalApplications(conn);
+		
+		//전체 페이지수
+		int totPage = 0;
+		
+		if(totalApplications % viewGymApplicationsCnt > 0) {
+			totPage = totalApplications / viewGymApplicationsCnt + 1;
+		}else {
+			totPage = totalApplications / viewGymApplicationsCnt;
+		}
+		
+		//페이지 하단에 보여줄 페이지네이션 html 코드 작성
+		
+		
+		String pageNavi = "";
+			//이전 버튼
+			if(page > 1) {
+				pageNavi += "<a href='/admin/gym/applications?page="+ (page-1) +"><span>"+"<"+"</span></a>"; 
+			}
+			
+			//다음 버튼
+			if(page <= totPage) {
+				pageNavi += "<a href='/admin/gym/applications?page="+ (page+1) +"><span>"+">"+"</span></a>";
+				if(page == totPage) {
+					pageNavi += "";
+				}
+			}
+			
+		//서블릿으로 리턴해야 하는 값 => 헬스장 신청내역 리스트와 페이지 하단에 보여줄 페이지버튼(pageNavi)
+		ListData<Gym> listData = new ListData<Gym>();
+		listData.setList(list);
+		listData.setPageNavi(pageNavi);
+		listData.setCurrentPage(page);
+		listData.setPageSize(viewGymApplicationsCnt);
+		
+		JDBCTemplate.close(conn);
+		
+		return listData;
 	}
 	
 	

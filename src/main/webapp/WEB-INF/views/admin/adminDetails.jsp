@@ -99,10 +99,13 @@ select:focus {
 					      <td>
 					    	<input type="hidden" name="id" value="${adminDetails[0].memberId}">
 					      	<input type="hidden" name="url" value="/admin/super">
-					        <input type="checkbox" name="sel" value="Y" ${adminDetails[0].selYN eq 'Y' ? 'checked' : ''}>조회
-					        <input type="checkbox" name="upd" value="Y" ${adminDetails[0].updYN eq 'Y' ? 'checked' : ''}>수정
-					        <input type="checkbox" name="del" value="Y" ${adminDetails[0].delYN eq 'Y' ? 'checked' : ''}>삭제
-					   	    <button type="submit" class="previliegeBtn member-info-btn-small" >수정</button>
+					        <input type="checkbox" id='adminSel' name="sel" value="Y" ${adminDetails[0].selYN eq 'Y' ? 'checked' : ''}>
+					        <label for='adminSel'>조회</label>
+					        <input type="checkbox" id= 'adminUpd' name="upd" value="Y" ${adminDetails[0].updYN eq 'Y' ? 'checked' : ''}>
+					        <label for='adminUpd'>수정</label>
+					        <input type="checkbox" id='adminDel' name="del" value="Y" ${adminDetails[0].delYN eq 'Y' ? 'checked' : ''}>
+					        <label for='adminDel'>삭제</label>
+					   	    <button type="submit" class="previliegeBtn member-info-btn-small" >변경</button>
 					      </td>
 					    </tr>
 					  </form>
@@ -114,10 +117,13 @@ select:focus {
 					      <td>
 					   	    <input type="hidden" name="id" value="${adminDetails[0].memberId}">
 					  	  	<input type="hidden" name="url" value="/admin/member">
-					        <input type="checkbox" name="sel" value="Y" ${adminDetails[1].selYN eq 'Y' ? 'checked' : ''}>조회
-					        <input type="checkbox" name="upd" value="Y" ${adminDetails[1].updYN eq 'Y' ? 'checked' : ''}>수정
-					        <input type="checkbox" name="del" value="Y" ${adminDetails[1].delYN eq 'Y' ? 'checked' : ''}>삭제
-					        <button type="submit" class="previliegeBtn member-info-btn-small">수정</button>
+					        <input type="checkbox" id='memberSel' name="sel" value="Y" ${adminDetails[1].selYN eq 'Y' ? 'checked' : ''}>
+					        <label for='memberSel'>조회</label>
+					        <input type="checkbox" id='memberUpd' name="upd" value="Y" ${adminDetails[1].updYN eq 'Y' ? 'checked' : ''}>
+					        <label for='memberUpd'>수정</label>
+					        <input type="checkbox" id='memberDel' name="del" value="Y" ${adminDetails[1].delYN eq 'Y' ? 'checked' : ''}>
+					        <label for='memberDel'>삭제</label>
+					        <button type="submit" class="previliegeBtn member-info-btn-small">변경</button>
 					      </td>
 					    </tr>
 					  </form>
@@ -129,10 +135,13 @@ select:focus {
 					      <td>
 					        <input type="hidden" name="id" value="${adminDetails[0].memberId}">
 					      	<input type="hidden" name="url" value="/admin/gym">
-					        <input type="checkbox" name="sel" value="Y" ${adminDetails[2].selYN eq 'Y' ? 'checked' : ''}>조회
-					        <input type="checkbox" name="upd" value="Y" ${adminDetails[2].updYN eq 'Y' ? 'checked' : ''}>수정
-					        <input type="checkbox" name="del" value="Y" ${adminDetails[2].delYN eq 'Y' ? 'checked' : ''}>삭제
-					        <button type="submit" class="previliegeBtn member-info-btn-small">수정</button>
+					        <input type="checkbox" id='gymSel' name="sel" value="Y" ${adminDetails[2].selYN eq 'Y' ? 'checked' : ''}>
+					        <label for='gymSel'>조회</label>
+					        <input type="checkbox" id='gymUpd' name="upd" value="Y" ${adminDetails[2].updYN eq 'Y' ? 'checked' : ''}>
+					        <label for='gymUpd'>수정</label>
+					        <input type="checkbox" id='gymDel' name="del" value="Y" ${adminDetails[2].delYN eq 'Y' ? 'checked' : ''}>
+					        <label for='gymDel'>삭제</label>
+					        <button type="submit" class="previliegeBtn member-info-btn-small">변경</button>
 					      </td>
 					    </tr>
 					  </form>
@@ -144,9 +153,12 @@ select:focus {
 					      <td>
 					      	<input type="hidden" name="id" value="${adminDetails[0].memberId}">
 					      	<input type="hidden" name="url" value="/admin/board">
-					        <input type="checkbox" name="sel" value="Y" ${adminDetails[3].selYN eq 'Y' ? 'checked' : ''}>조회
-					        <input type="checkbox" name="upd" value="Y" ${adminDetails[3].updYN eq 'Y' ? 'checked' : ''}>수정
-					        <input type="checkbox" name="del" value="Y" ${adminDetails[3].delYN eq 'Y' ? 'checked' : ''}>삭제
+					        <input type="checkbox" id='boardSel' name="sel" value="Y" ${adminDetails[3].selYN eq 'Y' ? 'checked' : ''}>
+					        <label for='boardSel'>조회</label>
+					        <input type="checkbox" id='boardUpd' name="upd" value="Y" ${adminDetails[3].updYN eq 'Y' ? 'checked' : ''}>
+					        <label for='boardUpd'>수정</label>
+					        <input type="checkbox" id='boardDel' name="del" value="Y" ${adminDetails[3].delYN eq 'Y' ? 'checked' : ''}>
+					        <label for='boardDel'>삭제</label>
 					        <button type="submit" class="previliegeBtn member-info-btn-small">수정</button>
 					      </td>
 					    </tr>
