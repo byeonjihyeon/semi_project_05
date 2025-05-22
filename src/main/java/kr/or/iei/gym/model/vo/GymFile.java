@@ -12,4 +12,6 @@ public class GymFile {
 	private String fileName;
 	private String filePath;
 	private String gymId;
+	private String fileSavePath;
+	private String fileUrl;
 }

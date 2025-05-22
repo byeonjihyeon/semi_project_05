@@ -3,8 +3,7 @@
 <!DOCTYPE html>
 <html>
 <!-- gymReview.jsp -->
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<head>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <!-- JSTL 라이브러리 선언 -->     <head>
     <title>${gym.name} - 리뷰</title>
     <link rel="stylesheet" href="/resources/css/gym/gym-2.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

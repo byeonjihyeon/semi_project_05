@@ -11,6 +11,8 @@ import kr.or.iei.gym.model.dao.GymDao;
 import kr.or.iei.gym.model.vo.Gym;
 import kr.or.iei.gym.model.vo.GymFile;
 import kr.or.iei.gym.model.vo.GymTicket;
+import kr.or.iei.gym.model.vo.Payment;
+import kr.or.iei.gym.model.vo.Usage;
 
 public class GymService {
 	
@@ -74,6 +76,15 @@ public class GymService {
 		}
 		JDBCTemplate.close(conn);
 		return gym;
+	}
+	
+	public GymTicket selectTicket(String gymId) {
+		Connection conn = JDBCTemplate.getConnection();
+		GymTicket ticket = dao.selectGymTicket(conn, gymId);
+		ticket.setGymId(gymId);		
+		
+		JDBCTemplate.close(conn);
+		return ticket;
 	}
 	public Gym loginChkGym(String userId, String password) {
 		Connection conn = JDBCTemplate.getConnection();
@@ -140,17 +151,46 @@ public class GymService {
 		return result;
 	}
 
-	public List<Gym> selectAllGym() {
+	public List<Gym> selectAllGym(String savePath) {
 		Connection conn = JDBCTemplate.getConnection();
 		
 		List<Gym> gymList = dao.selectAllGym(conn);
 		for(Gym gym: gymList) {
 			GymTicket ticket = dao.selectGymTicket(conn, gym.getGymId());
 			gym.setTicket(ticket);
+			List<GymFile> fileList = dao.selectGymFile(conn, gym.getGymId(), savePath);
+			gym.setFileList(fileList);
 		}
 		
 		JDBCTemplate.close(conn);
 		return gymList;
+	}
+
+	public int insertPaymentInfo(Payment payment, Usage usage) {
+		Connection conn = JDBCTemplate.getConnection();
+		
+		int result = 0;
+		result = dao.insertPayment(conn, payment);
+		if(result > 0) {
+			result = dao.insertUsage(conn, usage);
+			if(result > 0) {
+				JDBCTemplate.commit(conn);
+				JDBCTemplate.close(conn);
+				return result;
+			}
+		}
+		JDBCTemplate.rollback(conn);
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
+
+	public String selectTicketId(String gymId, String membership) {
+		Connection conn = JDBCTemplate.getConnection();
+		String ticketId = null;
+		ticketId = dao.selectTicketId(conn, gymId, membership);
+		JDBCTemplate.close(conn);
+		return ticketId;
 	}
 
 	
