@@ -16,9 +16,9 @@
 		<main class='content'>
 		 <section class='section notice-write-wrap'>
 								<form action="/board/update" method="post"  enctype="multipart/form-data" >
- 								 <input type="hidden" name="boardId" id="boardId"  value="${boardInfo.boardId}">	
+ 								 <input type="hidden" name="boardId" id="boardId"  value="${oneBoard.boardId}">	
  								 
-				<div class='page-title'>게시글 조회</div>
+				<div class='page-title'>게시글 수정</div>
 						<%-- tbl_notice의 notice_writer(작성자) 컬럼의 값은 회원 번호! --%>					
   								<input type="hidden" name="memberId" id="loginMemberId" value="${loginMember.memberId}">
 						<table class='tbl'>
@@ -26,7 +26,7 @@
 								<th class="name-title">제목</th>
 								<td colspan='3'>
 									<div class='input-item'>
-										<input type='text' name='boardTitle' id="boardTitle" value="${boardInfo.boardTitle}">
+										<input type='text' name='boardTitle' id="boardTitle" value="${oneBoard.boardTitle}">
 									</div>
 								</td>
 							</tr>
@@ -34,7 +34,7 @@
 							<tr>
 								<th style='width:10%'>작성자</th>
 								<td style='width:40%; text-align: left;'>
-									<input type="text" style="border: none;" name="memberId" id="memberId" value="${boardInfo.memberId}" disabled>
+									<input type="text" style="border: none;" name="memberId" id="memberId" value="${oneBoard.memberId}" disabled>
 								</td>
 							</tr>
 							
@@ -42,42 +42,44 @@
 								<td colspan='4'>
 									<div class='input-item'>
 									
-										<textarea name='boardContent' id="boardContent">${boardInfo.boardContent}</textarea>
+										<textarea name='boardContent' id="boardContent">${oneBoard.boardContent}</textarea>
 									</div>
 								</td>
 							</tr>
-								<c:if test="${loginMember.memberId eq boardInfo.memberId}">	
-							<tr>
-								<th style='width:10%'>이미지 첨부</th>
-								<td style='width:40%'>
-									<input type='file' name='uploadImg'>
 								
-								</td>
-								<td>이미지는 gif, jpg, png 파일 형식만 가능합니다.(5MB 이하)</td>
-							</tr>
-								</c:if>
-								<c:if test="${loginMember.memberId eq boardInfo.memberId}">		
 							<tr>
+							
 								<th style='width:10%'>첨부파일</th>
-								<td style='width:40%'>
-									<input type='file' name='uploadFile'>
-								</td>
-								<td>pdf, doc, docx, ppt, pptx, xls, xlsx, mp3 파일형식만 가능합니다.(5MB 이하)</td>
-							</tr>
-								</c:if>
-							<c:if test="${loginMember.memberId eq boardInfo.memberId}">
-							<tr>
-								<td>
-  									<button type="submit" id="updateNotice">수정하기</button>
-								</td>
+								<td style='width:40%'> 
+								<div>
+								<c:forEach var="file" items="${oneBoard.fileList}" >
+									<div class="files">
+										<span class='delFileName'>${file.fileName}</span>			
+										<span class="material-icons delBtn" onclick="delFile(this, ${file.fileNo})">remove_circle</span>						
+									<%-- 1) 작성한 게시물 이미지 꺼내오기 --%>
+									<%-- 2) 로그인한 아이디랑 작성자 아이디가 같으면 파일선택 버튼과, 문구 보여주기  --%>
 								
-						<%-- <button type="submit" id="updateNotice">수정하기</button> --%>
+									</div>										
+								</c:forEach>
+								</div>
+									<input type='file' name='uploadImg' >
+								<td>gif, jpg, png, pdf, doc, docx, ppt, pptx, xls, xlsx, mp3 파일 형식만 가능합니다.(5MB 이하)</td>
 							</tr>
+								
+							
+							<c:if test="${loginMember.memberId eq oneBoard.memberId}">	
+								<tr>
+									<td>
+	  									<button type="submit" id="updateNotice">수정하기</button>
+									</td>
+	
+								</tr>
 							</c:if>
+							
+							
 						</table>
 						</form>
-						
-								<c:if test="${loginMember.memberId eq boardInfo.memberId}">				
+								<c:if test="${loginMember.memberId eq oneBoard.memberId}">				
 						<form action="/board/delete" method="get" >
 						<input type="hidden" name="deleteBoardId" value="${boardInfo.boardId}">
 									<button type="submit" id="deleteNotice">삭제하기</button>
@@ -89,7 +91,18 @@
 		</div>     
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
 	<script>
+	function delFile(obj, fileNo){
+		//파일 삭제 아이콘 클릭시, form태그 내부에 hidden타입으로 input 태그 추가
+		let input = $('<input>');
+		input.attr('type','hidden');
+		input.attr('name','delFileNo');
+		input.attr('value', fileNo);
+		$(obj).parent().remove();
+		$('form').prepend(input);
+	}
 	
+	
+	/*
 	$('#deleteNotice').on('click', function(e) {
 		
 	    e.preventDefault();
@@ -156,7 +169,7 @@
 		
 	});
     
-		
+	*/	
 
 		
 	

@@ -24,6 +24,7 @@ import kr.or.iei.common.KhRenamePolicy;
 /**
  * Servlet implementation class UpdateServlet
  */
+//자유게시판 수정
 @WebServlet("/board/update")
 public class UpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -42,6 +43,8 @@ public class UpdateServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//인코딩 필터
 		//값추출
+	
+		
 		String toDay = new SimpleDateFormat("yyyyMMdd").format(new Date()); // 오늘날짜 
 		
 		String rootPath = request.getSession().getServletContext().getRealPath("/"); //세션
@@ -60,11 +63,8 @@ public class UpdateServlet extends HttpServlet {
 		
 		//로직
 		String boardTitle = mRequest.getParameter("boardTitle");
-		
 		String boardContent = mRequest.getParameter("boardContent");
-		
 		String memberId = mRequest.getParameter("memberId");
-	
 		String boardId = mRequest.getParameter("boardId");		
 		
 		
@@ -78,19 +78,21 @@ public class UpdateServlet extends HttpServlet {
 		
 		String fileName = mRequest.getOriginalFileName(name);
 		String filePath = mRequest.getFilesystemName(name);
-		File fileType = mRequest.getFile(name);
-		File fileTypeId = mRequest.getFile(name);
+		//File fileType = mRequest.getFile(name);
+		//File fileTypeId = mRequest.getFile(name);
 		
-		if(filePath != null) {
-			BoardFile file = new BoardFile();
-			file.setFileName(fileName);
-			file.setFilePath(filePath);
-			file.setMemberId(memberId);
-			file.setFileType(name);
-			file.setFileTypeId(name);
-			addFileList.add(file);
+		
+			if(filePath != null) {
+				BoardFile file = new BoardFile();
+				file.setFileName(fileName);
+				file.setFilePath(filePath);
+				file.setMemberId(memberId);
+				file.setFileType(name);
+				file.setFileTypeId(boardId);
+				addFileList.add(file);
+			}
 		}
-		}
+		
 		Board board = new Board();
 		board.setBoardTitle(boardTitle);
 		board.setBoardContent(boardContent);

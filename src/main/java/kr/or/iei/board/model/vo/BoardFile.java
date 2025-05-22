@@ -17,5 +17,4 @@ public class BoardFile extends Board {
 	private String fileName;
 	private String filePath;
 	
-	private ArrayList<BoardFile> fileList;
 }

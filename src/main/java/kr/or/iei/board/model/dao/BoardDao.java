@@ -13,6 +13,7 @@ import kr.or.iei.common.JDBCTemplate;
 
 public class BoardDao {
 	
+	//게시판 리스트
 	public ArrayList<Board> selectBoardList(Connection conn, int start, int end, String gubun, String sortGubun) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -56,7 +57,8 @@ public class BoardDao {
 		
 		return list;
 	}
-
+	
+	//게시글 전체글수 조회
 	public int selectTotalCount(Connection conn, String gubun) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -86,13 +88,14 @@ public class BoardDao {
 
 	
 		
-
+	//게시글 번호 생성
 	public String selectBoardNo(Connection conn) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
 		String boardNo = "";
 		
+		//게시글 번호 생성
 		String query = "select to_char(sysdate, 'yymmdd') || lpad(seq_board.nextval, 5, '0') board_no from dual";
 		
 		try {
@@ -109,11 +112,12 @@ public class BoardDao {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
-
 		
 		return boardNo;
 	}
-
+	
+	
+	//조회수
 	public int boardViewCount(Connection conn, String boardId) {
 		PreparedStatement pstmt = null;
 		
@@ -135,7 +139,9 @@ public class BoardDao {
 
 		return result;
 	}
-
+	
+	
+	//게시글 작성
 	public int insertBoard(Connection conn, Board board) {
 		PreparedStatement pstmt = null;
 
@@ -167,27 +173,22 @@ public class BoardDao {
 				
 		return result;
 	}
-
+	
+	//파일 첨부
 	public int insertBoardFile(Connection conn, BoardFile file) {
 		PreparedStatement pstmt =null;
 		
 			int result = 0;
 			
-			System.out.println(file.getBoardType());
-			System.out.println(file.getFileTypeId());
-			System.out.println(file.getFileName());
-			System.out.println(file.getFilePath());
 			
-			String query ="insert into tbl_file values(seq_tbl_file.nextval, ?, ?, ?, ?)";
+			String query ="insert into tbl_file values(seq_tbl_file.nextval, 'B', ?, ?, ?)";
 			
 			try {
 				pstmt = conn.prepareStatement(query);
 				
-				pstmt.setString(1, file.getFileType());
-				pstmt.setString(2, file.getFileTypeId());
-				pstmt.setString(3, file.getFileName());
-				pstmt.setString(4, file.getFilePath());
-				System.out.println(file);
+				pstmt.setString(1, file.getFileTypeId());
+				pstmt.setString(2, file.getFileName());
+				pstmt.setString(3, file.getFilePath());
 				result = pstmt.executeUpdate();
 						
 			} catch (SQLException e) {
@@ -199,7 +200,8 @@ public class BoardDao {
 
 		return result;
 	}
-
+	
+	//게시글 하나 조회
 	public Board selectOneBoard(Connection conn, String boardNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset= null;
@@ -231,8 +233,7 @@ public class BoardDao {
 		return oneB;
 	}
 
-
-
+	//게시글 수정하기
 	public int updateBoard(Connection conn, Board board) {
 		PreparedStatement pstmt = null;
 		
@@ -259,13 +260,14 @@ public class BoardDao {
 		}
 		return result;
 	}
-
+	
+	//게시글 하나의 첨부된 파일리스트 추출
 	public ArrayList<BoardFile> selectBoardFileList(Connection conn, String boardId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
 		ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
-		
+		System.out.println(boardId);
 		String query = "select * from tbl_file where file_type_id = ?";
 		
 		try {
@@ -280,7 +282,7 @@ public class BoardDao {
 				file.setFileName(rset.getString("file_name"));
 				file.setFilePath(rset.getString("file_path"));
 				file.setFileTypeId(rset.getString("file_type_id"));
-				
+				System.out.println(file);
 				fileList.add(file);
 			}
 		} catch (SQLException e) {
@@ -295,13 +297,14 @@ public class BoardDao {
 		return fileList;
 		
 	}
-
+	
+	//게시글 삭제
 	public int deleteBoard(Connection conn, String boardId) {
 		PreparedStatement pstmt = null;
 		
 		int result = 0;
-		
-		String query = "delete from tbl_board where board_id =?";
+		System.out.println(boardId);
+		String query = "delete from tbl_file where file_no = ?";
 		
 		try {
 			pstmt = conn.prepareStatement(query);

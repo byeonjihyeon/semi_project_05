@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class WriteAFrmServlet
  */
+//일대일 문의 작성하기폼
 @WebServlet("/board/writeAFrm")
 public class WriteAFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

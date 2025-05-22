@@ -16,6 +16,7 @@ import kr.or.iei.common.ListData;
 /**
  * Servlet implementation class AListServlet
  */
+//공지사항
 @WebServlet("/board/alist")
 public class AListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

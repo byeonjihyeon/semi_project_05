@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class EditorFrmServlet
  */
+//자유게시판 작성하기로 페이지 이동
 @WebServlet("/board/writeFrm")
 public class WriteFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

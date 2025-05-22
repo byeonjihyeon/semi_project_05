@@ -24,6 +24,7 @@ import kr.or.iei.common.KhRenamePolicy;
 /**
  * Servlet implementation class EditorServlet
  */
+//자유게시판 하나 글 작성해서 제출..
 @WebServlet("/board/write")
 public class WriteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

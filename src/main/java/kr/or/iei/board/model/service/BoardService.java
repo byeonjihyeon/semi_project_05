@@ -17,7 +17,7 @@ public class BoardService {
 		dao = new BoardDao();
 	}
 	
-	
+	//게시판 리스트
 	public ListData<Board> selectBoardList(int reqPage, String gubun, String sortGubun) {
 		Connection conn = JDBCTemplate.getConnection();
 		
@@ -126,12 +126,14 @@ public class BoardService {
 			
 	}
 
-
+	//게시판 작성 (파일 포함)
 	public int insertBoard(Board board, ArrayList<BoardFile> fileList) {
 		Connection conn = JDBCTemplate.getConnection();
 		
+		//새로운 게시글 번호 추출
 		String boardId = dao.selectBoardNo(conn);
-	
+		
+		//게시글 번호 세팅
 		board.setBoardId(boardId);
 		
 		int result = dao.insertBoard(conn, board);
@@ -161,15 +163,17 @@ public class BoardService {
 
 	public Board selectOneBoard(String boardNo) {
 		Connection conn = JDBCTemplate.getConnection();
+		
+		//1. 게시글 정보 조회
 		Board oneB = dao.selectOneBoard(conn, boardNo);
+		
+		//2. 게시글에 대한 파일 정보 조회
+		ArrayList<BoardFile> fileList = dao.selectBoardFileList(conn, boardNo);
+		oneB.setFileList(fileList);
+		
 		JDBCTemplate.close(conn);
 		return oneB;
 	}
-
-
-	
-
-
 
 
 
@@ -192,10 +196,9 @@ public class BoardService {
 			
 			if(delFileNoList != null) {
 				String delFileNoStr = String.join("|", delFileNoList);
-				
 				//preFileList에서 삭제할 파일 정보만 남기고 remove
 				//arraylist는 자동으로 길이가 조정되기때문에 뒤에서부터 처리
-				for (int i=preFileList.size()-1; i>0; i--) {
+				for (int i=preFileList.size()-1; i>=0; i--) {
 					String preFileNo = String.valueOf(preFileList.get(i).getFileNo());
 					
 					if(delFileNoStr.indexOf(preFileNo) > -1) {
@@ -212,9 +215,8 @@ public class BoardService {
 			}
 			
 		}
+		//추가된 첨부파일수 + 1 : 추가된 첨부파일수 + 삭제된 첨부파일수 + 1
 		int updTotalCnt = delFileNoList == null ? fileList.size() + 1 : fileList.size() + delFileNoList.length + 1;
-		
-		System.out.println(result);
 		if(updTotalCnt == result) {
 			JDBCTemplate.commit(conn);
 			JDBCTemplate.close(conn);

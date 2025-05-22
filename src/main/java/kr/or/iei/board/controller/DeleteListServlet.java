@@ -20,6 +20,7 @@ import kr.or.iei.member.model.vo.Member;
 /**
  * Servlet implementation class DeleteListServlet
  */
+//글 하나 삭제 (재사용가능할듯)
 @WebServlet("/board/delete")
 public class DeleteListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

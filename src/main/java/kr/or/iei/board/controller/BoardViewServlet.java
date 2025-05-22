@@ -15,6 +15,7 @@ import kr.or.iei.board.model.vo.Board;
 /**
  * Servlet implementation class boardViewServlet
  */
+//자유게시판 -하나의 글 조회
 @WebServlet("/board/view")
 public class BoardViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -39,20 +40,10 @@ public class BoardViewServlet extends HttpServlet {
 		BoardService service = new BoardService();
 		Board oneB = service.selectOneBoard(boardNo);
 		// 결과처리
-		RequestDispatcher view = null;
-		if(oneB == null) {
-			view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
-			request.setAttribute("title", "알림");
-			request.setAttribute("msg", "게시판을 여는 과정에서 오류가 발생하였습니다.");
-			request.setAttribute("icon", "error");
-			request.setAttribute("loc", "/WEB-INF/views/board/list.jsp");
-		}else {
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/board/boardView.jsp");
+	
+		request.setAttribute("boardInfo", oneB);
 			
-			view = request.getRequestDispatcher("/WEB-INF/views/board/upWriteFrm.jsp");
-			request.setAttribute("boardInfo", oneB);
-			
-			
-		}
 		view.forward(request, response);
 		
 	}

@@ -129,8 +129,6 @@ public class AdminService {
 		
 		int result = dao.deleteMember(conn, deleteId);
 		
-		System.out.println(deleteId);
-		System.out.println(result);
 		if(result > 0) {
 			JDBCTemplate.commit(conn);
 		}else {
