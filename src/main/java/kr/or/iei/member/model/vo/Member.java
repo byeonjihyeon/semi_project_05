@@ -19,4 +19,5 @@ public class Member {
 	private String memberDate;				//회원 가입일
 	private int reportedCnt;				//신고 당한 횟수
 	private int memberType;					//회원 타입
+	
 }

@@ -67,7 +67,7 @@
 		<br><br>
 		
 	<div class="list-header">
-		<a class="btn-point write-btn" href="/board/writeFrm">공지사항쓰기(매니저만 보이게)</a>
+		<a class="btn-point write-btn" href="/board/writeAFrm">공지사항쓰기(매니저만 보이게)</a>
 		
 		
 	<div class="box-container2">

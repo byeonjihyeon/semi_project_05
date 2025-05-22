@@ -1,5 +1,7 @@
 package kr.or.iei.board.model.vo;
 
+import java.util.ArrayList;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class BoardFile {
+public class BoardFile extends Board {
 	
 	private String fileNo;
 	private String fileType;
@@ -15,4 +17,5 @@ public class BoardFile {
 	private String fileName;
 	private String filePath;
 	
+	private ArrayList<BoardFile> fileList;
 }

@@ -38,7 +38,7 @@ public class AdminsServlet extends HttpServlet {
 		//3. 로직 (각 관리자마다의 권한 리스트)
 		AdminService service = new AdminService();
 		ArrayList<Admin> list = service.selectAdmins();
-		System.out.println(list);
+		
 		
 		//4. 결과처리
 			//4.1 페이지 이동

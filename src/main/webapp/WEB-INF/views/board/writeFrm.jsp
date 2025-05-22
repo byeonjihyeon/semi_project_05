@@ -16,16 +16,9 @@
 				<form action='/board/write'
 						method='post' <%--첨부파일 업로드시, method는 모조건 post로 지정하고, enctype은 multipart로 지정해야함. --%>
 						enctype='multipart/form-data'
-
 						onsubmit='return validateForm()'>
-						<%-- tbl_notice의 notice_writer(작성자) 컬럼의 값은 회원 번호! --%>
-						<input type='hidden' name='boardWriter' value='${loginMember.memberNo}'>
-						
-						<%-- tbl_notice의 board_writer(작성자) 컬럼의 값은 회원 번호! 
 						<input type='hidden' name='memberId' value='${loginMember.memberId}'>
-						--%>
-						<input type='hidden' name='memberId' value='user01'>
-						<input type='hidden' name='boardType' value='B'>
+						<input type='hidden' name='boardType' value='B'> <%-- 자유게시판 : B --%>
 
 						<table class='tbl'>
 							<tr>
@@ -39,7 +32,7 @@
 							
 							<tr>
 								<th style='width:10%'>작성자</th>
-								<td style='width:40%'>
+								<td style='width:40%; text-align: left;' >
 									<span>${loginMember.memberId}</span>
 								</td>
 							</tr>
@@ -55,7 +48,7 @@
 							<tr>
 								<th style='width:10%'>이미지 첨부</th>
 								<td style='width:40%'>
-									<input type='file' name='uploadFile'>
+									<input type='file' name='uploadFile1'>
 								
 								</td>
 								<td>이미지는 gif, jpg, png 파일 형식만 가능합니다.(5MB 이하)</td>
@@ -64,7 +57,7 @@
 							<tr>
 								<th style='width:10%'>첨부파일</th>
 								<td style='width:40%'>
-									<input type='file' name='uploadFile'>
+									<input type='file' name='uploadFile2'>
 								</td>
 								<td>pdf, doc, docx, ppt, pptx, xls, xlsx, mp3 파일형식만 가능합니다.(5MB 이하)</td>
 							</tr>

@@ -36,6 +36,7 @@ public class ListServlet extends HttpServlet {
 		
 		//2. 값 추출 - 요청페이지 번호, 정렬 구분 값
 		int reqPage = Integer.parseInt(request.getParameter("reqPage"));
+		
 		String sortGubun = request.getParameter("sortGubun") == null ? "desc" : request.getParameter("sortGubun");
 		
 		//3. 로직 - 전체 게시글 정보 조회

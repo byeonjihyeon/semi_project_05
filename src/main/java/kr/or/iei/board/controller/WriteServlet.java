@@ -67,7 +67,7 @@ public class WriteServlet extends HttpServlet {
 		String boardContent = mRequest.getParameter("boardContent");
 		String boardType = mRequest.getParameter("boardType");
 		String memberId = mRequest.getParameter("memberId");
-	
+		
 	
 		//input type의 file인 태그가 여러개일 때, 처리 코드
 				//Enumeration : iterator의 구버전 (토크나이저와 유사)
@@ -88,10 +88,12 @@ public class WriteServlet extends HttpServlet {
 				file.setFilePath(filePath);
 				file.setFileType("B"); //게시판 == B, 공지사항 == G
 				
+				
 				fileList.add(file);
 			}
 		}
 		
+		System.out.println("file Size : " + fileList.size());
 		//3.로직
 		Board board = new Board();
 		board.setBoardTitle(boardTitle);
@@ -100,7 +102,7 @@ public class WriteServlet extends HttpServlet {
 		board.setMemberId(memberId);
 		
 		BoardService service = new BoardService();
-		int result =  service.insertBoard(board, fileList);
+		int result = service.insertBoard(board, fileList);
 		
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
 		
@@ -114,7 +116,7 @@ public class WriteServlet extends HttpServlet {
 			request.setAttribute("msg", "게시글 작성중 오류가 발생하였습니다");
 			request.setAttribute("icon", "error");
 			request.setAttribute("loc", "writeFrm");
-	}
+		}
 	
 		view.forward(request, response);
 	}

@@ -16,13 +16,13 @@ import kr.or.iei.board.model.vo.Board;
  * Servlet implementation class boardViewServlet
  */
 @WebServlet("/board/view")
-public class boardViewServlet extends HttpServlet {
+public class BoardViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public boardViewServlet() {
+    public BoardViewServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,7 +34,7 @@ public class boardViewServlet extends HttpServlet {
 		// 인코딩 - 필터
 		// 값 추출
 		String boardNo = request.getParameter("boardNo");
-
+	
 		// 로직 => 게시물 찾기
 		BoardService service = new BoardService();
 		Board oneB = service.selectOneBoard(boardNo);

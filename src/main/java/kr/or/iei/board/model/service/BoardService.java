@@ -142,7 +142,7 @@ public class BoardService {
 				
 				result = dao.insertBoardFile(conn, file);
 				
-				if(result <1) {
+				if(result < 1) {
 					JDBCTemplate.rollback(conn);
 					JDBCTemplate.close(conn);
 					return 0;
@@ -162,11 +162,111 @@ public class BoardService {
 	public Board selectOneBoard(String boardNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		Board oneB = dao.selectOneBoard(conn, boardNo);
+		JDBCTemplate.close(conn);
 		return oneB;
 	}
 
 
-
 	
 
+
+
+
+
+	public ArrayList<BoardFile> updateBoard(Board board, ArrayList<BoardFile> fileList, String[] delFileNoList) {
+		
+		Connection conn = JDBCTemplate.getConnection();
+		
+		//게시글 수정
+		//(1)게시글 정보 업데이트
+		int result = dao.updateBoard(conn, board);
+		
+		ArrayList<BoardFile> preFileList = null;
+		
+		if(result > 0) {
+			//(2)게시글에 대한 전체 파일 리스트 조회
+			//리스트에서 삭제 대상 파일 정보만 남기고, remove
+			//ex) 리스트에 저장된 파일 객체의 파일 번호 : 1, 2, 3, 4, 5
+			preFileList = dao.selectBoardFileList(conn, board.getBoardId());
+			
+			
+			if(delFileNoList != null) {
+				String delFileNoStr = String.join("|", delFileNoList);
+				
+				//preFileList에서 삭제할 파일 정보만 남기고 remove
+				//arraylist는 자동으로 길이가 조정되기때문에 뒤에서부터 처리
+				for (int i=preFileList.size()-1; i>0; i--) {
+					String preFileNo = String.valueOf(preFileList.get(i).getFileNo());
+					
+					if(delFileNoStr.indexOf(preFileNo) > -1) {
+						result += dao.deleteBoard(conn, preFileNo); //게시글에 대한 개별 파일 삭제
+					}else {
+						//기존 파일이 삭제 대상 파일이 아닐 때
+						preFileList.remove(i); //서버에서 삭제되지 않도록 리스트에서 제거
+					}
+				}
+			}
+			for(int i=0; i<fileList.size(); i++) {
+				BoardFile insFile = fileList.get(i);
+				result += dao.insertBoardFile(conn, insFile);
+			}
+			
+		}
+		int updTotalCnt = delFileNoList == null ? fileList.size() + 1 : fileList.size() + delFileNoList.length + 1;
+		
+		System.out.println(result);
+		if(updTotalCnt == result) {
+			JDBCTemplate.commit(conn);
+			JDBCTemplate.close(conn);
+			return preFileList;
+			
+		}else {
+			JDBCTemplate.rollback(conn);
+			JDBCTemplate.close(conn);
+	
+		
+			return null;
+		}
+	}
+
+	public ArrayList<BoardFile> deleteBoard(String boardId) {
+		Connection conn = JDBCTemplate.getConnection();
+		
+		ArrayList<BoardFile> delFileList = dao.selectBoardFileList(conn, boardId);
+		
+		int result = dao.deleteBoard(conn, boardId);
+		
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+			JDBCTemplate.close(conn);
+			return delFileList;
+		}
+		
+		JDBCTemplate.rollback(conn);
+		JDBCTemplate.close(conn);
+		return null;
+	}
+
+/*
+	public String updateListBoard(String boardId) {
+		Connection conn = JDBCTemplate.getConnection();
+		
+		int result = dao.updateListBoard(conn, boardId);
+		
+		
+		if(result >0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return null;
+	}
+
+
+	*/
+
+
+	
+	
 }

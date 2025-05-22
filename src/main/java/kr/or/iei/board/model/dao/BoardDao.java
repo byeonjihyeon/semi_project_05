@@ -182,6 +182,7 @@ public class BoardDao {
 				pstmt.setString(2, file.getFileTypeId());
 				pstmt.setString(3, file.getFileName());
 				pstmt.setString(4, file.getFilePath());
+				System.out.println(file);
 				result = pstmt.executeUpdate();
 						
 			} catch (SQLException e) {
@@ -211,10 +212,11 @@ public class BoardDao {
 			if(rset.next()) {
 				oneB = new Board();
 				
+				oneB.setBoardId(rset.getString("board_id"));
 				oneB.setBoardTitle(rset.getString("board_title"));
 				oneB.setBoardContent(rset.getString("BOARD_CONTENT"));
 				oneB.setMemberId(rset.getString("member_id"));
-				System.out.println(oneB.getBoardContent());
+				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -225,15 +227,115 @@ public class BoardDao {
 	}
 
 
-	
 
-	
+	public int updateBoard(Connection conn, Board board) {
+		PreparedStatement pstmt = null;
+		
+		int result = 0;
+		
+		String query = "update tbl_board set board_title = ?, board_content =? where member_id = ? and board_id =?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			
+			pstmt.setString(1, board.getBoardTitle());
+			pstmt.setString(2, board.getBoardContent());
+			pstmt.setString(3, board.getMemberId());
+			pstmt.setString(4, board.getBoardId());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
 
-	
+	public ArrayList<BoardFile> selectBoardFileList(Connection conn, String boardId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
+		
+		String query = "select * from tbl_file where file_type_id = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, boardId);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				BoardFile file = new BoardFile();
+				file.setFileNo(rset.getString("file_no"));
+				file.setFileTypeId(boardId); //주의
+				file.setFileName(rset.getString("file_name"));
+				file.setFilePath(rset.getString("file_path"));
+				file.setFileTypeId(rset.getString("file_type_id"));
+				
+				fileList.add(file);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
 		
 		
+		return fileList;
+		
+	}
+
+	public int deleteBoard(Connection conn, String boardId) {
+		PreparedStatement pstmt = null;
+		
+		int result = 0;
+		
+		String query = "delete from tbl_board where board_id =?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, boardId);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+/*
+  	// 스트링으로할려했었다가 어레이리스트로 변경
+	public int updateListBoard(Connection conn, String boardId) {
+		PreparedStatement pstmt = null;
+		
+		int result = 0;
+		
+		String query = "update tbl_file set board_id = ?";
+		
+		try {
+		pstmt = conn.prepareStatement(query);
+		pstmt.setString(1, boardId);
 	
-
-
-
+		result = pstmt.executeUpdate();
+				
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+*/
+	
 }

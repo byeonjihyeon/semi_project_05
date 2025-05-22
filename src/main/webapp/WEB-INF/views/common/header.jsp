@@ -46,7 +46,7 @@
 		                 <a href="/admin/member/list?page=1">회원 관리</a>
 		                 <a href="/admin/gym/list?page=1">헬스장 관리</a>
 		                 <a href="/admin/gym/applications?page=1">헬스장 신청내역</a>
-		                 <a href="/admin/board/inquiries?page=1"">일대일 문의내역</a>
+		                 <a href="/admin/board/inquiries?page=1">일대일 문의내역</a>
               		 </div>
             	 	</div>
              	 </c:if>

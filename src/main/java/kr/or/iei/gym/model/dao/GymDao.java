@@ -119,7 +119,7 @@ public class GymDao {
 				loginGym.setDetail(rset.getString("detail"));
 				loginGym.setConvenience(rset.getString("convenience"));
 				 
-				System.out.println(loginGym.getGymId());
+				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

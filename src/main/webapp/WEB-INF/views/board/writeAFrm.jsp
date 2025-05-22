@@ -12,15 +12,15 @@
 	<jsp:include page="/WEB-INF/views/common/sidemenuAdmin.jsp"></jsp:include>
 	<main class="content">
 	<section class='section notice-write-wrap'>
-				<div class='page-title'>게시판 작성</div>
+				<div class='page-title'>공지사항 작성</div>
 				<form action='/board/write'
 						method='post' <%--첨부파일 업로드시, method는 모조건 post로 지정하고, enctype은 multipart로 지정해야함. --%>
 						enctype='multipart/form-data'
 						>
 						<%-- tbl_notice의 board_writer(작성자) 컬럼의 값은 회원 번호! 
-						<input type='hidden' name='memberId' value='${loginMember.memberId}'>
-						--%>
 						<input type='hidden' name='memberId' value='user01'>
+						--%>
+						<input type='hidden' name='memberId' value='${loginMember.memberId}'>
 						<input type='hidden' name='boardType' value='G'>
 						<table class='tbl'>
 							<tr>

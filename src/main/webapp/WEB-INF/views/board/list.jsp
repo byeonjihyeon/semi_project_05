@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <!-- JSTL 라이브러리 선언 -->            
-<link rel="stylesheet" href="/resources/css/login.css">
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -105,6 +105,7 @@
 	width: 100%;
 	
 	}  
+	
 </style>
 </head>
 <body>
@@ -117,12 +118,7 @@
 				<div class='page-title2'>최근 많이 본 TOP 5</div>
 			 	
 			 	
-			 		<c:if test="${sortGubun eq 'asc' }">
-			 		<div class="box2"> <a href='/board/list?reqPage=1&sortGubun=desc'>왼쪽</a> <%-- 자료 한번 넣어봤음 a href--%></div> 
-			 		</c:if>
-			 		<c:if test="${sortGubun eq 'desc' }">
-			 		<div class="box3"> <a href='/board/list?reqPage=1&sortGubun=desc'>오른쪽</a> <%-- 자료 한번 넣어봤음 a href--%></div> 
-			 		</c:if>
+			 		
 			 		
 			 	<div class='box-container'>
 			 		
@@ -178,10 +174,10 @@
 						<c:forEach var="board" items="${boardList}">
 							<tr>
 								<td>
-								<a href="/board/view?boardNo=${board.boardId}&title=${board.boardTitle}&writer=${board.memberId}&updChk=true">${board.boardId}</a>
+								<a href="/board/view?boardNo=${board.boardId}&?title=${board.boardTitle}&?writer=${board.memberId}&?updChk=true">${board.boardId}</a>
 								</td>
 								<td class='boardTitle'>${board.boardTitle}
-								console.log(${board.boardTitle});
+								
 								</td>
 								<td>${board.memberId}</td>
 								<td>${board.createdAt}</td>
