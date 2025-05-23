@@ -16,6 +16,8 @@ import kr.or.iei.gym.model.vo.Payment;
 import kr.or.iei.gym.model.vo.Usage;
 import kr.or.iei.member.model.service.MemberService;
 import kr.or.iei.member.model.vo.Member;
+import kr.or.iei.member.model.vo.UsageDTO;
+
 
 /**
  * Servlet implementation class UserHistoryListServlet
@@ -41,21 +43,34 @@ public class UserHistoryListServlet extends HttpServlet {
 		
 		MemberService service = new MemberService();
 		ArrayList<GymFile> memberFile = service.searchFile(m.getMemberId());
-
 		ArrayList<Usage> memberHistory = service.searchHistory(m.getMemberId());
-		
 		ArrayList<Payment> memberPay = service.searchPay(m.getMemberId());
 		
+		ArrayList<UsageDTO> usageList = new ArrayList<>();
+
+		int count = Math.min(Math.min(memberFile.size(), memberHistory.size()), memberPay.size());
 		
-		m.setPayment(memberPay);
-		m.setGymFiles(memberFile);
-		m.setUsages(memberHistory);
+		System.out.println(memberFile.size());
+		System.out.println(memberHistory.size());
+		System.out.println(memberPay.size());
 		
-		ArrayList<Member> usingInfo = new ArrayList<Member>();
-		usingInfo.add(m);
+		for (int i = 0; i < count; i++) {
+		    UsageDTO dto = new UsageDTO();
+		    
+		    dto.setGymFile(memberFile.get(i));
+		    dto.setUsage(memberHistory.get(i));
+		    dto.setPayment(memberPay.get(i));
+		    usageList.add(dto);
+		}
+		
+		System.out.println("usageList size: " + usageList.size());
+		for (UsageDTO dto : usageList) {
+		    System.out.println(dto);
+		}
+		
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/member/userHistoryList.jsp");
-		request.setAttribute("usingInfo", usingInfo);
-		
+		request.setAttribute("usingInfo", usageList);
+		System.out.println(usageList);
 		
 		view.forward(request, response);
 	}

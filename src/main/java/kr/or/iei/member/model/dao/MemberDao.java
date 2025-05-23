@@ -6,7 +6,11 @@ import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.gym.model.vo.GymFile;
@@ -433,7 +437,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		ArrayList<GymFile> memberFile = null;
+		ArrayList<GymFile> memberFile = new ArrayList<GymFile>();
 		String query = "select * from tbl_member join tbl_user_history using(member_id)"
 				+ "              join tbl_gym_file using(gym_id) where member_id = ?";
 		
@@ -448,7 +452,7 @@ public class MemberDao {
 			
 			while(rset.next()) {
 				GymFile gFile = new GymFile();
-				memberFile = new ArrayList<GymFile>();
+				
 				
 				gFile.setFileName(rset.getString("file_name"));
 				gFile.setFileNo(rset.getString("file_no"));
@@ -473,10 +477,10 @@ public class MemberDao {
 	public ArrayList<Usage> searchHistory(Connection conn, String memberId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		ArrayList<Usage> memberHistory = null;
+		ArrayList<Usage> memberHistory = new ArrayList<Usage>();
 		
 		
-		String query = "select user_history_no, ticket_insert_date, member_id, ticket_kind, gym_id, floor(ticket_insert_date + 30*ticket_kind - sysdate) as leftDate from tbl_member join tbl_user_history using(member_id) join tbl_gym_file using(gym_id) where member_id = ?";
+		String query = "select * from tbl_user_history join tbl_ticket using(ticket_kind) where member_id = ?";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -487,15 +491,57 @@ public class MemberDao {
 			
 			while(rset.next()) {
 				Usage usage = new Usage();
-				memberHistory = new ArrayList<Usage>();
+				
+				
 				
 				usage.setUsageNo(rset.getString("user_history_no"));
 				usage.setEnrollDate(rset.getString("ticket_insert_date"));
-				usage.setTickPeriod(rset.getString("tickte_period"));
+				String period = rset.getString("ticket_period");
+				
+				if(period.equals("oneDay")) {
+					period = "1";
+				}else if(period.equals("oneMonth")){
+					period = "30";
+				}else if(period.equals("threeMonth")) {
+					period = "90";
+				}else if(period.equals("sixMonth")) {
+					period = "180";
+				}else if(period.equals("oneYear")) {
+					period = "360";
+				}
+				
+				usage.setTicketPeriod(period);
 				usage.setMemberIdRef(rset.getString("member_id"));
 				usage.setTicketIdRef(rset.getString("ticket_kind"));
 				usage.setGymIdRef(rset.getString("gym_id"));
-				usage.setLeftDate(rset.getString("leftdate"));
+				
+				// 1. ticket_insert_date를 LocalDate로 가져온다고 가정
+				LocalDate insertDate = rset.getDate("ticket_insert_date").toLocalDate();
+				String ticketPeriodStr = rset.getString("ticket_period");
+				
+				// 2. 기간 문자열을 일 수로 변환
+				Map<String, Integer> periodMap = new HashMap<>();
+				periodMap.put("oneDay", 1);
+				periodMap.put("oneMonth", 30);
+				periodMap.put("threeMonth", 90);
+				periodMap.put("sixMonth", 180);
+				periodMap.put("oneYear", 360);
+				
+				// 3. 해당 기간 일 수 계산
+				int periodDays = periodMap.getOrDefault(ticketPeriodStr, 0);
+				
+				// 4. 종료일 계산
+				LocalDate endDate = insertDate.plusDays(periodDays);
+				
+				// 5. 현재 날짜 기준 남은 일수 계산
+				long remainingDays = ChronoUnit.DAYS.between(LocalDate.now(), endDate);
+				
+				// 6. 내림 처리 (양수일 경우만 적용되므로 long 사용 시 floor 불필요)
+				int daysLeft = (int) remainingDays;
+				
+				
+				
+				usage.setLeftDate(daysLeft);
 				
 				memberHistory.add(usage);
 				
@@ -515,7 +561,7 @@ public class MemberDao {
 	public ArrayList<Payment> searchPay(Connection conn, String memberId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		ArrayList<Payment> memberPay = null;
+		ArrayList<Payment> memberPay = new ArrayList<Payment>();
 		String query ="select * from tbl_member join tbl_buy using(member_id) where member_id = ?";
 		
 		try {
@@ -527,10 +573,11 @@ public class MemberDao {
 			
 			while(rset.next()) {
 				Payment payInfo = new Payment();
-				memberPay = new ArrayList<Payment>();
+				
 				
 				payInfo.setCardName(rset.getString("CARD_COMPANY_NAME"));
 				payInfo.setMemberId(rset.getString("member_Id"));
+				
 				payInfo.setMerchantId(rset.getString("merchant_id"));
 				payInfo.setPaymentDate(rset.getString("payment_date"));
 				payInfo.setPaymentId(rset.getString("PAYMENT_HISTORY_NO"));
