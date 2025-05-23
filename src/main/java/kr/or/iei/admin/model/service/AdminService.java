@@ -29,7 +29,7 @@ public class AdminService {
 		if(loginAdmin.isEmpty()) {
 			return null;
 		}else {
-			boolean pwChk = BCrypt.checkpw(adminPw, loginAdmin.get(1).getMemberPw());
+			boolean pwChk = BCrypt.checkpw(adminPw, loginAdmin.get(0).getMemberPw());
 			
 			if(pwChk) {
 				return loginAdmin;
