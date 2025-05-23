@@ -34,12 +34,13 @@ public class FileDownServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String fileName = request.getParameter("fileName");
 		String filePath = request.getParameter("filePath");
+		String fileType = request.getParameter("type");
 		
 		String writeDate = filePath.substring(0,8);
 		//webapp 폴더 경로
 		String rootPath = request.getSession().getServletContext().getRealPath("/");
 		//파일 저장 경로
-		String savePath = rootPath + "resources/upload/" + writeDate + "/"; 
+		String savePath = rootPath + "resources/upload/board/"+ fileType +"/" + writeDate + "/"; 
 		
 		File file = new File(savePath+filePath);
 		

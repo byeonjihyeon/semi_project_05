@@ -13,17 +13,16 @@ import kr.or.iei.board.model.service.BoardService;
 import kr.or.iei.board.model.vo.Board;
 
 /**
- * Servlet implementation class AboardViewServlet
+ * Servlet implementation class UpdateAFrmServlet
  */
-//공지사항 - 하나의 글 조회
-@WebServlet("/board/aview")
-public class AboardViewServlet extends HttpServlet {
+@WebServlet("/board/updateaFrm")
+public class UpdateAFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AboardViewServlet() {
+    public UpdateAFrmServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,16 +31,13 @@ public class AboardViewServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//인코딩
-		//값 추출
 		String boardNo = request.getParameter("boardNo");
 		
 		BoardService service = new BoardService();
-		Board oneB = service.selectOneBoard(boardNo);
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/board/AboardView.jsp");
+		Board board = service.selectOneBoard(boardNo);
 		
-		request.setAttribute("boardInfo", oneB);
-			
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/board/upAwriteFrm.jsp");
+		request.setAttribute("oneBoard", board);
 		view.forward(request, response);
 	}
 

@@ -51,8 +51,8 @@ public class WriteServlet extends HttpServlet {
 		String rootPath = request.getSession().getServletContext().getRealPath("/");
 				
 		//실제 파일 저장 경로 지정
-		String savePath = rootPath + "resources/upload/" + toDay + "/";
-				
+		//String savePath = rootPath + "resources/upload/" + toDay + "/";
+		String savePath = rootPath + "resources/upload/board/free/"+ toDay +"/";
 		//업로드 파일의 최대 크기 지정
 		int maxSize = 1024 * 1024 * 100; //100 Mega Byte
 		
@@ -94,7 +94,6 @@ public class WriteServlet extends HttpServlet {
 			}
 		}
 		
-		System.out.println("file Size : " + fileList.size());
 		//3.로직
 		Board board = new Board();
 		board.setBoardTitle(boardTitle);

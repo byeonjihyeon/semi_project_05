@@ -175,20 +175,25 @@ public class BoardDao {
 	}
 	
 	//파일 첨부
-	public int insertBoardFile(Connection conn, BoardFile file) {
+	public int insertBoardFile(Connection conn, String boardType ,BoardFile file) {
 		PreparedStatement pstmt =null;
 		
 			int result = 0;
 			
 			
-			String query ="insert into tbl_file values(seq_tbl_file.nextval, 'B', ?, ?, ?)";
+			String query ="insert into tbl_file values(seq_tbl_file_no.nextval, ?, ?, ?, ?)";
 			
 			try {
 				pstmt = conn.prepareStatement(query);
 				
-				pstmt.setString(1, file.getFileTypeId());
-				pstmt.setString(2, file.getFileName());
-				pstmt.setString(3, file.getFilePath());
+				pstmt.setString(1, boardType);
+				System.out.println(boardType);
+				pstmt.setString(2, file.getFileTypeId());
+				System.out.println(file.getFileTypeId());
+				pstmt.setString(3, file.getFileName());
+				System.out.println(file.getFileName());
+				pstmt.setString(4, file.getFilePath());
+				System.out.println(file.getFilePath());
 				result = pstmt.executeUpdate();
 						
 			} catch (SQLException e) {
@@ -223,7 +228,7 @@ public class BoardDao {
 				oneB.setBoardTitle(rset.getString("board_title"));
 				oneB.setBoardContent(rset.getString("BOARD_CONTENT"));
 				oneB.setMemberId(rset.getString("member_id"));
-				
+				oneB.setBoardType(rset.getString("board_type"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -267,9 +272,7 @@ public class BoardDao {
 		ResultSet rset = null;
 		
 		ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
-		System.out.println(boardId);
 		String query = "select * from tbl_file where file_type_id = ?";
-		
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, boardId);
@@ -282,7 +285,7 @@ public class BoardDao {
 				file.setFileName(rset.getString("file_name"));
 				file.setFilePath(rset.getString("file_path"));
 				file.setFileTypeId(rset.getString("file_type_id"));
-				System.out.println(file);
+				file.setFileType(rset.getString("file_type"));
 				fileList.add(file);
 			}
 		} catch (SQLException e) {
@@ -298,17 +301,15 @@ public class BoardDao {
 		
 	}
 	
-	//게시글 삭제
-	public int deleteBoard(Connection conn, String boardId) {
+	//게시글과 관련된 파일 삭제 
+	public int deleteBoardFile(Connection conn, String fileNo) {
 		PreparedStatement pstmt = null;
 		
 		int result = 0;
-		System.out.println(boardId);
 		String query = "delete from tbl_file where file_no = ?";
-		
 		try {
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, boardId);
+			pstmt.setString(1, fileNo);
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -345,5 +346,28 @@ public class BoardDao {
 		return result;
 	}
 */
+	//게시글 삭제
+	public int deleteBoard(Connection conn, String boardId) {
+		PreparedStatement pstmt = null;
+		
+		int result = 0;
+		
+		String query = "delete from tbl_board where board_id = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, boardId);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
 	
 }
