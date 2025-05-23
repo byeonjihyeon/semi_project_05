@@ -46,8 +46,6 @@ public class GymRegisterServlet extends HttpServlet {
 		if(session != null) {
 			session.invalidate();
 		}
-		//오늘 날짜(yyyyMMdd) 폴더 생성을 위한 String 변수
-		String toDay = new SimpleDateFormat("yyyyMMdd").format(new Date()); //"20250509"
 		
 		//C드라이브부터 webapp 폴더까지 경로 C:\serverworkspace
 		String rootPath = request.getSession().getServletContext().getRealPath("/");

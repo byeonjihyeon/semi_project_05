@@ -339,9 +339,10 @@ public class GymDao {
 			rset= pstmt.executeQuery();
 			GymFile file= new GymFile();
 			while(rset.next()) {
-				String fileUrl = savePath+rset.getString("file_path");
-				System.out.println(fileUrl);
-				fileList.add(file);
+				GymFile gymFile = new GymFile();
+				gymFile.setFileSavePath(savePath);
+				gymFile.setFilePath(rset.getString("file_path"));
+				fileList.add(gymFile);
 			}
 			
 		} catch (SQLException e) {
