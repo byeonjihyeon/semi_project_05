@@ -11,6 +11,7 @@ import kr.or.iei.admin.model.vo.Admin;
 import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.common.ListData;
 import kr.or.iei.gym.model.vo.Gym;
+import kr.or.iei.gym.model.vo.GymFile;
 import kr.or.iei.member.model.vo.Member;
 
 public class AdminService {
@@ -385,6 +386,7 @@ public class AdminService {
 	public Gym selectGymApplication(String applyNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		Gym gym = dao.selectGymApplication(conn, applyNo);
+		ArrayList<GymFile> applicationFiles = dao.selectGymApplicatonsFiles(conn, applyNo);
 		
 		JDBCTemplate.close(conn);
 		

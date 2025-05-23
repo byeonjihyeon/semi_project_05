@@ -49,9 +49,6 @@
 				    	</tr>
 					    <tr>
 					    	<th>첨부서류</th>
-					    		<c:forEach>
-					    		</c:forEach>
-					    	
 				    	</tr>
 				  </table>
 				

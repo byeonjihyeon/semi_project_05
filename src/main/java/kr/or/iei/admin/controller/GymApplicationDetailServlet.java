@@ -46,8 +46,6 @@ public class GymApplicationDetailServlet extends HttpServlet {
 		request.setAttribute("gymApplication", gym);
 		view.forward(request, response);
 		
-		
-		
 	
 	}
 

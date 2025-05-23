@@ -10,6 +10,7 @@ import kr.or.iei.admin.model.vo.Admin;
 import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.gym.model.vo.Gym;
 import kr.or.iei.gym.model.vo.GymApplication;
+import kr.or.iei.gym.model.vo.GymFile;
 import kr.or.iei.member.model.vo.Member;
 
 public class AdminDao {
@@ -611,7 +612,7 @@ public class AdminDao {
 				application.setInsertGymNo(rset.getString("insert_gym_no"));
 				application.setScreeningDate(rset.getString("screening_date"));
 				application.setJudgeId(rset.getString("judge_id"));
-				//gym.setGymApplication();
+				
 				
 			}
 			
@@ -624,6 +625,13 @@ public class AdminDao {
 		}
 		
 		return gym;
+	}
+
+	public ArrayList<GymFile> selectGymApplicatonsFiles(Connection conn, String applyNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		return null;
 	}
 
 	
