@@ -11,6 +11,8 @@ import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.gym.model.vo.Gym;
 import kr.or.iei.gym.model.vo.GymFile;
 import kr.or.iei.gym.model.vo.GymTicket;
+import kr.or.iei.gym.model.vo.Payment;
+import kr.or.iei.gym.model.vo.Usage;
 
 public class GymDao {
 
@@ -72,7 +74,7 @@ public class GymDao {
 		
 		int result = 0;
 		
-		String query = "insert into tbl_gym_file values (seq_gym_file.nextval, ?, ?, ?)";
+		String query = "insert into tbl_gym_file values (seq_gym_file.nextval, ?, ?, ?, ?)";
 	
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -80,7 +82,7 @@ public class GymDao {
 			pstmt.setString(1, file.getFileName());
 			pstmt.setString(2, file.getFilePath());
 			pstmt.setString(3, file.getGymId());
-			
+			pstmt.setString(4,  file.getFileSavePath());
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -343,7 +345,117 @@ public class GymDao {
 		return result;
 	}
 
-	
+
+	public List<GymFile> selectGymFile(Connection conn, String gymId, String savePath) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = "select * from tbl_gym_file where gym_id = ? and file_save_path = ?";
+		List<GymFile> fileList = new ArrayList<GymFile>();
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, gymId);
+			pstmt.setString(2, savePath);
+			
+			rset= pstmt.executeQuery();
+			GymFile file= new GymFile();
+			while(rset.next()) {
+				String fileUrl = savePath+rset.getString("file_path");
+				System.out.println(fileUrl);
+				file.setFileUrl(fileUrl);
+				fileList.add(file);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return fileList;
+	}
+
+	public String selectTicketId(Connection conn, String gymId, String membership) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = "select max(to_number(ticket_kind)) as ticket_kind from tbl_ticket where gym_id = ? and ticket_period = ?";
+		String ticketId = null;
+		try {
+			pstmt = conn.prepareStatement(query);
+			System.out.println("dao gymId: "+gymId);
+			pstmt.setString(1, gymId);
+			System.out.println("dao membership: "+membership);
+			pstmt.setString(2, membership);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				ticketId = rset.getString("ticket_kind");
+				System.out.println("rset ticketId:"+ ticketId);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return ticketId;
+	}
+
+	public int insertPayment(Connection conn, Payment payment) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = "insert into tbl_buy values(seq_tbl_buy.nextval, ?, ?, ?, ?, sysdate, ?)";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, payment.getMemberId());
+			pstmt.setString(2, payment.getTicketPrice());
+			pstmt.setString(3, payment.getPayMethod());
+			pstmt.setString(4, payment.getCardName());
+			pstmt.setString(5, payment.getMerchantId());
+			
+			result = pstmt.executeUpdate();
+			System.out.println("dao 결제내역 db 처리 후 result: " + result);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public int insertUsage(Connection conn, Usage usage) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = "insert into tbl_user_history values(seq_tbl_user_history.nextval, sysdate, ?, ?, ?)";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, usage.getMemberIdRef());
+			pstmt.setString(2, usage.getTicketIdRef());
+			pstmt.setString(3, usage.getGymIdRef());
+			
+			result = pstmt.executeUpdate();
+			System.out.println("dao 이용내역 db 처리 후 result: " + result);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
 
 
 

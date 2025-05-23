@@ -1,7 +1,6 @@
 package kr.or.iei.gym.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,20 +9,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kr.or.iei.gym.model.service.GymService;
-import kr.or.iei.gym.model.vo.Gym;
-
 /**
- * Servlet implementation class GymFindFrmServlet
+ * Servlet implementation class PaymentSuccessServlet
  */
-@WebServlet("/gym/list")
-public class GymListServlet extends HttpServlet {
+@WebServlet("/payment/success")
+public class PaymentSuccessServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GymListServlet() {
+    public PaymentSuccessServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,20 +28,14 @@ public class GymListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String orderId = request.getParameter("orderId");
 		
-		String rootPath = request.getSession().getServletContext().getRealPath("/");
-		//실제 파일 저장 경로 지정
-		String savePath = "/upload/gym/image/";
-		
-		
-		//등록된 헬스장 리스트 가져오기
-		GymService service = new GymService();
-		List<Gym> gymList = service.selectAllGym(savePath);
-		if(gymList.size()==0) gymList = null;
-		request.setAttribute("gymList", gymList);
-		
-		
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/gym/gymList.jsp");
+		request.setAttribute("orderId", orderId);
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
+		request.setAttribute("title", "결제성공");
+		request.setAttribute("msg", "주문번호"+orderId+"이 정상적으로 처리되었습니다.");
+		request.setAttribute("icon", "success");
+		request.setAttribute("loc", "/WEB-INF/views/gym/paymentSuccess.jsp");
 		view.forward(request, response);
 	}
 

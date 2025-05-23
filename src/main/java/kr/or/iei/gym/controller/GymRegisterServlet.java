@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.oreilly.servlet.MultipartRequest;
 
@@ -41,7 +41,12 @@ public class GymRegisterServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		HttpSession session = request.getSession();
+		if(session != null) {
+			session.invalidate();
+		}
+		//오늘 날짜(yyyyMMdd) 폴더 생성을 위한 String 변수
+		String toDay = new SimpleDateFormat("yyyyMMdd").format(new Date()); //"20250509"
 		
 		//C드라이브부터 webapp 폴더까지 경로 C:\serverworkspace
 		String rootPath = request.getSession().getServletContext().getRealPath("/");
@@ -82,12 +87,12 @@ public class GymRegisterServlet extends HttpServlet {
 			
 			String fileName = mRequest.getOriginalFileName(name); //사용자가 업로드한 파일명
 			String filePath = mRequest.getFilesystemName(name);	  //변경된 파일명
-			
+			String fileSavePath = "/upload/gym/judge/";
 			if(filePath != null) { //input type이 file인 요소들 중, 업로드 된 요소만 처리하기 위함.
 				GymFile file = new GymFile();
 				file.setFileName(fileName);
 				file.setFilePath(filePath);
-				//파일에 헬스장 아이디 저장
+				file.setFileSavePath(fileSavePath);			
 				file.setGymId(gymId);
 				
 				fileList.add(file);
