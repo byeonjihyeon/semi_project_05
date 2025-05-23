@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class Payment {
-	private String paymentId;
-	private String memberId;
-	private String ticketPrice;
-	private String payMethod;
-	private String cardName;
-	private String paymentDate;
-	private String merchantId;
+	private String paymentId; 	//payment
+	private String memberId;	//m i
+	private String ticketPrice;	// tp
+	private String payMethod; // p m
+	private String cardName; // c c n
+	private String paymentDate; // date
+	private String merchantId; // merchantId
 }

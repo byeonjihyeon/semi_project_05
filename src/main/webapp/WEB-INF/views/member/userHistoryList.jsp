@@ -136,13 +136,11 @@ body {
 
     <!-- 메인 콘텐츠 -->
     <div class="main-content">
-        <h2>나의 기록 일지</h2>
+        <h2>이용내역 조회</h2>
         <div class="welcome-box">
-            <div>
-                <p><strong>${sessionScope.loginMember.memberName}</strong>님, 환영합니다!</p>
-                <p>회원님의 등급은 <strong>${sessionScope.loginMember.memberGrade}</strong>입니다.</p>
-                <p>※ 프로필 설정 및 활동 통계는 추후 추가 예정입니다.</p>
-            </div>
+            <c:forEach var="i" items="${usingInfo}">
+            	${usingInfo}
+            </c:forEach>
         </div>
 
     </div>

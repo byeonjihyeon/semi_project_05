@@ -36,6 +36,7 @@ public class PaymentSuccessServlet extends HttpServlet {
 		request.setAttribute("msg", "주문번호"+orderId+"이 정상적으로 처리되었습니다.");
 		request.setAttribute("icon", "success");
 		request.setAttribute("loc", "/WEB-INF/views/gym/paymentSuccess.jsp");
+		
 		view.forward(request, response);
 	}
 
