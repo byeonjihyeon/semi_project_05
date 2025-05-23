@@ -10,6 +10,7 @@ import kr.or.iei.admin.model.vo.Admin;
 import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.gym.model.vo.Gym;
 import kr.or.iei.gym.model.vo.GymApplication;
+import kr.or.iei.gym.model.vo.GymFile;
 import kr.or.iei.member.model.vo.Member;
 
 public class AdminDao {
@@ -496,6 +497,7 @@ public class AdminDao {
 		return result;
 	}
 
+	//등록신청한 헬스장'들' 조회
 	public ArrayList<Gym> selectGymApplications(Connection conn, int start, int end) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -530,7 +532,6 @@ public class AdminDao {
 				application.setInsertGymNo(rset.getString("insert_gym_no"));
 				application.setScreeningDate(rset.getString("screening_date"));
 				application.setJudgeId(rset.getString("judge_id"));
-				application.setFileNo(rset.getString("file_no"));
 				
 				gym.setGymApplication(application);
 				
@@ -576,6 +577,7 @@ public class AdminDao {
 		return cnt;
 	}
 
+	//등록신청한 하나의 헬스장 조회	
 	public Gym selectGymApplication(Connection conn, String applyNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -609,8 +611,7 @@ public class AdminDao {
 				application.setInsertGymNo(rset.getString("insert_gym_no"));
 				application.setScreeningDate(rset.getString("screening_date"));
 				application.setJudgeId(rset.getString("judge_id"));
-				application.setFileNo(rset.getString("file_no"));
-				gym.setGymApplication(application);
+				
 				
 			}
 			
@@ -623,6 +624,13 @@ public class AdminDao {
 		}
 		
 		return gym;
+	}
+
+	public ArrayList<GymFile> selectGymApplicatonsFiles(Connection conn, String applyNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		return null;
 	}
 
 	
