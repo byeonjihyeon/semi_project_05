@@ -78,3 +78,35 @@
 .input-msg.invalid {
     color: red;
 }
+
+/* 주소 입력 필드 스타일 */
+.form-group input#address,
+.form-group input#detailAddress {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 주소 찾기 버튼 스타일 */
+.form-group input[type="button"] {
+    margin-top: 10px;
+    padding: 8px 15px;
+    background-color: #d94f4f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin-left: 10px;
+}
+
+/* 주소 입력 input-wrap이 있을 경우 정렬용 */
+.input-wrap {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
