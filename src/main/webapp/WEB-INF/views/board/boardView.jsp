@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>게시글 조회</title>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
@@ -49,12 +49,6 @@
 										<a href="javascript:fileDown('${file.fileName}', '${file.filePath}')">${file.fileName}</a>
 									</c:forEach>
 							</tr>
-								
-							<tr>
-							
-								
-							</tr>
-								
 						</table>
 						</form>
 						

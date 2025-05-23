@@ -67,7 +67,7 @@
 		<br><br>
 		
 	<div class="list-header">
-		<a class="btn-point write-btn" href="/board/writeAFrm">공지사항쓰기(매니저만 보이게)</a>
+		<a  href="/board/awriteFrm" class="btn-point write-btn">공지사항쓰기(매니저만 보이게)</a>
 		
 		
 	<div class="box-container2">
@@ -98,7 +98,9 @@
 	</tr>
 	<c:forEach var="board" items="${boardList }">
 		<tr>
-			<td><a href="/board/view?boardno=${board.boardId}&updChk=true">${board.boardId}</a></td>
+			<td>
+			<a href="/board/aview?boardNo=${board.boardId}&?title=${board.boardTitle}&?writer=${board.memberId}&?updChk=true">${board.boardId}</a>
+			</td>
 			<td class="boardTitle">${board.boardTitle}</td>
 			<td>${board.memberId}</td>
 			<td>${board.createdAt}</td>
