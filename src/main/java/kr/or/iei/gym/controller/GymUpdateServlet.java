@@ -67,7 +67,8 @@ public class GymUpdateServlet extends HttpServlet {
 				MultipartRequest mRequest = new MultipartRequest(request, savePath, maxSize, "UTF-8", new KhRenamePolicy());
 				
 				String gymName = mRequest.getParameter("gymName");
-				String gymAddress = mRequest.getParameter("gymAddress");
+				String addrFirst = mRequest.getParameter("address");
+				String addrLast = mRequest.getParameter("detailAddress");
 				String email = mRequest.getParameter("email");
 				String phone = mRequest.getParameter("phone");
 				String openHours = mRequest.getParameter("openHours");
@@ -122,7 +123,7 @@ public class GymUpdateServlet extends HttpServlet {
 				
 				//수정 정보 넣고 로직 처리
 				gym.setGymName(gymName);
-				gym.setGymAddr(gymAddress);
+				gym.setGymAddr(addrFirst + " " + addrLast);
 				gym.setEmail(email);
 				gym.setPhone(phone);
 				gym.setOpenTime(openHours);
