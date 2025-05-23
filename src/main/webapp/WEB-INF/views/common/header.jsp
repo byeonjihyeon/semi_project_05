@@ -75,7 +75,7 @@
 	             </c:when>
 				<c:otherwise>
 				<c:choose>
-					<c:when test = '${not empty loginMember and empty loginAdmin[0] and empty loginGym}'>
+					<c:when test = '${not empty loginMember and empty loginAdmzin[0] and empty loginGym}'>
 						<%-- 회원용 마이페이지 --%>
 						<div class="menu-item"><a href='/member/myPageFrm'>마이페이지</a></div>
 					</c:when>

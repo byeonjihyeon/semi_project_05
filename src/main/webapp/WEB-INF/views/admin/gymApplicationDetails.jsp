@@ -49,7 +49,9 @@
 				    	</tr>
 					    <tr>
 					    	<th>첨부서류</th>
-					    	<td>${gymApplication.fileList}</td>
+					    		<c:forEach>
+					    		</c:forEach>
+					    	
 				    	</tr>
 				  </table>
 				

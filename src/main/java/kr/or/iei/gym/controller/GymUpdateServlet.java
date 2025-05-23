@@ -49,14 +49,12 @@ public class GymUpdateServlet extends HttpServlet {
 			gym = (Gym)session.getAttribute("loginGym");
 			
 			if(gym != null) {
-				//오늘 날짜(yyyyMMdd) 폴더 생성을 위한 String 변수
-				String toDay = new SimpleDateFormat("yyyyMMdd").format(new Date()); //"20250509"
 				
 				//C드라이브부터 webapp 폴더까지 경로 C:\serverworkspace
 				String rootPath = request.getSession().getServletContext().getRealPath("/");
 				
 				//실제 파일 저장 경로 지정
-				String savePath = rootPath + "resources/upload/gym" + toDay + "/";
+				String savePath = rootPath + "/resources/upload/gym/image/";
 				
 				//업로드 파일의 최대 크기 지정
 				int maxSize = 1024 * 1024 * 100; //100 Mega Byte
