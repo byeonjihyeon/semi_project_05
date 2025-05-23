@@ -1,5 +1,6 @@
 package kr.or.iei.admin.model.vo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import kr.or.iei.member.model.vo.Member;
@@ -11,7 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Admin extends Member {
+public class Admin extends Member implements Serializable {
+	 private static final long serialVersionUID = 1L;
+	
 	private String jobCode;		//업무코드
 	private String url;			//메뉴 url
 	private String selYN;		//조회 권한

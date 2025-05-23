@@ -77,18 +77,33 @@ public class PaymentResultServlet extends HttpServlet {
 	        // 3. customData JSON 문자열 파싱
 	        Map<String, String> customData = gson.fromJson(customDataStr, Map.class);
 	        String gymId = customData.get("gymId");
+	        System.out.println("customData에서 뽑은 gymId: "+ gymId);
 	        String membership = customData.get("membership");
+	        System.out.println("customData에서 뽑은 membership: "+ membership);
+	        if(membership.equals("1개월")) {
+	        	membership = "oneMonth";
+	        }else if(membership.equals("3개월")) {
+	        	membership = "threeMonth";
+	        }else if(membership.equals("6개월")) {
+	        	membership = "sixMonth";
+	        }else if(membership.equals("12개월")) {
+	        	membership = "oneYear";
+	        }else if(membership.equals("일일권")) {
+	        	membership = "oneDay";
+	        }
 	        String memberId = customData.get("memberId");
-
+	        System.out.println("customData에서 뽑은 memberId: "+ memberId);
 	        // 4. DB 저장
 	        GymService service = new GymService();
 	        String ticketId = service.selectTicketId(gymId, membership);
+	        System.out.println("servlet ticketId: "+ticketId);
 
 	        Payment payment = new Payment();
 	        payment.setMemberId(memberId);
 	        payment.setTicketPrice(String.valueOf(amount));
 	        payment.setPayMethod(payMethod);
 	        payment.setCardName(cardName);
+	        payment.setMerchantId(merchantUid);
 
 	        Usage usage = new Usage();
 	        usage.setMemberIdRef(memberId);
@@ -96,11 +111,13 @@ public class PaymentResultServlet extends HttpServlet {
 	        usage.setGymIdRef(gymId);
 
 	        int result = service.insertPaymentInfo(payment, usage);
-
+	        System.out.println("first payment servlet result: " + result);
 	        if (result > 0) {
+	        	System.out.println("servlet db 처리 후 성공 result: " + result);
 	            resultMap.put("success", true);
 	            resultMap.put("orderId", merchantUid);
 	        } else {
+	        	System.out.println("servlet db 처리 후 실패 result: " + result);
 	            resultMap.put("success", false);
 	            resultMap.put("message", "DB 저장 실패");
 	        }
