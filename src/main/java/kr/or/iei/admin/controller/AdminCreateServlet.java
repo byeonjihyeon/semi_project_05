@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import kr.or.iei.admin.model.service.AdminService;
 import kr.or.iei.admin.model.vo.Admin;
 
@@ -57,11 +59,14 @@ public class AdminCreateServlet extends HttpServlet {
 		//3.1 랜덤 비밀번호 만들기
 		AdminService service1 = new AdminService();
 		String randomPw = service1.makeRandomPw();
-		
 		admin.setMemberPw(randomPw);
 		
-		//3.2 이메일 전송
-		//3.2.1 환경 설정 정보
+		//3.2 관리자 등록 (권한포함)
+		AdminService service2 = new AdminService();
+		int result = service2.createAdmin(admin);
+		
+		//3.3 이메일 전송
+		//3.3.1 환경 설정 정보
 		Properties prop = new Properties();
 		prop.put("mail.smtp.host", "smtp.naver.com"); //사용 smtp 서버명
 		prop.put("mail.smtp.port", 587); //사용 smtp 포트
@@ -69,18 +74,14 @@ public class AdminCreateServlet extends HttpServlet {
 		prop.put("mail,smtp.ssl.enable", "true"); //보안 설정 적용
 		prop.put("mail.smtp.ssl.trust", "smtp.naver.com");
 		
-		//3.2.2 세션 설정 및 인증 정보 설정
+		//3.3.2 세션 설정 및 인증 정보 설정
 		Session session = Session.getDefaultInstance(prop, new Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication("byeonchoco@naver.com", "C1QRC34848PV");
 			}
 		});
 		
-		//3.2 관리자 등록 (권한포함)
-		AdminService service2 = new AdminService();
-		int result = service2.createAdmin(admin);
-		
-		//3. 이메일로 새로 등록된 관리자 아이디와 임시 비밀번호 전송
+		//3.3.3. 이메일로 새로 등록된 관리자 아이디와 임시 비밀번호 전송
 		MimeMessage msg = new MimeMessage(session);
 		
 		try {

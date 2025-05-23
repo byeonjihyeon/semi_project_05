@@ -36,6 +36,7 @@ public class AdminUpdatePreviliegeServlet extends HttpServlet {
 		String memberId = request.getParameter("id");
 		String url = request.getParameter("url");
 		String sel = request.getParameter("sel");
+	
 		if(sel == null) {
 			sel = "N";
 		}

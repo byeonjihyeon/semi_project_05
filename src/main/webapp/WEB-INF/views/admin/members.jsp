@@ -162,10 +162,9 @@ $('#search').on('click', function(){
 				alert('검색한 회원이 존재하지 않습니다');
 			}else{
 				$('.memberlist').remove();
-		
+				
 				$.each(res, function(idx,item){
 					let html = '';
-					
 					html += "<tr class='memberlist'>";
 					    html += "<td>" + (idx + 1) + "</td>";
 						html += "<td>" + item.memberId +"</td>";
@@ -175,7 +174,7 @@ $('#search').on('click', function(){
 					
 						html += "<td>";
 						html += "<a href='/admin/member/details?id="+item.memberId+"'><button>조회</button></a>";
-						html += "<a href='#'><button onclick='deleteMember("+item.memberId+")'>삭제</button></a>"
+						html += "<button onclick='deleteMember("+ item.memberId +")'>삭제</button>";
 						html += "</td>";
 						
 					html += "</tr>";

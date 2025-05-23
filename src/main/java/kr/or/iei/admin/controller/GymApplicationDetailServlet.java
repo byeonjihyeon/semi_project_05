@@ -9,24 +9,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import kr.or.iei.admin.model.service.AdminService;
-import kr.or.iei.common.ListData;
 import kr.or.iei.gym.model.vo.Gym;
-import kr.or.iei.member.model.vo.Member;
 
 /**
- * Servlet implementation class GymApplyDetailsServlet
+ * Servlet implementation class gymApplicationDetailServlet
  */
-//헬스장 신청 내역 페이지로 이동
-@WebServlet("/admin/gym/applications")
-public class GymApplicationsServlet extends HttpServlet {
+@WebServlet("/admin/gym/application/details")
+public class GymApplicationDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GymApplicationsServlet() {
+    public GymApplicationDetailServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,21 +34,21 @@ public class GymApplicationsServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//1. 인코딩 - 필터
-		//2. 값 추출
-		int page = Integer.parseInt(request.getParameter("page"));
-		//3. 로직 - 헬스장 등록신청한 리스트 조회
+		//2. 값 추출 
+		String applyNo = request.getParameter("no"); 
+		
+		//3.비즈니스스 로직 (하나의 헬스장 신청 세부내역 추출)
 		AdminService service = new AdminService();
-		ListData<Gym> listData = service.selectGymApplications(page);
+		Gym gym = service.selectGymApplication(applyNo);
+		
 		//4. 결과 처리
-			//4.1 이동할 페이지 경로지정
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/admin/gymApplications.jsp");
-			//4.2 화면 구현에 필요한 데이터 등록 (리스트, 페이지네이션)
-		request.setAttribute("gymApplications", listData.getList());
-		request.setAttribute("applyNavi", listData.getPageNavi());
-			//4.3 페이지 이동
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/admin/gymApplicationDetails.jsp");
+		request.setAttribute("gymApplication", gym);
 		view.forward(request, response);
 		
 		
+		
+	
 	}
 
 	/**
