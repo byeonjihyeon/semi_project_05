@@ -50,10 +50,7 @@ public class UserHistoryListServlet extends HttpServlet {
 
 		int count = Math.min(Math.min(memberFile.size(), memberHistory.size()), memberPay.size());
 		
-		System.out.println(memberFile.size());
-		System.out.println(memberHistory.size());
-		System.out.println(memberPay.size());
-		
+
 		for (int i = 0; i < count; i++) {
 		    UsageDTO dto = new UsageDTO();
 		    
@@ -63,14 +60,9 @@ public class UserHistoryListServlet extends HttpServlet {
 		    usageList.add(dto);
 		}
 		
-		System.out.println("usageList size: " + usageList.size());
-		for (UsageDTO dto : usageList) {
-		    System.out.println(dto);
-		}
 		
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/member/userHistoryList.jsp");
 		request.setAttribute("usingInfo", usageList);
-		System.out.println(usageList);
 		
 		view.forward(request, response);
 	}
