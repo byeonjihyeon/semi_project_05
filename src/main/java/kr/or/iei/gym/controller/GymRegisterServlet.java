@@ -87,7 +87,7 @@ public class GymRegisterServlet extends HttpServlet {
 			
 			String fileName = mRequest.getOriginalFileName(name); //사용자가 업로드한 파일명
 			String filePath = mRequest.getFilesystemName(name);	  //변경된 파일명
-			String fileSavePath = "/upload/gym/judge/";
+			String fileSavePath = "/resources/upload/gym/judge/";
 			if(filePath != null) { //input type이 file인 요소들 중, 업로드 된 요소만 처리하기 위함.
 				GymFile file = new GymFile();
 				file.setFileName(fileName);
