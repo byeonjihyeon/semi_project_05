@@ -20,6 +20,7 @@ import com.oreilly.servlet.MultipartRequest;
 import kr.or.iei.common.KhRenamePolicy;
 import kr.or.iei.gym.model.service.GymService;
 import kr.or.iei.gym.model.vo.Gym;
+import kr.or.iei.gym.model.vo.GymApplyFile;
 import kr.or.iei.gym.model.vo.GymFile;
 
 /**
@@ -79,7 +80,7 @@ public class GymRegisterServlet extends HttpServlet {
 		
 		
 		//여러개의 input type이 file인 요소가 존재할 경우, 해당 파일들을 저장할 리스트 생성
-		ArrayList<GymFile> fileList = new ArrayList<GymFile>();
+		ArrayList<GymApplyFile> fileList = new ArrayList<GymApplyFile>();
 		
 		
 		while(files.hasMoreElements()) {
@@ -89,7 +90,7 @@ public class GymRegisterServlet extends HttpServlet {
 			String filePath = mRequest.getFilesystemName(name);	  //변경된 파일명
 			String fileSavePath = "/resources/upload/gym/judge/";
 			if(filePath != null) { //input type이 file인 요소들 중, 업로드 된 요소만 처리하기 위함.
-				GymFile file = new GymFile();
+				GymApplyFile file = new GymApplyFile();
 				file.setFileName(fileName);
 				file.setFilePath(filePath);
 				file.setFileSavePath(fileSavePath);			
@@ -111,7 +112,7 @@ public class GymRegisterServlet extends HttpServlet {
 		
 		
 		GymService service = new GymService();
-		int result = service.insertGym(gym, fileList);
+		int result = service.registerGym(gym, fileList);
 		
 		//4. 결과 처리
 			//4.1 이동할 페이지 경로 지정
