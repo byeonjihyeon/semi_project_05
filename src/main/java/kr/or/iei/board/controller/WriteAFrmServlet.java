@@ -9,22 +9,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kr.or.iei.board.model.service.BoardService;
-import kr.or.iei.board.model.vo.Board;
-import kr.or.iei.common.ListData;
-
 /**
- * Servlet implementation class AListServlet
+ * Servlet implementation class WriteAFrmServlet
  */
-//공지사항
-@WebServlet("/board/alist")
-public class AListServlet extends HttpServlet {
+//일대일 문의 작성하기폼
+@WebServlet("/board/awriteFrm")
+public class WriteAFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AListServlet() {
+    public WriteAFrmServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,22 +29,10 @@ public class AListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//1. 인코딩 - 필터
-		//2. 값 추출 
-		int reqPage = Integer.parseInt(request.getParameter("reqPage"));
-		String sortGubun = request.getParameter("sortGubun") == null ? "desc" : request.getParameter("sortGubun");
-		
-		//3. 로직
-		BoardService service = new BoardService();
-		ListData<Board> listData = service.selectBoardList(reqPage, "G", sortGubun);
-		//4. 결과 처리
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/board/alist.jsp");
-		
-		request.setAttribute("boardList", listData.getList());
-		request.setAttribute("pageNavi", listData.getPageNavi());
-		request.setAttribute("sortGubun", sortGubun);
+RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/board/writeAFrm.jsp");
 		
 		view.forward(request, response);
+		
 	}
 
 	/**

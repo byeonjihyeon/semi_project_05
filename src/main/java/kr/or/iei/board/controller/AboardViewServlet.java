@@ -9,17 +9,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kr.or.iei.board.model.service.BoardService;
+import kr.or.iei.board.model.vo.Board;
+
 /**
- * Servlet implementation class WriteFrmServlet2
+ * Servlet implementation class AboardViewServlet
  */
-@WebServlet("/WriteFrmServlet2")
-public class WriteFrmServlet2 extends HttpServlet {
+//공지사항 - 하나의 글 조회
+@WebServlet("/board/aview")
+public class AboardViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public WriteFrmServlet2() {
+    public AboardViewServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,9 +32,17 @@ public class WriteFrmServlet2 extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//인코딩
+		//값 추출
+		String boardNo = request.getParameter("boardNo");
 		
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/board/WriteFrm2.jsp");
+		BoardService service = new BoardService();
+		Board oneB = service.selectOneBoard(boardNo);
 		
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/board/AboardView.jsp");
+		
+		request.setAttribute("boardInfo", oneB);
+			
 		view.forward(request, response);
 	}
 

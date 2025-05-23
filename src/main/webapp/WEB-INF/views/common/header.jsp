@@ -36,6 +36,7 @@
                <div class="submenu">
                  <a href="/board/alist?reqPage=1">공지사항</a>
                  <a href="/board/list?reqPage=1">자유게시판</a>
+                 <a href="/board/Inlist?reqPage=1">1대1 문의사항</a>
                </div>
              </div>
              	<%--관리자인 경우에만 보이는 관리자페이지--%>
@@ -45,7 +46,7 @@
 		                 <a href="/admin/member/list?page=1">회원 관리</a>
 		                 <a href="/admin/gym/list?page=1">헬스장 관리</a>
 		                 <a href="/admin/gym/applications?page=1">헬스장 신청내역</a>
-		                 <a href="/admin/board/inquiries?page=1"">일대일 문의내역</a>
+		                 <a href="/admin/board/inquiries?page=1">일대일 문의내역</a>
               		 </div>
             	 	</div>
              	 </c:if>
