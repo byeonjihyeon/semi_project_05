@@ -12,11 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import kr.or.iei.gym.model.service.GymService;
 import kr.or.iei.gym.model.service.PortOneUtil;
+import kr.or.iei.gym.model.vo.Gym;
 import kr.or.iei.gym.model.vo.Payment;
 import kr.or.iei.gym.model.vo.Usage;
 
@@ -113,9 +112,12 @@ public class PaymentResultServlet extends HttpServlet {
 	        int result = service.insertPaymentInfo(payment, usage);
 	        System.out.println("first payment servlet result: " + result);
 	        if (result > 0) {
+	        	Gym gym = service.selectOneGym(gymId);
 	        	System.out.println("servlet db 처리 후 성공 result: " + result);
 	            resultMap.put("success", true);
 	            resultMap.put("orderId", merchantUid);
+	            resultMap.put("gymName", gym.getGymName());
+	            resultMap.put("amount", amount);
 	        } else {
 	        	System.out.println("servlet db 처리 후 실패 result: " + result);
 	            resultMap.put("success", false);

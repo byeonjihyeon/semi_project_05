@@ -1,6 +1,7 @@
 package kr.or.iei.gym.controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,16 +11,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class PaymentSuccessServlet
+ * Servlet implementation class PaymentSuccessResultServlet
  */
-@WebServlet("/payment/success")
-public class PaymentSuccessServlet extends HttpServlet {
+@WebServlet("/payment/result")
+public class PaymentSuccessResultServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PaymentSuccessServlet() {
+    public PaymentSuccessResultServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,18 +29,22 @@ public class PaymentSuccessServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String orderId = request.getParameter("orderId");
 		String gymName = request.getParameter("gymName");
 		String amount = request.getParameter("amount");
 		
-		request.setAttribute("orderId", orderId);
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
-		request.setAttribute("title", "결제성공");
-		request.setAttribute("msg", "주문번호"+orderId+"이 정상적으로 처리되었습니다.");
-		request.setAttribute("icon", "success");
-//		response.sendRedirect("");
 		
-		request.setAttribute("loc", "/payment/result?amount="+amount+"&gymName="+gymName);
+		LocalDate today = LocalDate.now();
+
+        int year = today.getYear();
+        int month = today.getMonthValue(); // 1~12
+        int day = today.getDayOfMonth();
+        String date = year + "년 " + month + "월 " + day + "일";
+		
+		
+		request.setAttribute("gymName", gymName);
+		request.setAttribute("amount", amount);
+		request.setAttribute("paymentDate", date);
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/gym/paymentSuccess.jsp");
 		view.forward(request, response);
 		
 	}

@@ -67,7 +67,8 @@ public class GymRegisterServlet extends HttpServlet {
 		String gymId = mRequest.getParameter("gymId");
 		String gymPw = mRequest.getParameter("password");
 		String gymName = mRequest.getParameter("gymName");
-		String gymAddr = mRequest.getParameter("gymAddress");
+		String addrFirst = mRequest.getParameter("address");
+		String addrLast = mRequest.getParameter("detailAddress");
 		String gymEmail = mRequest.getParameter("email");
 		String gymPhone = mRequest.getParameter("phone");
 		
@@ -103,7 +104,7 @@ public class GymRegisterServlet extends HttpServlet {
 		gym.setGymId(gymId);
 		gym.setGymPw(gymPw);
 		gym.setGymName(gymName);
-		gym.setGymAddr(gymAddr);
+		gym.setGymAddr(addrFirst + " " + addrLast);
 		gym.setEmail(gymEmail);
 		gym.setPhone(gymPhone);
 		gym.setPhone(gymPhone);

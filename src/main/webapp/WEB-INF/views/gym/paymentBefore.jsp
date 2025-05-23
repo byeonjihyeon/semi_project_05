@@ -93,7 +93,7 @@ function generateUUID() {
                 const result = await res.json();
                 
                 if (result.success) {//인증 거치고, db에 잘 넣으면, 
-                    location.href = "/payment/success?orderId=" + response.merchant_uid;
+                    location.href = "/payment/success?orderId=" + result.orderId + "&gymName="+result.gymName+"&amount="+result.amount;
                 } else {
                     alert("서버에서 결제 승인 실패");
                 }
