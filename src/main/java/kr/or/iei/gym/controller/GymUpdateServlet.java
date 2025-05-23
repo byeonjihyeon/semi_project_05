@@ -56,7 +56,7 @@ public class GymUpdateServlet extends HttpServlet {
 				String rootPath = request.getSession().getServletContext().getRealPath("/");
 				
 				//실제 파일 저장 경로 지정
-				String savePath = rootPath + "resources/upload/gym" + toDay + "/";
+				String savePath = rootPath + "/resources/upload/gym/image/";
 				
 				//업로드 파일의 최대 크기 지정
 				int maxSize = 1024 * 1024 * 100; //100 Mega Byte
@@ -105,6 +105,7 @@ public class GymUpdateServlet extends HttpServlet {
 						GymFile file = new GymFile();
 						file.setFileName(fileName);
 						file.setFilePath(filePath);
+						file.setFileSavePath("/upload/gym/image/");
 						//파일에 헬스장 아이디 저장
 						file.setGymId(gym.getGymId());
 						
