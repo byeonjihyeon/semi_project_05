@@ -130,7 +130,7 @@
             <c:forEach var="gym" items="${gymList}">
                 <div class="gym-card" onclick="location.href='/gym/detail?gymId=${gym.gymId}'">
                     <div class="gym-img">
-                        <img src="${gym.fileList[0].fileUrl}" alt="헬스장 이미지">
+                        <img src="${gym.fileList[0].getfileUrl()}" alt="헬스장 이미지">
                         
                     </div>
                     <div class="gym-info">

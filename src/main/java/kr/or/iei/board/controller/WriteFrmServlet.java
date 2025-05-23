@@ -10,8 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class WriteFrmServlet
+ * Servlet implementation class EditorFrmServlet
  */
+//자유게시판 작성하기로 페이지 이동
 @WebServlet("/board/writeFrm")
 public class WriteFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -28,17 +29,10 @@ public class WriteFrmServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//1.인코딩 - 필터
-		//2. 값 추출
-		//3. 로직
-		//4. 결과 처리
-			//4.1 이동할 페이지 경로 지정
+		
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/board/writeFrm.jsp");
-			//4.2 화면 구현에 필요한 데이터 등록
 		
-			//4.3 페이지 이동
 		view.forward(request, response);
-		
 	}
 
 	/**

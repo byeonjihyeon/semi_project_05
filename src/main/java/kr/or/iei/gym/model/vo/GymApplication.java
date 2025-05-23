@@ -1,5 +1,8 @@
 package kr.or.iei.gym.model.vo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,5 +15,5 @@ public class GymApplication {
 	private String screeningDate; //헬스장 심사신청일자
 	private String judgeId; //반려 코드
 	private String gymId; //헬스장 아디
-	private String fileNo;
+	private ArrayList<GymFile> applicationFiles;	//헬스장의 심사파일 첨부파일 리스트
 }

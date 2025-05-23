@@ -7,12 +7,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class GymFile {
+public class GymApplyFile {
 	private String fileNo;
 	private String fileName;
 	private String filePath;
 	private String fileSavePath;
 	private String gymId;
+	private String insertGymNo;
 	
 	
 	public String getfileUrl() {

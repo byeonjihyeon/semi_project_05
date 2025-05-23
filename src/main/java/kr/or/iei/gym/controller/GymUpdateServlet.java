@@ -2,9 +2,7 @@ package kr.or.iei.gym.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
@@ -20,6 +18,7 @@ import com.oreilly.servlet.MultipartRequest;
 import kr.or.iei.common.KhRenamePolicy;
 import kr.or.iei.gym.model.service.GymService;
 import kr.or.iei.gym.model.vo.Gym;
+import kr.or.iei.gym.model.vo.GymApplyFile;
 import kr.or.iei.gym.model.vo.GymFile;
 import kr.or.iei.gym.model.vo.GymTicket;
 
@@ -49,14 +48,13 @@ public class GymUpdateServlet extends HttpServlet {
 			gym = (Gym)session.getAttribute("loginGym");
 			
 			if(gym != null) {
-				//오늘 날짜(yyyyMMdd) 폴더 생성을 위한 String 변수
-				String toDay = new SimpleDateFormat("yyyyMMdd").format(new Date()); //"20250509"
 				
 				//C드라이브부터 webapp 폴더까지 경로 C:\serverworkspace
 				String rootPath = request.getSession().getServletContext().getRealPath("/");
-				
+				String imagePath = "/resources/upload/gym/image/";
+				String judgePath = "/resources/upload/gym/judge/";
 				//실제 파일 저장 경로 지정
-				String savePath = rootPath + "/resources/upload/gym/image/";
+				String savePath = rootPath + imagePath;
 				
 				//업로드 파일의 최대 크기 지정
 				int maxSize = 1024 * 1024 * 100; //100 Mega Byte
@@ -93,25 +91,33 @@ public class GymUpdateServlet extends HttpServlet {
 				
 				//여러개의 input type이 file인 요소가 존재할 경우, 해당 파일들을 저장할 리스트 생성
 				ArrayList<GymFile> fileList = new ArrayList<GymFile>();
-				
+				ArrayList<GymApplyFile> applyFileList = new ArrayList<GymApplyFile>();
 				
 				while(files.hasMoreElements()) {
 					String name = files.nextElement(); 
+					 String originalFileName = mRequest.getOriginalFileName(name);//사용자가 업로드한 파일명
+					 String renamedFileName = mRequest.getFilesystemName(name);//서버에 저장된 파일명
 					
-					String fileName = mRequest.getOriginalFileName(name); //사용자가 업로드한 파일명
-					String filePath = mRequest.getFilesystemName(name);	  //변경된 파일명
+					 if (renamedFileName != null) {
+					        if (name.equals("image")) {
+					            GymFile file = new GymFile();
+					            file.setFileName(originalFileName);
+					            file.setFilePath(renamedFileName);
+					            file.setFileSavePath(imagePath); // image 경로로 설정
+					            file.setGymId(gym.getGymId());
+					            fileList.add(file);
+					            System.out.println("servlet fileupdate gymId: "+ gym.getGymId());
+					        } else if (name.equals("judge")) {
+					            // 파일은 실제로는 imagePath에 저장되어 있지만, 논리적으로는 judgePath에 있다고 설정
+					            GymApplyFile file = new GymApplyFile();
+					            file.setFileName(originalFileName);
+					            file.setFilePath(renamedFileName);
+					            file.setFileSavePath(judgePath); // judge 경로로 설정
+					            file.setGymId(gym.getGymId());
+					            applyFileList.add(file);
+					        }
+					    }
 					
-					if(filePath != null) { //input type이 file인 요소들 중, 업로드 된 요소만 처리하기 위함.
-						GymFile file = new GymFile();
-						file.setFileName(fileName);
-						file.setFilePath(filePath);
-						file.setFileSavePath("/upload/gym/image/");
-						//파일에 헬스장 아이디 저장
-						file.setGymId(gym.getGymId());
-						
-						
-						fileList.add(file);
-					}
 				}
 				
 				//수정 정보 넣고 로직 처리
@@ -132,7 +138,7 @@ public class GymUpdateServlet extends HttpServlet {
 				gym.setTicket(ticket);
 				
 				GymService service = new GymService();
-				int result = service.updateGym(gym, fileList);
+				int result = service.updateGym(gym, fileList, applyFileList);
 				
 				//4. 결과 처리
 				//4.1 이동할 페이지 경로 지정

@@ -40,7 +40,9 @@ public class MemberService {
 		Connection conn = JDBCTemplate.getConnection();
 		String memberPw = BCrypt.hashpw(m.getMemberPw(), BCrypt.gensalt());
 		m.setMemberPw(memberPw);
+
 		int result = dao.joinMember(conn, m);
+
 		if(result > 0) {
 			JDBCTemplate.commit(conn);
 		}else {

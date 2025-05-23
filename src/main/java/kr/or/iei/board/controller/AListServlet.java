@@ -16,6 +16,7 @@ import kr.or.iei.common.ListData;
 /**
  * Servlet implementation class AListServlet
  */
+//공지사항
 @WebServlet("/board/alist")
 public class AListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -35,14 +36,17 @@ public class AListServlet extends HttpServlet {
 		//1. 인코딩 - 필터
 		//2. 값 추출 
 		int reqPage = Integer.parseInt(request.getParameter("reqPage"));
+		String sortGubun = request.getParameter("sortGubun") == null ? "desc" : request.getParameter("sortGubun");
+		
 		//3. 로직
 		BoardService service = new BoardService();
-		ListData<Board> listData = service.SelectBoadrList2(reqPage);
+		ListData<Board> listData = service.selectBoardList(reqPage, "G", sortGubun);
 		//4. 결과 처리
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/board/alist.jsp");
 		
 		request.setAttribute("boardList", listData.getList());
 		request.setAttribute("pageNavi", listData.getPageNavi());
+		request.setAttribute("sortGubun", sortGubun);
 		
 		view.forward(request, response);
 	}
