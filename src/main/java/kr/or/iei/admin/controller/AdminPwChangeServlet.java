@@ -1,29 +1,23 @@
-package kr.or.iei.gym.controller;
+package kr.or.iei.admin.controller;
 
 import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kr.or.iei.gym.model.service.GymService;
-import kr.or.iei.gym.model.vo.Gym;
-
 /**
- * Servlet implementation class GymFindFrmServlet
+ * Servlet implementation class AdminPwChangeServlet
  */
-@WebServlet("/gym/list")
-public class GymListServlet extends HttpServlet {
+@WebServlet("/admin/chgPwFrm")
+public class AdminPwChangeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GymListServlet() {
+    public AdminPwChangeServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,21 +26,11 @@ public class GymListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		String rootPath = request.getSession().getServletContext().getRealPath("/");
-		//실제 파일 저장 경로 지정
-		String savePath = "/resources/upload/gym/image/";
-		
-		
-		//등록된 헬스장 리스트 가져오기
-		GymService service = new GymService();
-		List<Gym> gymList = service.selectAllGym(savePath);
-		if(gymList.size()==0) gymList = null;
-		request.setAttribute("gymList", gymList);
-		
-		
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/gym/gymList.jsp");
-		view.forward(request, response);
+		//1. 인코딩 - 필터
+		//2. 값 추출 - x
+		//3. 비즈니스 로직 (비밀번호 변경 페이지로 이동)
+		//4. 결과 처리
+		request.getRequestDispatcher("/WEB-INF/views/admin/pwChangeFrm.jsp").forward(request, response);
 	}
 
 	/**

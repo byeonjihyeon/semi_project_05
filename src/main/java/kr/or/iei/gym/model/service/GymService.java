@@ -170,10 +170,15 @@ public class GymService {
 		Connection conn = JDBCTemplate.getConnection();
 		
 		int result = 0;
+		System.out.println("service first result: " + result);
 		result = dao.insertPayment(conn, payment);
 		if(result > 0) {
+			System.out.println("service 결제내역 db 처리 후 성공 result: " + result);
+
 			result = dao.insertUsage(conn, usage);
 			if(result > 0) {
+				System.out.println("service 이용내역 db 처리 후 성공 result: " + result);
+
 				JDBCTemplate.commit(conn);
 				JDBCTemplate.close(conn);
 				return result;
@@ -181,7 +186,7 @@ public class GymService {
 		}
 		JDBCTemplate.rollback(conn);
 		JDBCTemplate.close(conn);
-		
+		System.out.println("service 이용내역 db 처리 후 실패 result: " + result);
 		return result;
 	}
 

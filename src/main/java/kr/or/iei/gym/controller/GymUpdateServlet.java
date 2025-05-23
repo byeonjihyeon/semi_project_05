@@ -105,7 +105,7 @@ public class GymUpdateServlet extends HttpServlet {
 						GymFile file = new GymFile();
 						file.setFileName(fileName);
 						file.setFilePath(filePath);
-						file.setFileSavePath("/upload/gym/image/");
+						file.setFileSavePath("/resources/upload/gym/image/");
 						//파일에 헬스장 아이디 저장
 						file.setGymId(gym.getGymId());
 						

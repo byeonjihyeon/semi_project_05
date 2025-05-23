@@ -14,4 +14,5 @@ public class Payment {
 	private String payMethod;
 	private String cardName;
 	private String paymentDate;
+	private String merchantId;
 }
