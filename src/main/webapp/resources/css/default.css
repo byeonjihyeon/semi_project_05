@@ -5,7 +5,7 @@
 }
 
 .header-container {
-    max-width: 1200px; /* 원하는 너비 설정 */
+    max-width: 100%; /* 원하는 너비 설정 */
     margin: 0 auto; /* 수평 중앙정렬 */
     display: flex;
     justify-content: space-between;
@@ -68,7 +68,8 @@
   }
 
   footer {
-    max-width: 1200px; /* 원하는 너비 설정 */
+  	width: 100%;
+    max-width: 100%; /* 원하는 너비 설정 */
     margin: 0 auto; /* 수평 중앙정렬 */
     display: flex;
     justify-content: space-between;
@@ -108,7 +109,8 @@
  }
  
  .footer-container {
- 	width : 1200px;
+ 	width : 100%;
+ 	max-width: 100%;
  	} 
   
 #footer-admin {
@@ -118,7 +120,7 @@
 /*side*/
 
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   display: flex;
   min-height: 100vh;
@@ -287,7 +289,7 @@ a {
   background-color: var(--gray6);
 }
 .footer > div {
-  max-width: 1400px;
+  max-width: 100%;
   padding: 20px 10px;
   margin: 0 auto;
 }

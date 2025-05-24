@@ -1,10 +1,5 @@
 package kr.or.iei.member.model.vo;
 
-import java.util.ArrayList;
-
-import kr.or.iei.gym.model.vo.GymFile;
-import kr.or.iei.gym.model.vo.Payment;
-import kr.or.iei.gym.model.vo.Usage;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +19,5 @@ public class Member {
 	private String memberDate;				//회원 가입일
 	private int reportedCnt;				//신고 당한 횟수
 	private int memberType;					//회원 타입
-	ArrayList<Usage> usages;					//이용내역 테이블
-	ArrayList<GymFile> gymFiles; 				//헬스장 등록 파일
-	ArrayList<Payment> payment;
+	
 }

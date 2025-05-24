@@ -81,7 +81,7 @@ public class LoginChkServlet extends HttpServlet {
 					request.setAttribute("title", "실패");
 					request.setAttribute("msg", "로그인 중, 오류가 발생하였습니다.");
 					request.setAttribute("icon", "error");
-					request.setAttribute("loc", "index.jsp");
+					request.setAttribute("loc", "/main");
 				}
 				
 				
@@ -101,7 +101,7 @@ public class LoginChkServlet extends HttpServlet {
 				request.setAttribute("title", "실패");
 				request.setAttribute("msg", "로그인 중, 오류가 발생하였습니다.");
 				request.setAttribute("icon", "error");
-				request.setAttribute("loc", "index.jsp");
+				request.setAttribute("loc", "/main");
 			}
 			view.forward(request, response);
 		}

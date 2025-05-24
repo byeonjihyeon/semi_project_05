@@ -251,7 +251,7 @@ button:hover {
 	<div class="mypage-container">
     <!-- 사이드바 -->
     <div class="sidebar">
-        <h3><a href=/member/myPageFrm>마이페이지</a></h3>
+        <h3>마이페이지</h3>
         <ul>
             <li><a href="/member/updateMemberFrm">회원 정보 수정</a></li>
             <li><a href="/member/updatePwFrm">비밀번호 변경</a></li>
@@ -289,7 +289,7 @@ button:hover {
     			<div id="recordTable">
         			<table class="recordList">	
             			<tr>
-                			<th colspan="4">${loginMember.memberName}님의 최근 기록일지</th>
+                			<th colspan="4">${loginMember.memberName}님의 기록일지</th>
             			</tr>
             			<tr>
                 			<th>기록 일자</th>
@@ -316,7 +316,7 @@ button:hover {
             			</c:forEach>
         			</table>
         			<!-- 페이지네이션 위치는 테이블 바로 아래로 -->
-        			
+        			<div id="pagination"></div>
     			</div>
 			</div>
         		<div style="text-align: center; margin-top: 50px;">
@@ -436,7 +436,57 @@ button:hover {
         }
     });
 
+    function setupPagination() {
+        const rows = $('.record-row');
+        const rowsPerPage = 5;
+        const totalRows = rows.length;
+        const totalPages = Math.ceil(totalRows / rowsPerPage);
+        const groupSize = 5;
+        let currentPage = 1;
 
+        function renderPage(page) {
+            currentPage = page;
+            const start = (page - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+
+            rows.hide();
+            rows.slice(start, end).show();
+
+            renderPagination();
+        }
+
+        function renderPagination() {
+            const currentGroup = Math.floor((currentPage - 1) / groupSize);
+            const startPage = currentGroup * groupSize + 1;
+            let endPage = startPage + groupSize - 1;
+            if (endPage > totalPages) endPage = totalPages;
+
+            let paginationHtml = '<div>';
+
+            if (startPage > 1) {
+                paginationHtml += `<button class="page-btn" data-page="${startPage - 1}">&lt;이전</button>`;
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                paginationHtml += '<button class="page-btn ' + (i == currentPage ? 'active' : '') + '" data-page="' + i + '">' + i + '</button>';
+            }
+
+            if (endPage < totalPages) {
+                paginationHtml += `<button class="page-btn" data-page="${endPage + 1}">다음&gt;</button>`;
+            }
+
+            paginationHtml += '</div>';
+
+            $('#pagination').html(paginationHtml);
+
+            $('.page-btn').off('click').on('click', function () {
+                const selectedPage = parseInt($(this).data('page'));
+                renderPage(selectedPage);
+            });
+        }
+
+        renderPage(1); // 처음 실행 시 첫 페이지 표시
+    }
 </script>
 </body>
 </html>

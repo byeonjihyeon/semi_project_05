@@ -186,14 +186,14 @@ public class GymService {
 		return result;
 	}
 
-	public List<Gym> selectAllGym(String savePath) {
+	public List<Gym> selectAllGym() {
 		Connection conn = JDBCTemplate.getConnection();
 		
 		List<Gym> gymList = dao.selectAllGym(conn);
 		for(Gym gym: gymList) {
 			GymTicket ticket = dao.selectGymTicket(conn, gym.getGymId());
 			gym.setTicket(ticket);
-			List<GymFile> fileList = dao.selectGymFile(conn, gym.getGymId(), savePath);
+			List<GymFile> fileList = dao.selectGymFile(conn, gym.getGymId());
 			gym.setFileList(fileList);
 		}
 		

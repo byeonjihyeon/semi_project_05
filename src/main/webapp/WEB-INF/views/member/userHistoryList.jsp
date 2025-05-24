@@ -136,45 +136,13 @@ body {
 
     <!-- 메인 콘텐츠 -->
     <div class="main-content">
-        <h2>이용내역 조회</h2>
+        <h2>나의 기록 일지</h2>
         <div class="welcome-box">
-            
-           <div style="width: 900px; display: flex; flex-wrap: wrap; gap: 20px;">
-            
-				<c:forEach var="i" items="${usingInfo}">
-  					<div style="display: flex; align-items: center; gap: 20px; padding: 20px; width: 100%; margin-bottom: 30px; background-color: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-
-					    <div style="width: 150px; height: 150px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
-      						<img src="/resources${i.gymFile.fileSavePath}${i.gymFile.filePath}" alt="헬스장 사진" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
-    					</div>
-	
-    				<div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
-      					    <input type="text" name="Period" id="Period" value="${i.usage.ticketPeriod}일 이용권" style="width: 302px; border: none; height: 30px; font: bold; font-size: 30px; padding-bottom: 10px;">       
-          					<input type="text" name="usingNo" id="usingNo" value="주문번호 : ${i.payment.merchantId}" style="width: 302px; border: none; height: 30px;">
-          					<input type="text" name="leftDate" id="leftDate" value="이용권 남은 기간 : ${i.usage.leftDate}일 " style="width: 302px; border: none; height: 30px;">
-          					<input type="text" name="insertTicketDate" id="insertTicketDate" value="이용권 이용 등록날짜 : ${i.usage.enrollDate}" style="width: 302px; border: none; height: 30px;">
-    				</div>
-
-    
-    				<div style="display: flex; flex-direction: column; gap: 10px;">
-      					<form action="/member/payInfo">
-        					<button type="submit" style="width: 120px; height: 36px;">주문상세보기</button>
-      					</form>
-      					<form action="/member/gymReview">
-        					<button type="submit" style="width: 120px; height: 36px;">리뷰작성</button>
-      					</form>
-      					<form action="/member/refund">
-        					<button type="submit" style="width: 120px; height: 36px;">환불하기</button>
-      					</form>	
-      					<form action="/mem	ber/inquire">
-        					<button type="submit" style="width: 120px; height: 36px;">판매자 문의</button>
-				        </form>	
-    					</div>
-  					</div>
-					</c:forEach>
-	          		
-            </div><br>
-            
+            <div>
+                <p><strong>${sessionScope.loginMember.memberName}</strong>님, 환영합니다!</p>
+                <p>회원님의 등급은 <strong>${sessionScope.loginMember.memberGrade}</strong>입니다.</p>
+                <p>※ 프로필 설정 및 활동 통계는 추후 추가 예정입니다.</p>
+            </div>
         </div>
 
     </div>

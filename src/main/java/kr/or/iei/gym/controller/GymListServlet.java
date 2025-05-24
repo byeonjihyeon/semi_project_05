@@ -40,7 +40,7 @@ public class GymListServlet extends HttpServlet {
 		
 		//등록된 헬스장 리스트 가져오기
 		GymService service = new GymService();
-		List<Gym> gymList = service.selectAllGym(savePath);
+		List<Gym> gymList = service.selectAllGym();
 		if(gymList.size()==0) gymList = null;
 		request.setAttribute("gymList", gymList);
 		

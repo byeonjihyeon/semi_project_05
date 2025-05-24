@@ -6,16 +6,9 @@ import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import kr.or.iei.common.JDBCTemplate;
-import kr.or.iei.gym.model.vo.GymFile;
-import kr.or.iei.gym.model.vo.Payment;
-import kr.or.iei.gym.model.vo.Usage;
 import kr.or.iei.member.model.vo.Member;
 import kr.or.iei.member.model.vo.UserGrowth;
 
@@ -25,11 +18,8 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		String query = "select * from tbl_member join tbl_user_history using(member_id)"
-				+ "              join tbl_gym_file using(gym_id) where member_id = ?";
+		String query = "select * from tbl_member where member_id = ?";
 		Member loginM = null;
-		ArrayList<GymFile> gFile = new ArrayList<GymFile>();
-		
 				
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -53,9 +43,9 @@ public class MemberDao {
 				loginM.setMemberPw(rset.getString("member_pw"));
 				loginM.setReportedCnt(rset.getInt("reported_cnt"));
 				loginM.setMemberType(rset.getInt("member_type"));
+			
+				
 			}
-			
-			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -432,172 +422,6 @@ public class MemberDao {
 
 	    return list;
 	}
-
-	public ArrayList<GymFile> searchFile(Connection conn, String memberId) {
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		
-		ArrayList<GymFile> memberFile = new ArrayList<GymFile>();
-		String query = "select * from tbl_member join tbl_user_history using(member_id)"
-				+ "              join tbl_gym_file using(gym_id) where member_id = ?";
-		
-		
-		
-		try {
-			pstmt = conn.prepareStatement(query);
-			
-			pstmt.setString(1, memberId);
-			
-			rset = pstmt.executeQuery();
-			
-			while(rset.next()) {
-				GymFile gFile = new GymFile();
-				
-				
-				gFile.setFileName(rset.getString("file_name"));
-				gFile.setFileNo(rset.getString("file_no"));
-				gFile.setFilePath(rset.getString("file_path"));
-				gFile.setFileSavePath(rset.getString("file_save_path"));
-				
-				
-				memberFile.add(gFile);
-			}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(rset);
-			JDBCTemplate.close(pstmt);
-		}
-		
-		return memberFile;
-	}
-
-	public ArrayList<Usage> searchHistory(Connection conn, String memberId) {
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		ArrayList<Usage> memberHistory = new ArrayList<Usage>();
-		
-		
-		String query = "select * from tbl_user_history join tbl_ticket using(ticket_kind) where member_id = ?";
-		
-		try {
-			pstmt = conn.prepareStatement(query);
-			
-			pstmt.setString(1, memberId);
-			
-			rset = pstmt.executeQuery();
-			
-			while(rset.next()) {
-				Usage usage = new Usage();
-				
-				
-				
-				usage.setUsageNo(rset.getString("user_history_no"));
-				usage.setEnrollDate(rset.getString("ticket_insert_date"));
-				String period = rset.getString("ticket_period");
-				
-				if(period.equals("oneDay")) {
-					period = "1";
-				}else if(period.equals("oneMonth")){
-					period = "30";
-				}else if(period.equals("threeMonth")) {
-					period = "90";
-				}else if(period.equals("sixMonth")) {
-					period = "180";
-				}else if(period.equals("oneYear")) {
-					period = "360";
-				}
-				
-				usage.setTicketPeriod(period);
-				usage.setMemberIdRef(rset.getString("member_id"));
-				usage.setTicketIdRef(rset.getString("ticket_kind"));
-				usage.setGymIdRef(rset.getString("gym_id"));
-				
-				// 1. ticket_insert_date를 LocalDate로 가져온다고 가정
-				LocalDate insertDate = rset.getDate("ticket_insert_date").toLocalDate();
-				String ticketPeriodStr = rset.getString("ticket_period");
-				
-				// 2. 기간 문자열을 일 수로 변환
-				Map<String, Integer> periodMap = new HashMap<>();
-				periodMap.put("oneDay", 1);
-				periodMap.put("oneMonth", 30);
-				periodMap.put("threeMonth", 90);
-				periodMap.put("sixMonth", 180);
-				periodMap.put("oneYear", 360);
-				
-				// 3. 해당 기간 일 수 계산
-				int periodDays = periodMap.getOrDefault(ticketPeriodStr, 0);
-				
-				// 4. 종료일 계산
-				LocalDate endDate = insertDate.plusDays(periodDays);
-				
-				// 5. 현재 날짜 기준 남은 일수 계산
-				long remainingDays = ChronoUnit.DAYS.between(LocalDate.now(), endDate);
-				
-				// 6. 내림 처리 (양수일 경우만 적용되므로 long 사용 시 floor 불필요)
-				int daysLeft = (int) remainingDays;
-				
-				
-				
-				usage.setLeftDate(daysLeft);
-				
-				memberHistory.add(usage);
-				
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(rset);
-			JDBCTemplate.close(pstmt);
-		}
-		
-		
-		return memberHistory;
-	}
-
-	public ArrayList<Payment> searchPay(Connection conn, String memberId) {
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		ArrayList<Payment> memberPay = new ArrayList<Payment>();
-		String query ="select * from tbl_member join tbl_buy using(member_id) where member_id = ?";
-		
-		try {
-			pstmt = conn.prepareStatement(query);
-			
-			pstmt.setString(1, memberId);
-			
-			rset = pstmt.executeQuery();
-			
-			while(rset.next()) {
-				Payment payInfo = new Payment();
-				
-				
-				payInfo.setCardName(rset.getString("CARD_COMPANY_NAME"));
-				payInfo.setMemberId(rset.getString("member_Id"));
-				
-				payInfo.setMerchantId(rset.getString("merchant_id"));
-				payInfo.setPaymentDate(rset.getString("payment_date"));
-				payInfo.setPaymentId(rset.getString("PAYMENT_HISTORY_NO"));
-				payInfo.setPayMethod(rset.getString("PAY_METHOD"));
-				payInfo.setTicketPrice(rset.getString("TICKET_PRICE"));
-				
-				memberPay.add(payInfo);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(rset);
-			JDBCTemplate.close(pstmt);
-		}
-		
-		return memberPay;
-	}
-
-	
 
 	
 

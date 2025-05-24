@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import org.mindrot.jbcrypt.BCrypt;
 
 import kr.or.iei.common.JDBCTemplate;
-import kr.or.iei.gym.model.vo.GymFile;
-import kr.or.iei.gym.model.vo.Payment;
-import kr.or.iei.gym.model.vo.Usage;
 import kr.or.iei.member.model.dao.MemberDao;
 import kr.or.iei.member.model.vo.Member;
 import kr.or.iei.member.model.vo.UserGrowth;
@@ -160,30 +157,6 @@ public class MemberService {
 	    JDBCTemplate.close(conn);
 	    return list;
 		
-	}
-
-	public ArrayList<GymFile> searchFile(String memberId) {
-		Connection conn = JDBCTemplate.getConnection();
-		
-		ArrayList<GymFile> memberFile = dao.searchFile(conn, memberId);
-		JDBCTemplate.close(conn);
-		return memberFile;
-	}
-
-	public ArrayList<Usage> searchHistory(String memberId) {
-		Connection conn = JDBCTemplate.getConnection();
-		
-		ArrayList<Usage> memberHistory = dao.searchHistory(conn, memberId);
-		JDBCTemplate.close(conn);
-		return memberHistory;
-	}
-
-	public ArrayList<Payment> searchPay(String memberId) {
-		Connection conn = JDBCTemplate.getConnection();
-		
-		ArrayList<Payment> memberPay = dao.searchPay(conn, memberId);
-		JDBCTemplate.close(conn);
-		return memberPay;
 	}
 
 	

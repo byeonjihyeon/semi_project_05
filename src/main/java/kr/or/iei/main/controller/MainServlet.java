@@ -1,6 +1,8 @@
-package kr.or.iei.member.controller;
+package kr.or.iei.main.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,17 +11,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kr.or.iei.gym.model.service.GymService;
+import kr.or.iei.gym.model.vo.Gym;
+
 /**
- * Servlet implementation class UserHistoryListServlet
+ * Servlet implementation class mainServlet
  */
-@WebServlet("/member/userHistoryList")
-public class UserHistoryListServlet extends HttpServlet {
+@WebServlet("/main")
+public class MainServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UserHistoryListServlet() {
+    public MainServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,8 +33,14 @@ public class UserHistoryListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/member/userHistoryList.jsp");
+		List<Gym> gymList = new ArrayList<Gym>();
+		GymService service = new GymService();
+		gymList = service.selectAllGym();
+//		System.out.println((gymList.get(0)).getFileList().get(0).getfileUrl());
+		request.setAttribute("nearbyGyms", gymList);
+		RequestDispatcher view = request.getRequestDispatcher("/index.jsp");
 		view.forward(request, response);
+		
 	}
 
 	/**
