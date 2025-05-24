@@ -74,14 +74,14 @@ public class LoginChkServlet extends HttpServlet {
 					
 					view = request.getRequestDispatcher("index.jsp");
 					session.setAttribute("loginMember", loginM);
-				} else {
-					
-				// 로그인 실패시 msg로 문구 보여주고 로그인 창으로
+				}else{
+					// 로그인 실패시 msg로 문구 보여주고 로그인 창으로
 					view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
 					request.setAttribute("title", "실패");
 					request.setAttribute("msg", "로그인 중, 오류가 발생하였습니다.");
 					request.setAttribute("icon", "error");
 					request.setAttribute("loc", "/main");
+
 				}
 				
 				

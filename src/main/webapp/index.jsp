@@ -164,7 +164,7 @@
     <script>
     function diagnoseObesity() {
         const height = parseFloat(document.getElementById("height").value);
-        console.log(height);
+        
         const weight = parseFloat(document.getElementById("weight").value);
         const resultDiv = document.getElementById("obesityResult");
 
@@ -175,9 +175,9 @@
 
         // BMI 계산: 체중(kg) / (키(m)²)
         const heightMeter = height / 100;
-        console.log(heightMeter);
+        
         const bmi = weight / (heightMeter * heightMeter);
-        console.log(bmi);
+        
         let diagnosis = "";
 
         if (bmi <= 18.5) {
@@ -189,15 +189,16 @@
         } else {
             diagnosis = "비만";
         }
-        console.log(diagnosis);
-        resultDiv.innerHTML = `
-            <p><strong>BMI 지수:</strong> ${bmi.toFixed(1)}</p>
-            <p><strong>진단 결과:</strong> ${diagnosis}</p>
-        `;
+        
+        
+        resultDiv.innerHTML = 
+        	"<p><strong>BMI 지수:</strong> " + bmi.toFixed(1) + "</p>" +
+            "<p><strong>진단 결과:</strong> " + diagnosis + "</p>";
+       	;
 
         // 결과 보기 버튼 활성화
-        //document.getElementById("viewResultButton").style.display = "inline-block";
     }
+        //document.getElementById("viewResultButton").style.display = "inline-block";
 
 /*     function viewObesityResult() {
         const resultDiv = document.getElementById("obesityResult");
