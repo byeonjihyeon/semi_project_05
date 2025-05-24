@@ -35,7 +35,7 @@ public class GymListServlet extends HttpServlet {
 		
 		String rootPath = request.getSession().getServletContext().getRealPath("/");
 		//실제 파일 저장 경로 지정
-		String savePath = "/upload/gym/image/";
+		String savePath = "/resources/upload/gym/image/";
 		
 		
 		//등록된 헬스장 리스트 가져오기

@@ -20,6 +20,7 @@ import com.oreilly.servlet.MultipartRequest;
 import kr.or.iei.common.KhRenamePolicy;
 import kr.or.iei.gym.model.service.GymService;
 import kr.or.iei.gym.model.vo.Gym;
+import kr.or.iei.gym.model.vo.GymApplyFile;
 import kr.or.iei.gym.model.vo.GymFile;
 
 /**
@@ -45,8 +46,6 @@ public class GymRegisterServlet extends HttpServlet {
 		if(session != null) {
 			session.invalidate();
 		}
-		//오늘 날짜(yyyyMMdd) 폴더 생성을 위한 String 변수
-		String toDay = new SimpleDateFormat("yyyyMMdd").format(new Date()); //"20250509"
 		
 		//C드라이브부터 webapp 폴더까지 경로 C:\serverworkspace
 		String rootPath = request.getSession().getServletContext().getRealPath("/");
@@ -68,7 +67,8 @@ public class GymRegisterServlet extends HttpServlet {
 		String gymId = mRequest.getParameter("gymId");
 		String gymPw = mRequest.getParameter("password");
 		String gymName = mRequest.getParameter("gymName");
-		String gymAddr = mRequest.getParameter("gymAddress");
+		String addrFirst = mRequest.getParameter("address");
+		String addrLast = mRequest.getParameter("detailAddress");
 		String gymEmail = mRequest.getParameter("email");
 		String gymPhone = mRequest.getParameter("phone");
 		
@@ -79,7 +79,7 @@ public class GymRegisterServlet extends HttpServlet {
 		
 		
 		//여러개의 input type이 file인 요소가 존재할 경우, 해당 파일들을 저장할 리스트 생성
-		ArrayList<GymFile> fileList = new ArrayList<GymFile>();
+		ArrayList<GymApplyFile> fileList = new ArrayList<GymApplyFile>();
 		
 		
 		while(files.hasMoreElements()) {
@@ -87,9 +87,9 @@ public class GymRegisterServlet extends HttpServlet {
 			
 			String fileName = mRequest.getOriginalFileName(name); //사용자가 업로드한 파일명
 			String filePath = mRequest.getFilesystemName(name);	  //변경된 파일명
-			String fileSavePath = "/upload/gym/judge/";
+			String fileSavePath = "/resources/upload/gym/judge/";
 			if(filePath != null) { //input type이 file인 요소들 중, 업로드 된 요소만 처리하기 위함.
-				GymFile file = new GymFile();
+				GymApplyFile file = new GymApplyFile();
 				file.setFileName(fileName);
 				file.setFilePath(filePath);
 				file.setFileSavePath(fileSavePath);			
@@ -104,14 +104,14 @@ public class GymRegisterServlet extends HttpServlet {
 		gym.setGymId(gymId);
 		gym.setGymPw(gymPw);
 		gym.setGymName(gymName);
-		gym.setGymAddr(gymAddr);
+		gym.setGymAddr(addrFirst + " " + addrLast);
 		gym.setEmail(gymEmail);
 		gym.setPhone(gymPhone);
 		gym.setPhone(gymPhone);
 		
 		
 		GymService service = new GymService();
-		int result = service.insertGym(gym, fileList);
+		int result = service.registerGym(gym, fileList);
 		
 		//4. 결과 처리
 			//4.1 이동할 페이지 경로 지정

@@ -265,10 +265,9 @@ button#deleteBtn {
     <div class="sidebar">
         <h3><a href=/member/myPageFrm>마이페이지</a></h3>
         <ul>
-            <li><a href="/member/updateMemberFrm" style="color:red;">회원 정보 수정</a></li>
+            <li><a href="/member/updateMemberFrm" style="color: red;">회원 정보 수정</a></li>
             <li><a href="/member/updatePwFrm">비밀번호 변경</a></li>
             <li><a href="/member/userHistoryList">이용 내역 조회</a></li>
-            <li><a href="#">결제 내역 조회</a></li>
             <li><a href="/member/recordGrowth?reqPage=1">나의 몸무게 일지</a></li>
         </ul>
     </div>

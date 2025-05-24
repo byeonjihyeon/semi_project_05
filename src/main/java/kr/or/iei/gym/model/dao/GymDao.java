@@ -9,6 +9,7 @@ import java.util.List;
 
 import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.gym.model.vo.Gym;
+import kr.or.iei.gym.model.vo.GymApplyFile;
 import kr.or.iei.gym.model.vo.GymFile;
 import kr.or.iei.gym.model.vo.GymTicket;
 import kr.or.iei.gym.model.vo.Payment;
@@ -69,30 +70,7 @@ public class GymDao {
 		return result;
 	}
 
-	public int insertGymFile(Connection conn, GymFile file) {
-		PreparedStatement pstmt = null;
-		
-		int result = 0;
-		
-		String query = "insert into tbl_gym_file values (seq_gym_file.nextval, ?, ?, ?, ?)";
-	
-		try {
-			pstmt = conn.prepareStatement(query);
-			
-			pstmt.setString(1, file.getFileName());
-			pstmt.setString(2, file.getFilePath());
-			pstmt.setString(3, file.getGymId());
-			pstmt.setString(4,  file.getFileSavePath());
-			result = pstmt.executeUpdate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(pstmt);
-		}
-		
-		return result;
-	}
+
 
 	public Gym loginChkGym(Connection conn, String userId) {
 		PreparedStatement pstmt = null;
@@ -123,7 +101,7 @@ public class GymDao {
 				loginGym.setDetail(rset.getString("detail"));
 				loginGym.setFacilities(rset.getString("FACILITIES"));
 				 
-				System.out.println(loginGym.getGymId());
+				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -361,10 +339,10 @@ public class GymDao {
 			rset= pstmt.executeQuery();
 			GymFile file= new GymFile();
 			while(rset.next()) {
-				String fileUrl = savePath+rset.getString("file_path");
-				System.out.println(fileUrl);
-				file.setFileUrl(fileUrl);
-				fileList.add(file);
+				GymFile gymFile = new GymFile();
+				gymFile.setFileSavePath(savePath);
+				gymFile.setFilePath(rset.getString("file_path"));
+				fileList.add(gymFile);
 			}
 			
 		} catch (SQLException e) {
@@ -381,16 +359,20 @@ public class GymDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		String query = "select max(ticket_kind) as ticket_kind from tbl_ticket where gym_id = ? and ticket_period = ?";
-		String ticketId = "";
+		String query = "select max(to_number(ticket_kind)) as ticket_kind from tbl_ticket where gym_id = ? and ticket_period = ?";
+		String ticketId = null;
 		try {
 			pstmt = conn.prepareStatement(query);
+			System.out.println("dao gymId: "+gymId);
 			pstmt.setString(1, gymId);
+			System.out.println("dao membership: "+membership);
 			pstmt.setString(2, membership);
+			
 			rset = pstmt.executeQuery();
 			
 			if(rset.next()) {
 				ticketId = rset.getString("ticket_kind");
+				System.out.println("rset ticketId:"+ ticketId);
 			}
 			
 		} catch (SQLException e) {
@@ -408,7 +390,7 @@ public class GymDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		
-		String query = "insert into tbl_buy values(seq_tbl_buy.nextval, ?, ?, ?, ?, sysdate)";
+		String query = "insert into tbl_buy values(seq_tbl_buy.nextval, ?, ?, ?, ?, sysdate, ?)";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -416,8 +398,10 @@ public class GymDao {
 			pstmt.setString(2, payment.getTicketPrice());
 			pstmt.setString(3, payment.getPayMethod());
 			pstmt.setString(4, payment.getCardName());
+			pstmt.setString(5, payment.getMerchantId());
 			
 			result = pstmt.executeUpdate();
+			System.out.println("dao 결제내역 db 처리 후 result: " + result);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -431,7 +415,7 @@ public class GymDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		
-		String query = "insert into tbl_user_history values(seq_tbl_user_history.nextval, sysdate, 30, ?, ?, ?)";
+		String query = "insert into tbl_user_history values(seq_tbl_user_history.nextval, sysdate, ?, ?, ?)";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -440,12 +424,96 @@ public class GymDao {
 			pstmt.setString(3, usage.getGymIdRef());
 			
 			result = pstmt.executeUpdate();
+			System.out.println("dao 이용내역 db 처리 후 result: " + result);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
 			JDBCTemplate.close(pstmt);
 		}
+		return result;
+	}
+
+	public int insertApplyGym(Connection conn, String gymId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		int insertApplyNo = 0;
+		String query = "insert into tbl_applygym values(seq_tbl_applygym.nextval, sysdate, 'N0', ?)";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, gymId);
+			result = pstmt.executeUpdate();
+			if(result > 0) {
+				query = "select seq_tbl_applygym.currval as insert_gym_no from dual";
+				pstmt = conn.prepareStatement(query);
+				rset = pstmt.executeQuery();
+				if(rset.next()) {
+					insertApplyNo = rset.getInt("insert_gym_no");
+					JDBCTemplate.close(rset);
+					JDBCTemplate.close(pstmt);
+					return insertApplyNo;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public int insertGymApplyFile(Connection conn, GymApplyFile file, String insertApplyNo) {
+		PreparedStatement pstmt = null;
+		
+		int result = 0;
+		
+		String query = "insert into tbl_gym_apply_file values (seq_tbl_gym_apply_file.nextval, ?, ?, ?, ?, ?)";
+	
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, file.getFileName());
+			pstmt.setString(2, file.getFilePath());
+			pstmt.setString(3,  file.getFileSavePath());
+			pstmt.setString(4, file.getGymId());
+			pstmt.setString(5, insertApplyNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+	
+	
+	public int insertGymFile(Connection conn, GymFile file) {
+		PreparedStatement pstmt = null;
+		
+		int result = 0;
+		
+		String query = "insert into tbl_gym_file values (seq_gym_file.nextval, ?, ?, ?, ?)";
+	
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, file.getFileName());
+			pstmt.setString(2, file.getFilePath());
+			pstmt.setString(3,  file.getFileSavePath());
+			pstmt.setString(4, file.getGymId());
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
 		return result;
 	}
 

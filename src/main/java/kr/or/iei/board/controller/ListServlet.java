@@ -16,6 +16,7 @@ import kr.or.iei.common.ListData;
 /**
  * Servlet implementation class ListServlet
  */
+//자유게시판 리스트
 @WebServlet("/board/list")
 public class ListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -33,12 +34,15 @@ public class ListServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//1. 인코딩 -필터
-		//2. 값 추출 - 요청페이지 번호
+		
+		//2. 값 추출 - 요청페이지 번호, 정렬 구분 값
 		int reqPage = Integer.parseInt(request.getParameter("reqPage"));
+		
+		String sortGubun = request.getParameter("sortGubun") == null ? "desc" : request.getParameter("sortGubun");
 		
 		//3. 로직 - 전체 게시글 정보 조회
 		BoardService service = new BoardService();
-		ListData<Board> listData = service.selectBoardList(reqPage);
+		ListData<Board> listData = service.selectBoardList(reqPage, "B", sortGubun);
 		
 		//4. 결과처리
 			//4.1 이동할 페이지 경로 지정
@@ -46,6 +50,7 @@ public class ListServlet extends HttpServlet {
 			//4.2 화면 구현에 필요한 데이터 등록
 		request.setAttribute("boardList", listData.getList());
 		request.setAttribute("pageNavi", listData.getPageNavi());
+		request.setAttribute("sortGubun", sortGubun);
 			//4.3 페이지 이동
 		view.forward(request, response);
 	}

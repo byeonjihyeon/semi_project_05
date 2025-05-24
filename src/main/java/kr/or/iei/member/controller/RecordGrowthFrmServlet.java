@@ -42,7 +42,8 @@ public class RecordGrowthFrmServlet extends HttpServlet {
         
         Member loginMember = (Member) session.getAttribute("loginMember");
         String memberId = loginMember.getMemberId();
-
+        
+        
         MemberService service = new MemberService();
         ArrayList<UserGrowth> list = service.selectGrowthList(memberId);
 
