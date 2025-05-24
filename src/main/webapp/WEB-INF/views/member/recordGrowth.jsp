@@ -255,7 +255,7 @@ button:hover {
         <ul>
             <li><a href="/member/updateMemberFrm">회원 정보 수정</a></li>
             <li><a href="/member/updatePwFrm">비밀번호 변경</a></li>
-            <li><a href="/member/userHistoryList">이용 내역 조회</a></li>
+            <li><a href="/member/userHistoryList?reqPage=1">이용 내역 조회</a></li>
             <li><a href="/member/recordGrowth" style="color: red;">나의 몸무게 일지</a></li>
         </ul>
     </div>
@@ -296,8 +296,7 @@ button:hover {
                 			<th>몸무게</th>
                 			<th>목표몸무게까지 남은 몸무게</th>
             			</tr>
-            			<c:forEach var="i" items="${list}" varStatus="status">
-                			<tr class="record-row" data-index="${status.index}" style="${status.index >= 5 ? 'display:none;' : ''}">
+            			<c:forEach var="i" items="${list}">
                     			<td>${i.growthDate}</td>
                     			<td>${i.memberTall} cm</td>
                     			<td>${i.memberWeight} kg</td>	

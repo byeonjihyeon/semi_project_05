@@ -18,13 +18,13 @@ import kr.or.iei.member.model.vo.UserGrowth;
  * Servlet implementation class ShowHistoryList
  */
 @WebServlet("/member/showList")
-public class ShowHistoryList extends HttpServlet {
+public class ShowRecordGrowthList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ShowHistoryList() {
+    public ShowRecordGrowthList() {
         super();
         // TODO Auto-generated constructor stub
     }

@@ -129,7 +129,7 @@ body {
             <li><a href="/member/updateMemberFrm">회원 정보 수정</a></li>
             <li><a href="/member/updatePwFrm">비밀번호 변경</a></li>
             <li><a href="/member/userHistoryList" style="color: red;">이용 내역 조회</a></li>
-            <li><a href="/member/recordGrowth?reqPage=1">나의 몸무게 일지</a></li>
+            <li><a href="/member/recordGrowth">나의 몸무게 일지</a></li>
         </ul>
     </div>
 
