@@ -128,7 +128,7 @@ body {
         <ul>
             <li><a href="/member/updateMemberFrm">회원 정보 수정</a></li>
             <li><a href="/member/updatePwFrm">비밀번호 변경</a></li>
-            <li><a href="/member/userHistoryList">이용 내역 조회</a></li>
+            <li><a href="/member/userHistoryList" style="color: red;">이용 내역 조회</a></li>
             <li><a href="/member/recordGrowth?reqPage=1">나의 몸무게 일지</a></li>
         </ul>
     </div>
@@ -176,26 +176,31 @@ body {
             </div><br>
             	
         </div>
-        <div>
-        	<c:forEach var="i" items="${payInfo}">
-				<table border = '1'>
-					<tr>
-						<th> 헬스장 이름 </th>
-						<th> 이용권 가격 </th>
-						<th> 결제 수단 </th>
-						<th> 카드사명 </th>
-						<th> 결제일 </th>
-					</tr>
-					 <tr>
-					 	<td>${i.usage.gymName}</td>
-					 	<td>${i.payment.ticketPrice}</td>
-					 	<td>${i.payment.payMethod}</td>
-					 	<td>${i.payment.cardName}</td>
-					 	<td>${i.payment.paymentDate}</td>
-					 </tr>
-				</table>
-        	</c:forEach>
-		</div>
+        <div style="margin-top: 60px;">
+    <h3 style="margin-bottom: 20px; font-size: 20px; color: #333; text-align: center;">결제 상세 정보</h3>
+    <table style="width: 100%; border-collapse: collapse; font-size: 15px; background-color: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.06);">
+        <thead style="background-color: #f8f9fa;">
+            <tr style="height: 50px; border-bottom: 1px solid #ddd;">
+                <th style="padding: 10px;">헬스장 이름</th>
+                <th style="padding: 10px;">이용권 가격</th>
+                <th style="padding: 10px;">결제 수단</th>
+                <th style="padding: 10px;">카드사명</th>
+                <th style="padding: 10px;">결제일</th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach var="i" items="${payInfo}">
+                <tr style="height: 48px; text-align: center; border-bottom: 1px solid #eee;">
+                    <td style="padding: 10px;">${i.usage.gymName}</td>
+                    <td style="padding: 10px;">${i.payment.ticketPrice}원</td>
+                    <td style="padding: 10px;">${i.payment.payMethod}</td>
+                    <td style="padding: 10px;">${i.payment.cardName}</td>
+                    <td style="padding: 10px;">${i.payment.paymentDate}</td>
+                </tr>
+            </c:forEach>
+        </tbody>
+    </table>
+</div>
     </div>
 </div>
 </main>
