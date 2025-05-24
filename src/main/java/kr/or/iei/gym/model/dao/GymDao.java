@@ -324,23 +324,22 @@ public class GymDao {
 	}
 
 
-	public List<GymFile> selectGymFile(Connection conn, String gymId, String savePath) {
+	public List<GymFile> selectGymFile(Connection conn, String gymId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		String query = "select * from tbl_gym_file where gym_id = ? and file_save_path = ?";
+		String query = "select * from tbl_gym_file where gym_id = ?";
 		List<GymFile> fileList = new ArrayList<GymFile>();
 		try {
 			pstmt = conn.prepareStatement(query);
 			
 			pstmt.setString(1, gymId);
-			pstmt.setString(2, savePath);
 			
 			rset= pstmt.executeQuery();
 			GymFile file= new GymFile();
 			while(rset.next()) {
 				GymFile gymFile = new GymFile();
-				gymFile.setFileSavePath(savePath);
+				gymFile.setFileSavePath(rset.getString("file_save_path"));
 				gymFile.setFilePath(rset.getString("file_path"));
 				fileList.add(gymFile);
 			}

@@ -1,6 +1,7 @@
-package kr.or.iei.gym.controller;
+package kr.or.iei.main.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -14,16 +15,16 @@ import kr.or.iei.gym.model.service.GymService;
 import kr.or.iei.gym.model.vo.Gym;
 
 /**
- * Servlet implementation class GymFindFrmServlet
+ * Servlet implementation class mainServlet
  */
-@WebServlet("/gym/list")
-public class GymListServlet extends HttpServlet {
+@WebServlet("/main")
+public class MainServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GymListServlet() {
+    public MainServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,21 +33,14 @@ public class GymListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		String rootPath = request.getSession().getServletContext().getRealPath("/");
-		//실제 파일 저장 경로 지정
-		String savePath = "/resources/upload/gym/image/";
-		
-		
-		//등록된 헬스장 리스트 가져오기
+		List<Gym> gymList = new ArrayList<Gym>();
 		GymService service = new GymService();
-		List<Gym> gymList = service.selectAllGym();
-		if(gymList.size()==0) gymList = null;
-		request.setAttribute("gymList", gymList);
-		
-		
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/gym/gymList.jsp");
+		gymList = service.selectAllGym();
+//		System.out.println((gymList.get(0)).getFileList().get(0).getfileUrl());
+		request.setAttribute("nearbyGyms", gymList);
+		RequestDispatcher view = request.getRequestDispatcher("/index.jsp");
 		view.forward(request, response);
+		
 	}
 
 	/**
