@@ -114,6 +114,28 @@ body {
     justify-content: center;
     
     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    
+    
+}
+.main-content button {
+    background-color: #1a1a1a;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.main-content button:hover {
+    background-color: #ff414d;
+    transform: translateY(-2px);
+}
+
+.main-content button:active {
+    transform: translateY(1px);
+    background-color: #e63c45;
 }
 </style>
 </head>
