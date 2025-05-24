@@ -118,25 +118,22 @@ body {
     
 }
 .main-content button {
-    background-color: #1a1a1a;
+    background-color: #ff414d;
     color: #fff;
     border: none;
+    font-size: 15px;
+    font-weight: bold;
     border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
+    transition: background-color 0.3s;
+    margin-top: 5px;
 }
 
 .main-content button:hover {
-    background-color: #ff414d;
+    background-color: #1a1a1a;
     transform: translateY(-2px);
 }
 
-.main-content button:active {
-    transform: translateY(1px);
-    background-color: #e63c45;
-}
 </style>
 </head>
 
