@@ -41,6 +41,7 @@ public class UserHistoryListServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		Member m = (Member) session.getAttribute("loginMember");
 		
+		
 		MemberService service = new MemberService();
 		ArrayList<GymFile> memberFile = service.searchFile(m.getMemberId());
 		ArrayList<Usage> memberHistory = service.searchHistory(m.getMemberId());
@@ -60,10 +61,9 @@ public class UserHistoryListServlet extends HttpServlet {
 		    usageList.add(dto);
 		}
 		
-		
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/member/userHistoryList.jsp");
 		request.setAttribute("usingInfo", usageList);
-		
+
 		view.forward(request, response);
 	}
 

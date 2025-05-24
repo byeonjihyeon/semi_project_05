@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.mindrot.jbcrypt.BCrypt;
 
 import kr.or.iei.common.JDBCTemplate;
+import kr.or.iei.common.ListData;
 import kr.or.iei.gym.model.vo.GymFile;
 import kr.or.iei.gym.model.vo.Payment;
 import kr.or.iei.gym.model.vo.Usage;
@@ -208,6 +209,8 @@ public class MemberService {
 		JDBCTemplate.close(conn);
 		return memberPay;
 	}
+
+
 
 	
 

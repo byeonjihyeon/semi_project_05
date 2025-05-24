@@ -15,4 +15,8 @@ public class GymFile {
 	private String gymId;
 	
 
+	public String getfileUrl() {
+		return fileSavePath + filePath;
+	}
+	
 }

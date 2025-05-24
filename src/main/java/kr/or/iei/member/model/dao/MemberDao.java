@@ -749,6 +749,8 @@ public class MemberDao {
 		return memberPay;
 	}
 
+
+
 	
 
 	

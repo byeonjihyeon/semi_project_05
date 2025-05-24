@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="/resources/css/login.css"> <!-- CSS 파일 연결 -->    
+<link rel="stylesheet" href="/resources/css/defalut.css">
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,8 +10,8 @@
 </head>
 <body>
    <div class="login-container">
-      <div class="logo">
-          <img src="your-logo.png" alt="헬스장 플랫폼 로고" />
+      <div class="logo" style="margin-bottom: 30px;">
+          <a id='logo' href="/" style="    color: #CE2029; text-decoration: none;">MUTGYM LOGO</a>
       </div>
       <form action="/loginChk" method="POST" class="login-form">
           <!-- 회원 유형 선택 -->
