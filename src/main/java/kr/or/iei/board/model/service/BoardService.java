@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import kr.or.iei.board.model.dao.BoardDao;
 import kr.or.iei.board.model.vo.Board;
-import kr.or.iei.board.model.vo.BoardAdmin;
+import kr.or.iei.board.model.vo.BoardComment;
 import kr.or.iei.board.model.vo.BoardFile;
 import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.common.ListData;
@@ -249,24 +249,21 @@ public class BoardService {
 		return null;
 	}
 
-/*
-	public String updateListBoard(String boardId) {
+	public int insertComment(BoardComment comment) {
 		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.insertComment(conn, comment);
 		
-		int result = dao.updateListBoard(conn, boardId);
-		
-		
-		if(result >0) {
+		if(result > 0) {
 			JDBCTemplate.commit(conn);
 		}else {
-			JDBCTemplate.rollback(conn);
-		}
-		JDBCTemplate.close(conn);
-		return null;
+		JDBCTemplate.rollback(conn);
+	}
+	JDBCTemplate.close(conn);
+		return result;
+	
+	
 	}
 
-
-	*/
 
 
 	

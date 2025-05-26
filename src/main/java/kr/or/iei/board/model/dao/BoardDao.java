@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 
 import kr.or.iei.board.model.vo.Board;
+import kr.or.iei.board.model.vo.BoardComment;
 import kr.or.iei.board.model.vo.BoardFile;
 import kr.or.iei.common.JDBCTemplate;
 
@@ -360,6 +361,33 @@ public class BoardDao {
 			
 			result = pstmt.executeUpdate();
 			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int insertComment(Connection conn, BoardComment comment) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = "insert into tbl_comment values (?, ?, default, default, ?, ?, ?, ?, ?,)";
+		
+		try {
+			pstmt =	conn.prepareStatement(query);
+			
+			pstmt.setString(1, comment.getCommentId());
+			pstmt.setString(2, comment.getCommentContent());
+			pstmt.setString(3, comment.getCommentNo());
+			pstmt.setString(4, comment.getParentCommentId());
+			pstmt.setString(5, comment.getBoardId());
+			pstmt.setString(6, comment.getMemberId());
+			pstmt.setString(7, comment.getCommentNo());
+			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
