@@ -1,112 +1,153 @@
-@charset "UTF-8";
+/* gym-register.css */
+
+:root {
+  --main1: #1a73e8;
+  --main2: #2b85f8;
+  --main3: #4285f4;
+  --gray1: #333;
+  --gray2: #555;
+  --gray3: #777;
+  --gray5: #ccc;
+  --gray8: #f7f8fa;
+}
+
 .register-container {
-    max-width: 700px;
-    margin: 50px auto;
-    padding: 30px;
-    background: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px;
+  background-color: var(--gray8);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-family: ns-r;
 }
 
 .register-container h2 {
-    text-align: center;
-    margin-bottom: 30px;
-    color: #d94f4f;
+  font-family: ns-b;
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: var(--gray1);
+  border-bottom: 2px solid var(--main3);
+  padding-bottom: 10px;
 }
 
 .form-group {
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
+  margin-bottom: 25px;
 }
 
 .form-group label {
-    font-weight: bold;
-    margin-bottom: 5px;
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--gray2);
 }
 
-.form-group input[type="text"],
+.input-wrap {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.input-wrap input[type="text"],
 .form-group input[type="password"],
 .form-group input[type="email"],
 .form-group input[type="tel"],
-.form-group input[type="file"] {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.form-group input[type="file"],
+.form-group input[type="text"]:not([readonly]) {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-bottom: 2px solid var(--gray5);
+  background-color: #fff;
+  width: 100%;
 }
 
-.form-group button {
-    margin-top: 10px;
-    padding: 8px 15px;
-    background-color: #d94f4f;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+input:focus {
+  outline: none;
+  border-color: var(--main2);
 }
 
-.checkbox-area {
-    background-color: #f8f8f8;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
+input[readonly] {
+  background-color: #e9ecef;
+  cursor: not-allowed;
 }
 
-.checkbox-area p {
-    font-weight: bold;
-    margin-bottom: 10px;
+#idDuplChkBtn,
+input[type="button"] {
+  font-size: 14px;
+  padding: 9px 16px;
+  border: 1px solid var(--main2);
+  background-color: var(--main2);
+  color: #fff;
+  border-radius: 5px;
+  font-family: ns-b;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.checkbox-area ul {
-    list-style: none;
-    padding: 0;
-}
-
-.checkbox-area li {
-    margin-bottom: 8px;
+#idDuplChkBtn:hover,
+input[type="button"]:hover {
+  background-color: var(--main1);
 }
 
 .input-msg {
-    font-size: 0.9em;
-    margin-top: 5px;
+  font-size: 14px;
+  margin-top: 8px;
+  padding-left: 24px;
+  color: var(--gray3);
+  background: url(/resources/images/icon_info.svg) no-repeat left center / 18px;
 }
 
 .input-msg.valid {
-    color: green;
+  color: #1065dc;
+  background: url(/resources/images/icon_info_success.svg) no-repeat left center / 18px;
 }
 
 .input-msg.invalid {
-    color: red;
+  color: #ff3d00;
+  background: url(/resources/images/icon_info_warning.svg) no-repeat left center / 18px;
 }
 
-/* 주소 입력 필드 스타일 */
-.form-group input#address,
-.form-group input#detailAddress {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-top: 5px;
-    width: 100%;
-    box-sizing: border-box;
+.checkbox-area {
+  background-color: #f1f3f5;
+  border: 1px solid var(--gray5);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
 }
 
-/* 주소 찾기 버튼 스타일 */
-.form-group input[type="button"] {
-    margin-top: 10px;
-    padding: 8px 15px;
-    background-color: #d94f4f;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9em;
-    margin-left: 10px;
+.checkbox-area p {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--gray2);
 }
 
-/* 주소 입력 input-wrap이 있을 경우 정렬용 */
-.input-wrap {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    flex-wrap: wrap;
+.checkbox-area ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.checkbox-area li {
+  margin-bottom: 8px;
+  font-size: 15px;
+  color: var(--gray3);
+}
+
+button[type="submit"] {
+  background-color: var(--main2);
+  color: #fff;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-family: ns-b;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 30px;
+  transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+  background-color: var(--main1);
 }
