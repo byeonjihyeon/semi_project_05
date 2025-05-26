@@ -48,7 +48,7 @@ public class AwriteServlet extends HttpServlet {
 		String rootPath = request.getSession().getServletContext().getRealPath("/");
 		
 		// "resources/upload" 안에있는 경로까지 
-		String savePath = rootPath + "resources/upload/" + toDay + "/";
+		String savePath = rootPath + "resources/upload/board/notice/" + toDay + "/";
 		
 		//이미지 사이즈
 		int maxSize = 1024 * 1024 * 100;

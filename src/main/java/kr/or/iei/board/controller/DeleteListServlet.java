@@ -42,11 +42,11 @@ public class DeleteListServlet extends HttpServlet {
 
 		// 값 추출
 		String deleteBoardId = request.getParameter("deleteBoardId");
-		System.out.println(deleteBoardId);
+		String boardType = request.getParameter("boardType");
 		
 		BoardService service = new BoardService();
-		ArrayList<BoardFile> delFileList = service.deleteBoard(deleteBoardId);
 		
+		ArrayList<BoardFile> delFileList = service.deleteBoard(deleteBoardId);
 	    RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
 	    
 	    if(delFileList != null) {
@@ -60,7 +60,7 @@ public class DeleteListServlet extends HttpServlet {
 	    		BoardFile delFile = delFileList.get(i);
 	    		
 	    		String writeDate = delFile.getFilePath().substring(0, 8);
-	    		String savePath = rootPath + "resources/upload/" + writeDate + "/"; //파일 저장 경로
+	    		String savePath = rootPath + "resources/upload/board/"+ boardType +"/" + writeDate + "/"; //파일 저장 경로
 				
 				File file = new File(savePath + delFile.getFilePath());
 				file.delete();

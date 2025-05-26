@@ -5,9 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>게시글 수정하기</title>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="/resources/js/sweetalert.min.js"></script>
+<title>Insert title here</title>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
@@ -15,11 +13,10 @@
 		 <jsp:include page="/WEB-INF/views/common/sidemenuBoard.jsp"></jsp:include>
 		<main class='content'>
 		 <section class='section notice-write-wrap'>
-								<form action="/board/update" method="post"  enctype="multipart/form-data" >
+								<form action="/aboard/update" method="post"  enctype="multipart/form-data" >
  								 <input type="hidden" name="boardId" id="boardId"  value="${oneBoard.boardId}">	
- 								 <input type="hidden" name="boardType" id="boardType"  value="B">	
- 								 
-				<div class='page-title'>게시글 수정</div>
+ 								  <input type="hidden" name="boardType" id="boardType"  value="${oneBoard.boardType}">	
+				<div class='page-title'>공지사항 게시글 수정 </div>
 						<%-- tbl_notice의 notice_writer(작성자) 컬럼의 값은 회원 번호! --%>					
   								<input type="hidden" name="memberId" id="loginMemberId" value="${loginMember.memberId}">
 						<table class='tbl'>
@@ -85,90 +82,16 @@
 	         </main>
 		</div>     
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
-	<script>
-	function delFile(obj, fileNo){
-		//파일 삭제 아이콘 클릭시, form태그 내부에 hidden타입으로 input 태그 추가
-		let input = $('<input>');
-		input.attr('type','hidden');
-		input.attr('name','delFileNo');
-		input.attr('value', fileNo);
-		$(obj).parent().remove();
-		$('form').prepend(input);
-	}
-	
-	
-	/*
-	$('#deleteNotice').on('click', function(e) {
-		
-	    e.preventDefault();
-	    swal({
-	        title: "알림",
-	        text: "게시물을 삭제하시겠습니까 ?",
-	        icon: "warning",
-	        buttons: {
-	            cancel: {
-	                text: "취소",
-	                value: false,
-	                visible: true,
-	                closeModal: true
-	            },
-	            confirm: {
-	                text: "삭제",
-	                value: true,
-	                visible: true,
-	                closeModal: true
-	            }
-	        }
-	    }).then(function(val) {
-	        if (val) {
-	            // 버튼이 들어 있는 form을 찾아서 submit
-	        	$(e.target).closest('form').submit();
-	        }
-	    });
-	});
-		
-		
-    //form 태그의 action 속성 변경   /board/update
-    //수정하기 요청을 처리할 UpdateServlet 생성하여, 값 추출
-    //변경하기 클릭 시 동작할 함수 지정.
-    //SWAL로 수정 여부 확인 받고, 수정하기 클릭 시
-    
-    
-	$('#updateNotice').on('click', function(e){
-		
-		e.preventDefault(); // 강제로 submit 막아주는거야
-		swal({
-			title : "알림",
-			text : "게시물을 수정하시겠습니까?",
-			icon : "warning",
-			buttons : {
-				cancel : {
-					text :"취소",
-					value : false,
-					visible : true,
-					closeModal : true
-				},
-				confirm : {
-					text : "수정",
-					value : true,
-					visibla : true,
-					closeModal : true
-				}
-			}
-		}).then(function(val){
-			if(val) {
-				$(e.target).closest('form').submit();
-		            
-			}
-		});
-		
-	});
-    
-	*/	
-
-		
-	
-
-</script>
 </body>
+<script>
+function delFile(obj, fileNo){
+	//파일 삭제 아이콘 클릭시, form태그 내부에 hidden타입으로 input 태그 추가
+	let input = $('<input>');
+	input.attr('type','hidden');
+	input.attr('name','delFileNo');
+	input.attr('value', fileNo);
+	$(obj).parent().remove();
+	$('form').prepend(input);
+}
+</script>
 </html>
