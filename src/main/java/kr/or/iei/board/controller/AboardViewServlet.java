@@ -38,7 +38,6 @@ public class AboardViewServlet extends HttpServlet {
 		
 		BoardService service = new BoardService();
 		Board oneB = service.selectOneBoard(boardNo);
-		
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/board/AboardView.jsp");
 		
 		request.setAttribute("boardInfo", oneB);

@@ -43,13 +43,12 @@ public class UpdateServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//인코딩 필터
 		//값추출
-	
 		
 		String toDay = new SimpleDateFormat("yyyyMMdd").format(new Date()); // 오늘날짜 
 		
 		String rootPath = request.getSession().getServletContext().getRealPath("/"); //세션
 		
-		String savePath = rootPath + "resources/upload/" + toDay + "/"; //오늘 업로드한 시간
+		String savePath = rootPath + "resources/upload/board/free/" + toDay + "/"; //오늘 업로드한 시간
 		
 		int maxSize = 1024 * 1024 * 100; //사진 사이즈
 		
@@ -66,7 +65,7 @@ public class UpdateServlet extends HttpServlet {
 		String boardContent = mRequest.getParameter("boardContent");
 		String memberId = mRequest.getParameter("memberId");
 		String boardId = mRequest.getParameter("boardId");		
-		
+		String boardType = mRequest.getParameter("boardType");
 		
 		//파일을 전송한 input 요소들의 name 속성값들을 Enumeration 형태로 반환합니다.
 		Enumeration<String> files = mRequest.getFileNames();		
@@ -94,6 +93,7 @@ public class UpdateServlet extends HttpServlet {
 		}
 		
 		Board board = new Board();
+		board.setBoardType(boardType);
 		board.setBoardTitle(boardTitle);
 		board.setBoardContent(boardContent);
 		board.setMemberId(memberId);
@@ -113,7 +113,7 @@ public class UpdateServlet extends HttpServlet {
 				BoardFile delFile = delFileList.get(i);
 				
 				String writeDate = delFile.getFilePath().substring(0, 8); //삭제 파일이 위치한 폴더명
-				String delSavePath = rootPath + "resources/upload/" + writeDate + "/" + delFile.getFilePath();
+				String delSavePath = rootPath + "resources/upload/board/free/" + writeDate + "/" + delFile.getFilePath();
 				
 				File file = new File(delSavePath);
 				if(file.exists()) {

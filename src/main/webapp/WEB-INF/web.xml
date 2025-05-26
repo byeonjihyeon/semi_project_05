@@ -2,11 +2,12 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
   <display-name>mutgym</display-name>
 
+
 <welcome-file-list>
     <welcome-file>main</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-    <welcome-file>default.htm</welcome-file>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.html</welcome-file>
   </welcome-file-list>
   
     <!-- 필터 등록 -->
@@ -20,37 +21,4 @@
   	<filter-name>EncodingFilter</filter-name>
   	<url-pattern>/*</url-pattern> <!-- 모든 서블릿 요청에 적용 -->
   </filter-mapping>
- 
-  <!-- 슈퍼 관리자 권한 필터-->
-  <filter>
-  	<filter-name>SuperFilter</filter-name>
-  	<filter-class>kr.or.iei.common.filter.SuperFilter</filter-class>
-  </filter>
-  
-  <filter-mapping>
-  	<filter-name>SuperFilter</filter-name>
-  	<url-pattern>/admin/super/*</url-pattern>
-  </filter-mapping> 
-  
-   <!-- (관리자페이지) 회원 권한 필터-->
-   <filter>
-  	<filter-name>MemberFilter</filter-name>
-  	<filter-class>kr.or.iei.common.filter.MemberFilter</filter-class>
-  </filter>
-  
-  <filter-mapping>
-  	<filter-name>MemberFilter</filter-name>
-  	<url-pattern>/admin/member/*</url-pattern>
-  </filter-mapping> 
-  
-  <!-- (관리자페이지) 헬스 권한 필터-->
-   <filter>
-  	<filter-name>GymFilter</filter-name>
-  	<filter-class>kr.or.iei.common.filter.GymFilter</filter-class>
-  </filter>
-  
-  <filter-mapping>
-  	<filter-name>GymFilter</filter-name>
-  	<url-pattern>/admin/gym/*</url-pattern>
-  </filter-mapping> 
-</web-app> 
+</web-app>

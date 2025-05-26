@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import kr.or.iei.board.model.dao.BoardDao;
 import kr.or.iei.board.model.vo.Board;
-import kr.or.iei.board.model.vo.BoardAdmin;
+import kr.or.iei.board.model.vo.BoardComment;
 import kr.or.iei.board.model.vo.BoardFile;
 import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.common.ListData;
@@ -142,7 +142,7 @@ public class BoardService {
 			for(BoardFile file : fileList) {
 				file.setFileTypeId(boardId);
 				
-				result = dao.insertBoardFile(conn, file);
+				result = dao.insertBoardFile(conn, board.getBoardType(), file);
 				
 				if(result < 1) {
 					JDBCTemplate.rollback(conn);
@@ -202,7 +202,7 @@ public class BoardService {
 					String preFileNo = String.valueOf(preFileList.get(i).getFileNo());
 					
 					if(delFileNoStr.indexOf(preFileNo) > -1) {
-						result += dao.deleteBoard(conn, preFileNo); //게시글에 대한 개별 파일 삭제
+						result += dao.deleteBoardFile(conn, preFileNo); //게시글에 대한 개별 파일 삭제
 					}else {
 						//기존 파일이 삭제 대상 파일이 아닐 때
 						preFileList.remove(i); //서버에서 삭제되지 않도록 리스트에서 제거
@@ -211,7 +211,7 @@ public class BoardService {
 			}
 			for(int i=0; i<fileList.size(); i++) {
 				BoardFile insFile = fileList.get(i);
-				result += dao.insertBoardFile(conn, insFile);
+				result += dao.insertBoardFile(conn, board.getBoardType(), insFile);
 			}
 			
 		}
@@ -249,24 +249,21 @@ public class BoardService {
 		return null;
 	}
 
-/*
-	public String updateListBoard(String boardId) {
+	public int insertComment(BoardComment comment) {
 		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.insertComment(conn, comment);
 		
-		int result = dao.updateListBoard(conn, boardId);
-		
-		
-		if(result >0) {
+		if(result > 0) {
 			JDBCTemplate.commit(conn);
 		}else {
-			JDBCTemplate.rollback(conn);
-		}
-		JDBCTemplate.close(conn);
-		return null;
+		JDBCTemplate.rollback(conn);
+	}
+	JDBCTemplate.close(conn);
+		return result;
+	
+	
 	}
 
-
-	*/
 
 
 	

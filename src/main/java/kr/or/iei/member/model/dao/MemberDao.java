@@ -6,9 +6,16 @@ import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import kr.or.iei.common.JDBCTemplate;
+import kr.or.iei.gym.model.vo.GymFile;
+import kr.or.iei.gym.model.vo.Payment;
+import kr.or.iei.gym.model.vo.Usage;
 import kr.or.iei.member.model.vo.Member;
 import kr.or.iei.member.model.vo.UserGrowth;
 
@@ -20,6 +27,8 @@ public class MemberDao {
 		
 		String query = "select * from tbl_member where member_id = ?";
 		Member loginM = null;
+		ArrayList<GymFile> gFile = new ArrayList<GymFile>();
+		
 				
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -43,9 +52,9 @@ public class MemberDao {
 				loginM.setMemberPw(rset.getString("member_pw"));
 				loginM.setReportedCnt(rset.getInt("reported_cnt"));
 				loginM.setMemberType(rset.getInt("member_type"));
-			
-				
 			}
+			
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -422,6 +431,327 @@ public class MemberDao {
 
 	    return list;
 	}
+
+	public ArrayList<GymFile> searchFile(Connection conn, String memberId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		ArrayList<GymFile> memberFile = new ArrayList<GymFile>();
+		String query = "select * from tbl_member join tbl_user_history using(member_id)"
+				+ "              join tbl_gym_file using(gym_id) where member_id = ?";
+		
+		
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, memberId);
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				GymFile gFile = new GymFile();
+				
+				
+				gFile.setFileName(rset.getString("file_name"));
+				gFile.setFileNo(rset.getString("file_no"));
+				gFile.setFilePath(rset.getString("file_path"));
+				gFile.setFileSavePath(rset.getString("file_save_path"));
+				
+				
+				memberFile.add(gFile);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return memberFile;
+	}
+
+	public ArrayList<Usage> searchHistory(Connection conn, String memberId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Usage> memberHistory = new ArrayList<Usage>();
+		
+		
+		String query = "select * from tbl_user_history join tbl_ticket using(gym_id) where member_id = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, memberId);
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				Usage usage = new Usage();
+				
+				
+				
+				usage.setUsageNo(rset.getString("user_history_no"));
+				usage.setEnrollDate(rset.getString("ticket_insert_date"));
+				String period = rset.getString("ticket_period");
+				
+				if(period.equals("oneDay")) {
+					period = "1";
+				}else if(period.equals("oneMonth")){
+					period = "30";
+				}else if(period.equals("threeMonth")) {
+					period = "90";
+				}else if(period.equals("sixMonth")) {
+					period = "180";
+				}else if(period.equals("oneYear")) {
+					period = "360";
+				}
+				
+				usage.setTicketPeriod(period);
+				usage.setMemberIdRef(rset.getString("member_id"));
+				usage.setTicketIdRef(rset.getString("ticket_kind"));
+				usage.setGymIdRef(rset.getString("gym_id"));
+				
+				LocalDate insertDate = rset.getDate("ticket_insert_date").toLocalDate();
+				String ticketPeriodStr = rset.getString("ticket_period");
+				
+				
+				Map<String, Integer> periodMap = new HashMap<>();
+				periodMap.put("oneDay", 1);
+				periodMap.put("oneMonth", 30);
+				periodMap.put("threeMonth", 90);
+				periodMap.put("sixMonth", 180);
+				periodMap.put("oneYear", 360);
+				
+				int periodDays = periodMap.getOrDefault(ticketPeriodStr, 0);
+				
+				LocalDate endDate = insertDate.plusDays(periodDays);
+				
+				long remainingDays = ChronoUnit.DAYS.between(LocalDate.now(), endDate);
+				
+				int daysLeft = (int) remainingDays;
+				
+				
+				
+				usage.setLeftDate(daysLeft);
+				
+				memberHistory.add(usage);
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		
+		return memberHistory;
+	}
+
+	public ArrayList<Payment> searchPay(Connection conn, String memberId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Payment> memberPay = new ArrayList<Payment>();
+		String query ="select * from tbl_member join tbl_buy using(member_id) where member_id = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, memberId);
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				Payment payInfo = new Payment();
+				
+				
+				payInfo.setCardName(rset.getString("CARD_COMPANY_NAME"));
+				payInfo.setMemberId(rset.getString("member_Id"));
+				
+				payInfo.setMerchantId(rset.getString("merchant_id"));
+				payInfo.setPaymentDate(rset.getString("payment_date"));
+				payInfo.setPaymentId(rset.getString("PAYMENT_HISTORY_NO"));
+				payInfo.setPayMethod(rset.getString("PAY_METHOD"));
+				payInfo.setTicketPrice(rset.getString("TICKET_PRICE"));
+				
+				memberPay.add(payInfo);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return memberPay;
+	}
+
+	public ArrayList<GymFile> loadFile(Connection conn, String memberId, String paymentId) {
+		PreparedStatement pstmt = null; 
+		ResultSet rset = null;
+		
+		String query = "select distinct * from tbl_member join tbl_buy using(member_id) join tbl_user_history using(member_id) join tbl_gym_file using(gym_id) where member_id = ? AND PAYMENT_HISTORY_NO = ?";
+		
+		ArrayList<GymFile> memberFile = new ArrayList<GymFile>();
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, memberId);
+			pstmt.setString(2, paymentId);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				GymFile gfile = new GymFile();
+				
+				gfile.setFileName(rset.getString("file_name"));
+				gfile.setFileNo(rset.getString("file_no"));
+				gfile.setFilePath(rset.getString("file_path"));
+				gfile.setFileSavePath(rset.getString("file_save_path"));
+				
+				
+				memberFile.add(gfile);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return memberFile;
+	}
+
+	public ArrayList<Usage> loadHistory(Connection conn, String memberId, String paymentId) {
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Usage> memberHistory = new ArrayList<Usage>();
+		
+		
+		String query = "select * from tbl_member join tbl_buy using(member_id) join tbl_user_history using(member_id) join tbl_gym_file using(gym_id) join tbl_ticket using(gym_id) join tbl_gym using(gym_id) where member_id = ? AND PAYMENT_HISTORY_NO = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, memberId);
+			pstmt.setString(2, paymentId);
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				Usage usage = new Usage();
+				
+				
+				
+				usage.setUsageNo(rset.getString("user_history_no"));
+				usage.setEnrollDate(rset.getString("ticket_insert_date"));
+				String period = rset.getString("ticket_period");
+				
+				if(period.equals("oneDay")) {
+					period = "1";
+				}else if(period.equals("oneMonth")){
+					period = "30";
+				}else if(period.equals("threeMonth")) {
+					period = "90";
+				}else if(period.equals("sixMonth")) {
+					period = "180";
+				}else if(period.equals("oneYear")) {
+					period = "360";
+				}
+				
+				usage.setTicketPeriod(period);
+				usage.setMemberIdRef(rset.getString("member_id"));
+				usage.setTicketIdRef(rset.getString("ticket_kind"));
+				usage.setGymIdRef(rset.getString("gym_id"));
+				
+				LocalDate insertDate = rset.getDate("ticket_insert_date").toLocalDate();
+				String ticketPeriodStr = rset.getString("ticket_period");
+				
+				
+				Map<String, Integer> periodMap = new HashMap<>();
+				periodMap.put("oneDay", 1);
+				periodMap.put("oneMonth", 30);
+				periodMap.put("threeMonth", 90);
+				periodMap.put("sixMonth", 180);
+				periodMap.put("oneYear", 360);
+				
+				int periodDays = periodMap.getOrDefault(ticketPeriodStr, 0);
+				
+				LocalDate endDate = insertDate.plusDays(periodDays);
+				
+				long remainingDays = ChronoUnit.DAYS.between(LocalDate.now(), endDate);
+				
+				int daysLeft = (int) remainingDays;
+				
+				
+				usage.setGymName(rset.getString("gym_name"));
+				usage.setLeftDate(daysLeft);
+				
+				memberHistory.add(usage);
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		
+		return memberHistory;
+	}
+
+	public ArrayList<Payment> loadPay(Connection conn, String memberId, String paymentId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Payment> memberPay = new ArrayList<Payment>();
+		String query ="select distinct * from tbl_member join tbl_buy using(member_id) join tbl_user_history using(member_id) join tbl_gym_file using(gym_id) where member_id = ? AND PAYMENT_HISTORY_NO = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, memberId);
+			pstmt.setString(2, paymentId);
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				Payment payInfo = new Payment();
+				
+				
+				payInfo.setCardName(rset.getString("CARD_COMPANY_NAME"));
+				payInfo.setMemberId(rset.getString("member_Id"));
+				
+				payInfo.setMerchantId(rset.getString("merchant_id"));
+				payInfo.setPaymentDate(rset.getString("payment_date"));
+				payInfo.setPaymentId(rset.getString("PAYMENT_HISTORY_NO"));
+				payInfo.setPayMethod(rset.getString("PAY_METHOD"));
+				payInfo.setTicketPrice(rset.getString("TICKET_PRICE"));
+				
+				memberPay.add(payInfo);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return memberPay;
+	}
+
+
+
+	
 
 	
 

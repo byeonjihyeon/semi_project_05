@@ -17,6 +17,7 @@
 		 <section class='section notice-write-wrap'>
 								<form action="/board/update" method="post"  enctype="multipart/form-data" >
  								 <input type="hidden" name="boardId" id="boardId"  value="${oneBoard.boardId}">	
+ 								 <input type="hidden" name="boardType" id="boardType"  value="B">	
  								 
 				<div class='page-title'>게시글 수정</div>
 						<%-- tbl_notice의 notice_writer(작성자) 컬럼의 값은 회원 번호! --%>					
@@ -79,12 +80,6 @@
 							
 						</table>
 						</form>
-								<c:if test="${loginMember.memberId eq oneBoard.memberId}">				
-						<form action="/board/delete" method="get" >
-						<input type="hidden" name="deleteBoardId" value="${boardInfo.boardId}">
-									<button type="submit" id="deleteNotice">삭제하기</button>
-						</form>
-								</c:if>
 			</section>
 				
 	         </main>

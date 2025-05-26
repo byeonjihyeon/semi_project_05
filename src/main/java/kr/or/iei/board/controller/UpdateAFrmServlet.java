@@ -1,30 +1,28 @@
-package kr.or.iei.member.controller;
+package kr.or.iei.board.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import kr.or.iei.member.model.service.MemberService;
-import kr.or.iei.member.model.vo.Member;
-import kr.or.iei.member.model.vo.UserGrowth;
+import kr.or.iei.board.model.service.BoardService;
+import kr.or.iei.board.model.vo.Board;
 
 /**
- * Servlet implementation class ShowHistoryList
+ * Servlet implementation class UpdateAFrmServlet
  */
-@WebServlet("/member/showList")
-public class ShowHistoryList extends HttpServlet {
+@WebServlet("/board/updateaFrm")
+public class UpdateAFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ShowHistoryList() {
+    public UpdateAFrmServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,15 +31,14 @@ public class ShowHistoryList extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		  HttpSession session = request.getSession();
-	        Member loginMember = (Member) session.getAttribute("loginMember");
-	        String memberId = loginMember.getMemberId();
-
-	        MemberService service = new MemberService();
-	        ArrayList<UserGrowth> list = service.selectGrowthList(memberId);
-
-	        request.setAttribute("list", list);
-	        request.getRequestDispatcher("/WEB-INF/views/member/recordGrowth.jsp").forward(request, response);
+		String boardNo = request.getParameter("boardNo");
+		
+		BoardService service = new BoardService();
+		Board board = service.selectOneBoard(boardNo);
+		
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/board/upAwriteFrm.jsp");
+		request.setAttribute("oneBoard", board);
+		view.forward(request, response);
 	}
 
 	/**

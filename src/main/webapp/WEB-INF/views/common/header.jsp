@@ -65,7 +65,7 @@
 	               </div>
 	               --%>
 	             </div>
-	             <div class="menu-item"><a href='#'>회원가입</a>
+	             <div class="menu-item"><a href='/member/joinFrm'>회원가입</a>
 	             	<%-- 서브 메뉴 만들시 사용할 
 	               <div class="submenu">
 	                 <a href="#">문의하기</a>

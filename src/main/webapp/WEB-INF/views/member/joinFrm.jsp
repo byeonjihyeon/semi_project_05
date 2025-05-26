@@ -2,7 +2,8 @@
     pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="/resources/css/login.css"> <!-- CSS 파일 연결 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="/resources/js/sweetalert.min.js"></script>
+<script src="/resources/js/sweetalert.min.js"></script>    
+<link rel="stylesheet" href="/resources/css/defalut.css">
 <!DOCTYPE html>
 <style>
 	p {
@@ -21,7 +22,9 @@
 </head>
 <body>
 	   <div class="login-container">
-    
+          <div class="logo" style="margin-bottom: 30px;">
+    	      <a id='logo' href="/" style="    color: #CE2029; text-decoration: none;">MUTGYM LOGO</a>
+      	</div>
       <form action="/member/join" method="post" class="login-form">
           <!-- 회원 유형 선택 -->
           <div class="user-type">

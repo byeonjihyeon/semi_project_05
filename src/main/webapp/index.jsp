@@ -6,7 +6,6 @@
 <head>
     <meta charset="UTF-8">
     <title>MUTGYM 메인페이지</title>
-    <link rel="stylesheet" href="/resources/css/default.css">
     <link rel="stylesheet" href="/resources/css/gymList.css"> <!-- 기존 CSS 유지 -->
     <link rel="stylesheet" href="/resources/css/index.css"> <!-- 기존 CSS 유지 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -163,8 +162,54 @@
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
     <script>
-        function diagnoseObesity() { alert("진단하기 버튼 클릭됨 (구현 필요)"); }
-        function viewObesityResult() { alert("결과보기 버튼 클릭됨 (구현 필요)"); }
+
+    function diagnoseObesity() {
+        const height = parseFloat(document.getElementById("height").value);
+        
+        const weight = parseFloat(document.getElementById("weight").value);
+        const resultDiv = document.getElementById("obesityResult");
+
+        if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
+            resultDiv.innerHTML = `<p style="color:red;">정확한 키와 체중을 입력해주세요.</p>`;
+            return;
+        }
+
+        // BMI 계산: 체중(kg) / (키(m)²)
+        const heightMeter = height / 100;
+        
+        const bmi = weight / (heightMeter * heightMeter);
+        
+        let diagnosis = "";
+
+        if (bmi <= 18.5) {
+            diagnosis = "저체중";
+        } else if (bmi <= 22.9) {
+            diagnosis = "정상 체중";
+        } else if (bmi <= 24.9) {
+            diagnosis = "과체중";
+        } else {
+            diagnosis = "비만";
+        }
+        
+        
+        resultDiv.innerHTML = 
+        	"<p><strong>BMI 지수:</strong> " + bmi.toFixed(1) + "</p>" +
+            "<p><strong>진단 결과:</strong> " + diagnosis + "</p>";
+       	;
+
+        // 결과 보기 버튼 활성화
+    }
+        //document.getElementById("viewResultButton").style.display = "inline-block";
+
+/*     function viewObesityResult() {
+        const resultDiv = document.getElementById("obesityResult");
+        if (resultDiv.innerHTML.trim() === "") {
+            alert("먼저 진단을 진행해주세요.");
+        } else {
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    } */
+
 
         const innerContainer = document.querySelector('.gym-cards-inner-container');
         const outerContainer = document.querySelector('.gym-cards-outer-container');

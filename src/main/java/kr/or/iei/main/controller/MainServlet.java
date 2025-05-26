@@ -36,7 +36,7 @@ public class MainServlet extends HttpServlet {
 		List<Gym> gymList = new ArrayList<Gym>();
 		GymService service = new GymService();
 		gymList = service.selectAllGym();
-		System.out.println((gymList.get(0)).getFileList().get(0).getfileUrl());
+
 		request.setAttribute("nearbyGyms", gymList);
 		RequestDispatcher view = request.getRequestDispatcher("/index.jsp");
 		view.forward(request, response);

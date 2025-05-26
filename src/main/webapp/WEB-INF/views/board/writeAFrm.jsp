@@ -49,23 +49,14 @@
 								</td>
 							</tr>
 							<tr>
-								<th style='width:10%'>이미지 첨부</th>
-								<td style='width:40%'>
-									<input type='file' name='uploadFile1'>
-								
-								</td>
-								<td>이미지는 gif, jpg, png 파일 형식만 가능합니다.(5MB 이하)</td>
-							</tr>
-							
-							<tr>
 								<th style='width:10%'>첨부파일</th>
 								<td style='width:40%'>
-									<input type='file' name='uploadFile2'>
+									<input type='file' name='uploadFile1'>
 								</td>
-								<td>pdf, doc, docx, ppt, pptx, xls, xlsx, mp3 파일형식만 가능합니다.(5MB 이하)</td>
+								<td>이미지는 gif, jpg, png, pdf, doc, docx, ppt, pptx, xls, xlsx, mp3  파일 형식만 가능합니다.(5MB 이하)</td>
 							</tr>
-							<tr>
 							
+							<tr>
 								<td colspan='4'>
 									<button class='btn-primary lg' id="check" name="check">작성하기</button>
 								</td>

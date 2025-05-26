@@ -14,4 +14,8 @@ public class Usage {//이용내역 테이블
 	private String memberIdRef;
 	private String ticketIdRef;
 	private String gymIdRef;
+	private int leftDate;
+	private String ticketPeriod;
+	private String gymName;
+
 }

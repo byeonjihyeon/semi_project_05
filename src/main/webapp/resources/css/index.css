@@ -1,5 +1,6 @@
 /* Styles for main_page.jsp */
 
+
 .main-page-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -109,6 +110,25 @@
 }
 */
 
+#obesityResult {
+    margin-top: 15px; /* 위쪽 여백을 줘서 다른 요소들과 분리 */
+    padding: 10px; /* 내부 패딩을 줘서 내용이 너무 붙지 않도록 */
+    border-top: 1px dashed var(--line4, #f0f0f0); /* 구분선을 추가 (선택 사항) */
+    color: var(--gray1, #222); /* 텍스트 색상을 명확하게 지정 */
+    font-size: 0.9em; /* 텍스트 크기 조정 */
+    line-height: 1.5; /* 줄 간격 조정 */
+    
+    /* 결과가 길어질 경우 스크롤이 생기도록 할 수도 있습니다.*/
+    max-height: 100px;
+    overflow-y: auto;
+    
+}
+
+#obesityResult p {
+    margin: 5px 0; /* 내부 p 태그들의 상하 마진 조정 */
+    padding: 0; /* 내부 p 태그들의 패딩 제거 */
+    color: var(--gray1, #222); /* 텍스트 색상을 명확하게 지정 */
+}
 
 /* Search Section - No changes */
 .search-section {

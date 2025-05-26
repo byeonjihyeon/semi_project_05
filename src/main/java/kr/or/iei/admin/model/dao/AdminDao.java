@@ -565,7 +565,6 @@ public class AdminDao {
 			int total = rset.getInt("cnt");
 			
 			cnt = total;
-			System.out.println(cnt);
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
